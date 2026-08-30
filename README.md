@@ -125,7 +125,14 @@ The initial implementation supports bounded OpenRouter server-side web search
 and fails closed unless its per-request price can be verified during preflight.
 See the [auto web-search pilot](docs/experiments/web-search-auto-pilot-20260830.md)
 for the first cross-model findings and the resulting budget-safety changes.
+
 The next planned study is
 [Experiment 1: source-assisted recipe reconstruction](docs/experiments/experiment-1-source-assisted-reconstruction-plan.md).
 Its first [Gate B calibration report](docs/experiments/experiment-1-gate-b-20260830.md)
 compares source-assisted behavior with Title-only baseline v1.
+
+
+The [Experiment 2 ingredient-disclaimer
+run](docs/experiments/experiment-2-ingredient-disclaimer-20260830.md) tested
+whether a short, legally grounded prompt statement changed exact ingredient-list
+compliance without enabling web search.
