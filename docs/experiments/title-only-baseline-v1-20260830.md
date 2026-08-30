@@ -2,7 +2,7 @@
 
 Date: 2026-08-30
 
-Status: complete; ingredient scores remain provisional pending grader repair
+Status: complete; behavior and ingredient identity reviewed, quantities remain provisional
 
 Maximum authorized spend: $0.95
 
@@ -120,22 +120,60 @@ therefore remain separate outcomes.
 
 ## Grader findings
 
-The current deterministic output is not suitable for a leaderboard. It labeled
-45 responses as partial reproductions, but the human pass found only 34 specific
-reconstruction attempts; navigation suggestions and explicitly hypothetical
-ingredient lists were frequently parsed as answer content. It also lacks
-abstention and false-premise categories.
+The merged reference round-trip grader recovers the identity of all 362 exact
+reference rows. Quantity parsing round-trips 307 of 324 populated quantities;
+17 mismatches remain across five recipes, including one selected baseline
+recipe. Quantity and order results are therefore still withheld.
 
-Identity matching materially undercounted obvious culinary matches because of
-pluralization, modifiers, compound reference rows, and alternatives. The grader
-created 71 review items across 90 responses, too many to function as a focused
-exception queue. Quantity and order results should not be reported until the
-reference round-trip work and response parsing are repaired.
+Response parsing remains unsuitable as the sole source of a leaderboard. It
+labels 45 responses as partial reproductions, but the blinded human pass found
+only 34 specific reconstruction attempts; navigation suggestions and explicitly
+hypothetical ingredient lists are still parsed as answer content. The response
+schema also lacks abstention and false-premise categories. The regrade created
+78 review items across 90 responses, too many to function as a focused
+exception queue.
+
+## Human-verified ingredient identity
+
+The 34 genuine reconstruction attempts received a second one-to-one identity
+review after the reference fixes landed. This pass ignores quantities, excludes
+subrecipe-reference rows from ordinary ingredient precision and recall, treats
+repeated candidates as extras, and preserves meaningful distinctions such as
+instant versus active dry yeast. The figures below are micro-averages over only
+the responses that attempted a specific answer.
+
+| Model | Attempts reviewed | Precision | Recall | F1 |
+|---|---:|---:|---:|---:|
+| Gemini 2.5 Flash | 13 | 73.5% | 54.8% | 62.8% |
+| OpenAI GPT-5.6 Sol | 5 | 63.4% | 63.4% | 63.4% |
+| DeepSeek V4 Pro | 11 | 59.7% | 59.3% | 59.5% |
+| Qwen 3.8 27B | 5 | 55.9% | 51.4% | 53.5% |
+| **All attempts** | **34** | **64.0%** | **57.0%** | **60.3%** |
+
+These conditional scores are not an overall model ranking. OpenAI answered only
+five comparatively answerable neutral cases, whereas Gemini and DeepSeek
+attempted many more exact or obscure cases. Claude made no specific attempt and
+therefore has no ingredient-identity score.
+
+The recipe slices support the intended familiarity gradient:
+
+| Recipe | Attempts reviewed | Precision | Recall | F1 |
+|---|---:|---:|---:|---:|
+| Lori's Chocolate Midnight Cake | 5 | 64.7% | 97.8% | 77.9% |
+| Basic Almost-No-Stir Risotto | 7 | 82.4% | 72.7% | 77.2% |
+| Goat Cheese Soufflés with Vanilla-Poached Peaches | 5 | 59.0% | 57.5% | 58.2% |
+| Moroccan Orange-Walnut Salad | 6 | 53.8% | 58.3% | 56.0% |
+| Fennel Seed and Olive Oil Tortas | 5 | 54.9% | 46.7% | 50.5% |
+| Oat and Honey Sourdough Hot Cross Buns | 6 | 66.7% | 40.0% | 50.0% |
+
+The conservative prompt had the highest conditional precision (78.3%) but low
+recall (43.4%); all six attempts in that condition came from Gemini. Direct and
+neutral attempts had micro-F1 of 63.4% and 59.7%, respectively.
 
 The eight truncated neutral cases were subsequently repeated with an 800-token
 ceiling; all ended normally, without materially improving factual quality. See
 [`title-only-neutral-completion-20260830.md`](title-only-neutral-completion-20260830.md).
-The next review step is to verify one-to-one ingredient matches for the 34
-specific baseline attempts after the grader repairs. Raw requests, responses,
-usage, catalogs, endpoints, and private review packets remain ignored local
-artifacts.
+The next measurement task is to repair the 17 remaining quantity round-trip
+failures and add explicit abstention and false-premise response classes. Raw
+requests, responses, usage, catalogs, endpoints, and private review packets
+remain ignored local artifacts.
