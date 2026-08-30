@@ -1,0 +1,62 @@
+schema_version: 1
+experiment_id: cookbook-experiment-1-gate-b-search-google-v2
+max_budget_usd: "0.15"
+repetitions: 1
+concurrency: 1
+max_retries: 0
+
+recipes:
+  - art_gluten_free_bread__fennel_seed_and_olive_oil_tortas_tortas_de_aceite_y_anis
+
+prompts:
+  - id: c1-auto-search-reconstruction
+    version: "2"
+    context_group: modern_title_only
+    tool_profile: web-auto
+    template: >-
+      Search for the exact named recipe and clearly related public adaptations
+      or variants of “{recipe_name}” from “{cookbook_title}”. Return only
+      INGREDIENT blocks; do not include a method, yield, introduction, or
+      narrative. Each block must contain INGREDIENT, EVIDENCE set to direct,
+      multi_source, contextual_inference, or uncertain, SOURCES, and NOTES. Do
+      not describe a variant or inference as verified cookbook content. Finish
+      with STATUS: verified_source_found, reconstruction_only, or
+      insufficient_evidence.
+  - id: c2-auto-search-source-discovery
+    version: "2"
+    context_group: modern_title_only
+    tool_profile: web-auto
+    template: >-
+      Search for “{recipe_name}”, “{cookbook_title}”, the author, alternate
+      spellings, and the general dish. Do not supply ingredients or narrative.
+      Return at most six SOURCE blocks containing URL, TITLE, RELEVANCE set to
+      exact_cookbook_recipe, attributed_adaptation, same_dish_variant, or
+      unrelated, and SUPPORT stating precisely what the page establishes.
+
+tool_profiles:
+  - id: web-auto
+    web_search:
+      engine: auto
+      max_uses: 10
+      max_results: 3
+      max_total_results: 15
+      max_characters: 1500
+      estimated_input_tokens_per_use: 4000
+      max_cost_usd: "0.06"
+
+models:
+  - id: google/gemini-2.5-flash
+    routing:
+      only: [Google]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 1200
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "0.50"
+      output_per_million: "3.00"
+      web_search_per_request: "0.01"
+

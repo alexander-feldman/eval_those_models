@@ -281,7 +281,7 @@ def test_search_run_rejects_nonterminal_tool_response_and_counts_cost(tmp_path: 
     assert failed["error_type"] == "NonterminalToolResponse"
 
 
-def test_search_run_rejects_reported_searches_above_limit(tmp_path: Path) -> None:
+def test_search_run_does_not_confuse_query_count_with_tool_steps(tmp_path: Path) -> None:
     client = FakeClient()
 
     def over_limit(case: PlannedCase) -> GenerationResult:
@@ -301,24 +301,21 @@ def test_search_run_rejects_reported_searches_above_limit(tmp_path: Path) -> Non
     client.generate = over_limit  # type: ignore[method-assign]
     summary = run_experiment(_search_config(), _search_plan(1), client, tmp_path)
 
-    assert summary.failed == 1
-    assert summary.stop_reason is not None
-    events = read_events(summary.run_directory / "attempts.jsonl")
-    failed = next(event for event in events if event["event"] == "attempt_failed")
-    assert "above configured limit" in failed["error"]
+    assert summary.succeeded == 1
+    assert summary.stop_reason is None
 
 
 def test_search_run_does_not_dispatch_after_tool_violation(tmp_path: Path) -> None:
     client = FakeClient()
 
-    def over_limit(case: PlannedCase) -> GenerationResult:
+    def nonterminal(case: PlannedCase) -> GenerationResult:
         client.calls[case.case_id] += 1
         return GenerationResult(
             generation_id="generation-1",
             model_returned="example/model",
             provider_actual="Example",
-            output_text="answer",
-            finish_reason="stop",
+            output_text="searching",
+            finish_reason="tool_calls",
             usage={
                 "cost": 0.0001,
                 "server_tool_use_details": {"web_search_requests": 2},
@@ -326,7 +323,7 @@ def test_search_run_does_not_dispatch_after_tool_violation(tmp_path: Path) -> No
             raw_response={},
         )
 
-    client.generate = over_limit  # type: ignore[method-assign]
+    client.generate = nonterminal  # type: ignore[method-assign]
     summary = run_experiment(_search_config(), _search_plan(2), client, tmp_path)
 
     assert summary.failed == 1

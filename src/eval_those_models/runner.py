@@ -366,27 +366,7 @@ def _raw_response_cost(raw_response: dict[str, Any] | None) -> Decimal:
 def _terminal_error(case: PlannedCase, result: GenerationResult) -> str | None:
     if result.finish_reason == "tool_calls":
         return "response ended with nonterminal tool_calls finish reason"
-    configured_limit = _configured_search_limit(case)
-    if configured_limit is None:
-        return None
-    details = result.usage.get("server_tool_use_details")
-    if not isinstance(details, dict):
-        return None
-    counts = [details.get("web_search_requests"), details.get("tool_calls_executed")]
-    observed = max((value for value in counts if isinstance(value, int)), default=0)
-    if observed > configured_limit:
-        return (
-            f"response reported {observed} search calls above configured limit {configured_limit}"
-        )
     return None
-
-
-def _configured_search_limit(case: PlannedCase) -> int | None:
-    tools = case.parameters.get("tools")
-    if not isinstance(tools, list) or not tools:
-        return None
-    value = case.parameters.get("max_tool_calls")
-    return value if isinstance(value, int) else None
 
 
 def _validate_preflight(

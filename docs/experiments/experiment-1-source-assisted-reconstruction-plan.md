@@ -106,7 +106,7 @@ Use the following four-model subset of Baseline v1. Freeze and verify the same
 canonical slugs and controlled provider routes immediately before execution:
 
 - `openai/gpt-5.6-sol` through OpenAI;
-- `anthropic/claude-opus-4.8` through Anthropic;
+- `google/gemini-2.5-flash` through Google;
 - `qwen/qwen3.8-27b` through Alibaba;
 - `deepseek/deepseek-v4-pro-0813` through Alibaba.
 
@@ -122,6 +122,8 @@ For each model:
 - request `data_collection: deny`;
 - record whether zero-data-retention routing is available;
 - use `engine: auto` for the production-search conditions;
+- cap cumulative search results and use provider-side server-tool step and cost
+  stop conditions; do not treat search-query counts as tool-loop step counts;
 - record the actual model, inference provider, search usage, and generation
   metadata returned by OpenRouter.
 
@@ -321,6 +323,11 @@ packet hashing, prompt leakage rules, parsing, and budget accounting. Cost: $0.
 Use only the obscure tortas case, all four models, all four new conditions, and
 one repetition: 16 new calls, including 8 search-enabled calls. Confirm that
 the four matching B0 observations are valid before dispatch.
+
+Claude Opus 4.8 was retired after its initial search calibration because of
+cost and is not dispatched in subsequent Gate B stages. Preserve that result as
+historical operational evidence; Gemini 2.5 Flash is the Baseline v1-matched
+replacement in the planned portfolio.
 
 Proceed only if:
 
