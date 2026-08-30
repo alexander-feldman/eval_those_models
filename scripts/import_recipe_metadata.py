@@ -232,6 +232,10 @@ def read_and_validate_source(path: Path) -> tuple[list[dict[str, str]], dict[str
                 raise ValidationError(f"{recipe_id}: unexpected ingredient record shape")
             if record["tier"] not in tiers:
                 raise ValidationError(f"{recipe_id}: invalid ingredient tier")
+            if not isinstance(record["optional"], bool):
+                raise ValidationError(f"{recipe_id}: ingredient optional flag must be boolean")
+            if not isinstance(record["subrecipe_reference"], bool):
+                raise ValidationError(f"{recipe_id}: subrecipe-reference flag must be boolean")
 
         digest = hashlib.sha256(row["reference_text_exact"].encode("utf-8")).hexdigest()
         if digest != row["reference_text_sha256"]:
@@ -666,7 +670,7 @@ def main() -> int:
                 connection.close()
         else:
             counts = build_database(args)
-    except (OSError, sqlite3.Error, ValidationError) as exc:
+    except (OSError, sqlite3.Error, ValueError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
 
