@@ -2,7 +2,7 @@
 
 Date: 2026-08-30
 
-Status: complete; behavior and ingredient identity reviewed, quantities remain provisional
+Status: frozen; behavior and ingredient identity reviewed, quantity and order exploratory
 
 Maximum authorized spend: $0.95
 
@@ -120,18 +120,31 @@ therefore remain separate outcomes.
 
 ## Grader findings
 
-The merged reference round-trip grader recovers the identity of all 362 exact
-reference rows. Quantity parsing round-trips 307 of 324 populated quantities;
-17 mismatches remain across five recipes, including one selected baseline
-recipe. Quantity and order results are therefore still withheld.
+The final reference audit recovers all 362 exact ingredient identities, all 324
+populated quantities, and all 27 complete recipe-level round trips. Quantity and
+order metrics are now mechanically available, but remain exploratory because
+they have not received the response-level human verification applied to
+ingredient identity.
 
-Response parsing remains unsuitable as the sole source of a leaderboard. It
-labels 45 responses as partial reproductions, but the blinded human pass found
-only 34 specific reconstruction attempts; navigation suggestions and explicitly
-hypothetical ingredient lists are still parsed as answer content. The response
-schema also lacks abstention and false-premise categories. The regrade created
-78 review items across 90 responses, too many to function as a focused
-exception queue.
+The final offline replay classifies 34 responses as attempted reproductions, 35
+as abstentions, 19 as refusals, and 2 as false-premise denials. This exactly
+matches the blinded human behavior totals and prompt split. It also preserves
+the model-level attempt counts: Gemini 13, DeepSeek 11, OpenAI 5, Qwen 5, and
+Claude 0.
+
+One final calibration case required distinguishing a refusal to reproduce an
+exact list from a subsequent target-specific tentative reconstruction. The
+parser now scores the explicit claim that the named recipe's ingredients would
+likely include a supplied list, while continuing to exclude generic and
+replacement recipes. A regression test covers both sides of that boundary.
+
+The calibrated replay produces 68 review flags across 24 of the 34 attempted
+answers. All 24 flagged responses were inspected. The flags are evidence-bearing
+ambiguities worth retaining: 43 ingredient alternatives, 14 fuzzy candidates
+below the acceptance threshold, 8 qualifier issues, 2 strict-versus-lenient
+score disagreements, and 1 fuzzy match with competing references. The remaining
+10 attempted answers produce no review flag. Raw responses and the replay packet
+remain private ignored artifacts.
 
 ## Human-verified ingredient identity
 
@@ -173,7 +186,8 @@ neutral attempts had micro-F1 of 63.4% and 59.7%, respectively.
 The eight truncated neutral cases were subsequently repeated with an 800-token
 ceiling; all ended normally, without materially improving factual quality. See
 [`title-only-neutral-completion-20260830.md`](title-only-neutral-completion-20260830.md).
-The next measurement task is to repair the 17 remaining quantity round-trip
-failures and add explicit abstention and false-premise response classes. Raw
-requests, responses, usage, catalogs, endpoints, and private review packets
-remain ignored local artifacts.
+No additional provider calls were needed for final calibration. Title-only
+baseline v1 is frozen at the human-verified identity figures above; later
+experiments should retain these behavior labels and scores rather than silently
+regrading the baseline under a changed parser. Raw requests, responses, usage,
+catalogs, endpoints, and private review packets remain ignored local artifacts.

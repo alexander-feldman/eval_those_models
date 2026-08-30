@@ -16,8 +16,8 @@ and dataset revisions remain reproducible.
 
 Current local dataset: 27 recipes, 362 structured ingredients, 26 complete
 ingredient lists, and 1 explicitly partial list. The OpenRouter smoke-test
-harness and deterministic grader are implemented; calibration against the
-recorded pilot and blinded human labels is the next phase.
+harness and deterministic grader are implemented and calibrated against the
+recorded title-only baseline and blinded human behavior labels.
 
 The first broader title-only baseline is specified in
 [`configs/experiments/title-only-baseline-v1.yaml`](configs/experiments/title-only-baseline-v1.yaml),
