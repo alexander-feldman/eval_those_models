@@ -105,3 +105,7 @@ budget reserves the maximum number of retries at conservative token ceilings.
 Requests run with bounded concurrency. Every start, failure, retry, and untouched
 successful response is appended durably to private JSONL under `artifacts/runs/`;
 API credentials are never serialized.
+
+Optional tool profiles can make tool availability part of the case identity.
+The initial implementation supports bounded OpenRouter server-side web search
+and fails closed unless its per-request price can be verified during preflight.

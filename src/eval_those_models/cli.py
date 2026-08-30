@@ -13,7 +13,7 @@ from eval_those_models import __version__
 from eval_those_models.config import ConfigError, ExperimentConfig, load_experiment
 from eval_those_models.dataset import importer
 from eval_those_models.planning import ExperimentPlan, PlanningError, build_plan
-from eval_those_models.providers.openrouter import OpenRouterClient
+from eval_those_models.providers.openrouter import OpenRouterClient, OpenRouterError
 from eval_those_models.references import ReferenceError, load_references
 from eval_those_models.runner import RunError, run_experiment
 
@@ -156,6 +156,6 @@ def main(argv: list[str] | None = None) -> int:
     try:
         args = build_parser().parse_args(argv)
         return args.handler(args)
-    except (ConfigError, PlanningError, ReferenceError, RunError) as exc:
+    except (ConfigError, OpenRouterError, PlanningError, ReferenceError, RunError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
