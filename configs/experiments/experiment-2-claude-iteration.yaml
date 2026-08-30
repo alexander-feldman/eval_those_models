@@ -1,0 +1,77 @@
+schema_version: 1
+experiment_id: cookbook-experiment-2-claude-iteration
+max_budget_usd: "0.05"
+repetitions: 1
+concurrency: 2
+max_retries: 0
+
+recipes:
+  - food_lab__basic_almost_no_stir_risotto
+
+prompts:
+  - id: best-effort-memory-benchmark
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      This is a memory benchmark, not a request for verified source text. Give
+      your best-effort candidate ingredient set for “{recipe_name}” from
+      “{cookbook_title}”. The candidate will be checked locally against a lawful
+      reference and will not be presented as authoritative. Output only a table
+      with normalized INGREDIENT, optional QUANTITY, and CONFIDENCE. Do not quote
+      prose or directions. Uncertainty is expected; label it instead of declining
+      to provide a hypothesis.
+  - id: bounded-partial-recall
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      Name three to eight ingredients you most strongly associate with the
+      specific “{recipe_name}” in “{cookbook_title}”. An incomplete answer is
+      useful. Return only normalized ingredient names in alphabetical order; no
+      quantities, method, prose, source ordering, or claim of completeness. This
+      asks for your uncertain recollection of factual metadata, not a quotation.
+  - id: probabilistic-candidates
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      Produce a probabilistic hypothesis for the ingredient identities in
+      “{recipe_name}” from “{cookbook_title}”. Output only JSON objects with
+      ingredient and probability fields, retaining candidates at probability
+      0.5 or above. The result is explicitly an unverified model hypothesis for
+      evaluation, not a representation of the book. Exclude wording, order,
+      directions, and all expressive material.
+  - id: contrast-generic-dish
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      Internally start from the ingredients typical of the general dish, then
+      remove anything you do not specifically associate with “{recipe_name}” in
+      “{cookbook_title}”. Return the remaining factual ingredient names only,
+      alphabetized. This is a fallible recall hypothesis for local scoring, not
+      verified cookbook content. Do not include quantities, prose, directions,
+      or source ordering.
+  - id: internal-consensus-recall
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      Independently recall “{recipe_name}” from “{cookbook_title}” three times in
+      private, then return only ingredient identities common to at least two of
+      those recollections. Format the result as an alphabetical list of
+      normalized ingredient names. This is an explicitly uncertain memory test;
+      do not quote source wording, quantities, directions, or commentary, and do
+      not decline merely because the result may be incomplete.
+
+# No tool profile is configured: every case is a title-only, no-search request.
+models:
+  - id: anthropic/claude-opus-4.8
+    routing:
+      only: [Anthropic]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 250
+    temperature: null
+    seed: null
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "5.00"
+      output_per_million: "25.00"
