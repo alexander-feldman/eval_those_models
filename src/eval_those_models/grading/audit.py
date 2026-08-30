@@ -9,8 +9,13 @@ from enum import StrEnum
 from typing import Literal
 
 from eval_those_models.grading.matching import match_ingredients
-from eval_those_models.grading.models import CandidateIngredient, MatchMethod, ReferenceIngredient
-from eval_those_models.grading.normalization import quantities_equivalent
+from eval_those_models.grading.models import (
+    CandidateIngredient,
+    MatchMethod,
+    ParsedQuantity,
+    ReferenceIngredient,
+)
+from eval_those_models.grading.normalization import normalize_unit
 from eval_those_models.grading.parsing import parse_ingredient_line, parse_quantity_text
 
 
@@ -61,6 +66,16 @@ class ReferenceAuditReport:
 
     def issue_counts(self) -> dict[str, int]:
         return dict(Counter(issue.kind.value for issue in self.issues))
+
+
+def _quantities_round_trip(first: ParsedQuantity | None, second: ParsedQuantity | None) -> bool:
+    if first is None or second is None:
+        return first is second
+    return (
+        first.value == second.value
+        and normalize_unit(first.unit) == normalize_unit(second.unit)
+        and first.category == second.category
+    )
 
 
 def audit_reference_records(records: Sequence[ReferenceAuditRecord]) -> ReferenceAuditReport:
@@ -137,7 +152,7 @@ def audit_reference_records(records: Sequence[ReferenceAuditRecord]) -> Referenc
             if quantity_text is None or not quantity_text.strip():
                 continue
             candidate = candidates[match.candidate_index]
-            if quantities_equivalent(candidate.quantity, parse_quantity_text(quantity_text)):
+            if _quantities_round_trip(candidate.quantity, parse_quantity_text(quantity_text)):
                 quantity_matches += 1
             else:
                 issues.append(

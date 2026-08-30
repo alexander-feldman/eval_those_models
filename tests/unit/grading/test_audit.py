@@ -48,3 +48,18 @@ def test_reference_audit_reports_locations_without_reference_evidence() -> None:
         ("recipe-2", 1, ReferenceAuditIssueKind.QUANTITY_MISMATCH),
     ]
     assert all(not hasattr(issue, "reference_evidence") for issue in report.issues)
+
+
+def test_reference_audit_does_not_treat_collapsed_range_as_a_round_trip() -> None:
+    report = audit_reference_records(
+        [
+            _record(
+                text_exact="2 to 3 synthetic peaches",
+                quantity_text_exact="2",
+                ingredient_text="synthetic peaches",
+                ingredient_key="synthetic peaches",
+            )
+        ]
+    )
+
+    assert report.issue_counts() == {"quantity_mismatch": 1}

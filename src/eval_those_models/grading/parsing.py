@@ -8,6 +8,7 @@ from fractions import Fraction
 from eval_those_models.grading.models import (
     CandidateIngredient,
     CandidateResponse,
+    IngredientQualifier,
     ParsedQuantity,
     ResponseClass,
 )
@@ -157,6 +158,34 @@ _TRAILING_IDENTITY_METADATA = re.compile(
     r"\s*\((?:page\s+\d+|see\s+[^)]+)\))\s*$",
     re.I,
 )
+_SIZE_QUALIFIER = re.compile(r"^(?P<size>small|medium|large)\s+(?P<ingredient>.+)$", re.I)
+_SIZE_QUALIFIED_HEADS = {
+    "apple",
+    "apricot",
+    "artichoke",
+    "avocado",
+    "banana",
+    "beet",
+    "carrot",
+    "chile",
+    "chili",
+    "cucumber",
+    "egg",
+    "eggplant",
+    "lemon",
+    "lime",
+    "onion",
+    "orange",
+    "peach",
+    "pear",
+    "pepper",
+    "potato",
+    "shallot",
+    "shrimp",
+    "squash",
+    "tomato",
+    "zucchini",
+}
 
 
 def _heading_kind(line: str) -> str | None:
@@ -263,6 +292,21 @@ def _split_quantity(line: str) -> tuple[ParsedQuantity | None, str]:
     return None, normalized
 
 
+def _split_identity_qualifiers(
+    phrase: str,
+) -> tuple[str, tuple[IngredientQualifier, ...]]:
+    """Split only high-confidence size adjectives from countable ingredient identities."""
+    normalized = normalize_ingredient_key(phrase)
+    match = _SIZE_QUALIFIER.match(phrase)
+    if match is None:
+        return normalized, ()
+    identity_key = normalize_ingredient_key(match.group("ingredient"))
+    if not (_SIZE_QUALIFIED_HEADS & set(identity_key.split())):
+        return normalized, ()
+    qualifier = IngredientQualifier(kind="size", value=match.group("size").casefold())
+    return identity_key, (qualifier,)
+
+
 def parse_ingredient_line(line: str, index: int) -> CandidateIngredient | None:
     """Parse a single already-selected line; return ``None`` for headings or noise."""
     raw = line.rstrip()
@@ -283,14 +327,19 @@ def parse_ingredient_line(line: str, index: int) -> CandidateIngredient | None:
     elif re.search(r"\bor\b", phrase, re.I):
         ambiguous_reason = "ingredient alternative"
 
+    normalized_key = normalize_ingredient_key(phrase)
+    identity_key, qualifiers = _split_identity_qualifiers(phrase)
+
     return CandidateIngredient(
         index=index,
         raw=raw,
         quantity=quantity,
         ingredient_phrase=phrase,
-        normalized_key=normalize_ingredient_key(phrase),
+        normalized_key=normalized_key,
         modifier=modifier.strip() if separator and modifier.strip() else None,
         ambiguous_reason=ambiguous_reason,
+        identity_key=identity_key,
+        qualifiers=qualifiers,
     )
 
 

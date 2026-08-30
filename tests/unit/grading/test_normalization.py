@@ -32,6 +32,11 @@ def test_parse_numeric_range() -> None:
     assert quantity.unit == "cup"
 
 
+def test_scalar_quantity_within_reference_range_is_equivalent() -> None:
+    assert quantities_equivalent(parse_quantity_text("3"), parse_quantity_text("2 to 3"))
+    assert not quantities_equivalent(parse_quantity_text("4"), parse_quantity_text("2 to 3"))
+
+
 def test_safe_units_are_numerically_equivalent() -> None:
     assert quantities_equivalent(parse_quantity_text("3 tsp"), parse_quantity_text("1 tbsp"))
     assert not quantities_equivalent(parse_quantity_text("1 cup"), parse_quantity_text("1 gram"))

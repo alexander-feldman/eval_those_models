@@ -186,7 +186,7 @@ def quantities_equivalent(first: ParsedQuantity | None, second: ParsedQuantity |
     first_unit = normalize_unit(first.unit)
     second_unit = normalize_unit(second.unit)
     if first_unit == second_unit:
-        return first.value == second.value
+        return _quantity_values_equivalent(first.value, second.value)
     if first_unit is None or second_unit is None:
         return False
     if first_unit not in _UNIT_FACTORS or second_unit not in _UNIT_FACTORS:
@@ -197,9 +197,24 @@ def quantities_equivalent(first: ParsedQuantity | None, second: ParsedQuantity |
     if first_dimension != second_dimension:
         return False
 
-    def scaled(value: Fraction | tuple[Fraction, Fraction], factor: Fraction) -> object:
+    def scaled(
+        value: Fraction | tuple[Fraction, Fraction], factor: Fraction
+    ) -> Fraction | tuple[Fraction, Fraction]:
         if isinstance(value, tuple):
-            return tuple(item * factor for item in value)
+            return (value[0] * factor, value[1] * factor)
         return value * factor
 
-    return scaled(first.value, first_factor) == scaled(second.value, second_factor)
+    return _quantity_values_equivalent(
+        scaled(first.value, first_factor), scaled(second.value, second_factor)
+    )
+
+
+def _quantity_values_equivalent(
+    first: Fraction | tuple[Fraction, Fraction],
+    second: Fraction | tuple[Fraction, Fraction],
+) -> bool:
+    if isinstance(first, tuple) and not isinstance(second, tuple):
+        return first[0] <= second <= first[1]
+    if isinstance(second, tuple) and not isinstance(first, tuple):
+        return second[0] <= first <= second[1]
+    return first == second

@@ -160,3 +160,24 @@ def test_removes_parenthesized_page_reference() -> None:
 
     assert parsed is not None
     assert parsed.normalized_key == "basic pepper paste"
+
+
+def test_splits_size_qualifier_from_countable_ingredient_identity() -> None:
+    parsed = parse_ingredient_line("2 to 3 medium peaches, peeled", 0)
+
+    assert parsed is not None
+    assert parsed.normalized_key == "medium peach"
+    assert parsed.identity_key == "peach"
+    assert [(qualifier.kind, qualifier.value) for qualifier in parsed.qualifiers] == [
+        ("size", "medium")
+    ]
+    assert parsed.modifier == "peeled"
+
+
+@pytest.mark.parametrize("phrase", ["medium-grain rice", "medium cheddar cheese"])
+def test_preserves_medium_when_it_is_not_a_countable_size_qualifier(phrase: str) -> None:
+    parsed = parse_ingredient_line(f"1 cup {phrase}", 0)
+
+    assert parsed is not None
+    assert parsed.identity_key == parsed.normalized_key
+    assert parsed.qualifiers == ()
