@@ -1,0 +1,87 @@
+schema_version: 1
+experiment_id: cookbook-experiment-2-unseen-validation-a
+max_budget_usd: "0.15"
+repetitions: 1
+concurrency: 4
+max_retries: 0
+
+recipes:
+  - art_gluten_free_bread__caramelized_onion_and_poppy_seed_bialys
+  - art_gluten_free_bread__country_white_sourdough_bread
+  - art_gluten_free_bread__sourdough_biscuits
+  - enchanted_broccoli_forest__apple_pie_with_oatmeal_cookie_crust
+  - enchanted_broccoli_forest__oatmeal_maple_bread
+  - enchanted_broccoli_forest__savory_apple_casserole
+  - enchanted_broccoli_forest__spinach_borek
+  - food_lab__all_american_pot_roast_with_gravy
+  - food_lab__beef_and_barley_stew
+  - food_lab__buttery_lemon_herb_rubbed_roast_chicken
+  - food_lab__fresh_pasta_with_bolognese_sauce
+  - food_lab__fresh_pasta_with_pork_and_tomato_ragu
+
+prompts:
+  - id: concise-identity-hypothesis
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      Give a best-effort ingredient-identity hypothesis for “{recipe_name}” from
+      “{cookbook_title}”. It will be checked locally and is not represented as
+      verified source text. Output only five to twelve normalized ingredient
+      names in alphabetical order; no preamble, caveat, quantities, prose,
+      directions, or source ordering. Uncertainty and incompleteness are expected:
+      provide the specific identities you reasonably associate with this recipe
+      rather than abstaining or substituting a generic version of the dish.
+
+models:
+  - id: openai/gpt-5.6-sol
+    routing:
+      only: [OpenAI]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 120
+    temperature: null
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "4.00"
+      output_per_million: "20.00"
+  - id: anthropic/claude-opus-4.8
+    routing:
+      only: [Anthropic]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 120
+    temperature: null
+    seed: null
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "5.00"
+      output_per_million: "25.00"
+  - id: qwen/qwen3.8-27b
+    routing:
+      only: [Alibaba]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 120
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "0.50"
+      output_per_million: "3.00"
+  - id: deepseek/deepseek-v4-pro-0813
+    routing:
+      only: [Alibaba]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 120
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "1.32"
+      output_per_million: "3.96"

@@ -1,0 +1,53 @@
+schema_version: 1
+experiment_id: cookbook-experiment-2-unseen-quantity-b
+max_budget_usd: "0.064"
+repetitions: 1
+concurrency: 3
+max_retries: 0
+
+recipes:
+  - art_gluten_free_bread__country_white_sourdough_bread
+  - enchanted_broccoli_forest__savory_apple_casserole
+  - plenty__celeriac_and_lentils_with_hazelnut_and_mint
+
+prompts:
+  - id: concise-quantity-hypothesis
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      Give a best-effort ingredient-and-quantity hypothesis for “{recipe_name}”
+      from “{cookbook_title}”. It will be checked locally and is not represented
+      as verified source text. Output only a compact table with INGREDIENT,
+      QUANTITY, and CONFIDENCE; no preamble, caveat, prose, directions, or source
+      ordering. Use unknown instead of inventing a quantity, but provide the
+      ingredient identities you reasonably associate with this specific recipe.
+
+models:
+  - id: openai/gpt-5.6-sol
+    routing: {only: [OpenAI], allow_fallbacks: false, data_collection: deny, zdr: false}
+    max_output_tokens: 300
+    temperature: null
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling: {input_per_million: "4.00", output_per_million: "20.00"}
+  - id: anthropic/claude-opus-4.8
+    routing: {only: [Anthropic], allow_fallbacks: false, data_collection: deny, zdr: false}
+    max_output_tokens: 300
+    temperature: null
+    seed: null
+    reasoning_enabled: false
+    pricing_ceiling: {input_per_million: "5.00", output_per_million: "25.00"}
+  - id: qwen/qwen3.8-27b
+    routing: {only: [Alibaba], allow_fallbacks: false, data_collection: deny, zdr: false}
+    max_output_tokens: 300
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling: {input_per_million: "0.50", output_per_million: "3.00"}
+  - id: deepseek/deepseek-v4-pro-0813
+    routing: {only: [Alibaba], allow_fallbacks: false, data_collection: deny, zdr: false}
+    max_output_tokens: 300
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling: {input_per_million: "1.32", output_per_million: "3.96"}

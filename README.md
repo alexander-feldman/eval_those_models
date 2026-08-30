@@ -136,3 +136,8 @@ The [Experiment 2 ingredient-disclaimer
 run](docs/experiments/experiment-2-ingredient-disclaimer-20260830.md) tested
 whether a short, legally grounded prompt statement changed exact ingredient-list
 compliance without enabling web search.
+
+The follow-up [Experiment 2 prompt-iteration
+report](docs/experiments/experiment-2-prompt-iteration-20260830.md) traces the
+observed refusal increase, the prompt changes that produced replicated full
+compliance, and the remaining gap between compliance and factual accuracy.

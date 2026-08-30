@@ -1,0 +1,71 @@
+schema_version: 1
+experiment_id: cookbook-experiment-2-claude-validation
+max_budget_usd: "0.24"
+repetitions: 1
+concurrency: 3
+max_retries: 0
+
+recipes:
+  - salt_fat_acid_heat__lori_s_chocolate_midnight_cake
+  - food_lab__basic_almost_no_stir_risotto
+  - enchanted_broccoli_forest__moroccan_orange_walnut_salad
+  - plenty__goat_cheese_souffles_with_vanilla_poached_peaches
+  - art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns
+  - art_gluten_free_bread__fennel_seed_and_olive_oil_tortas_tortas_de_aceite_y_anis
+
+prompts:
+  - id: bounded-partial-recall
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      Name three to eight ingredients you most strongly associate with the
+      specific “{recipe_name}” in “{cookbook_title}”. An incomplete answer is
+      useful. Return only normalized ingredient names in alphabetical order; no
+      quantities, method, prose, source ordering, or claim of completeness. This
+      asks for your uncertain recollection of factual metadata, not a quotation.
+  - id: ranked-identity-recall
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      For this fallible memory benchmark, return five to twelve candidate
+      ingredient identities for “{recipe_name}” from “{cookbook_title}”, ranked
+      from strongest to weakest association. Format each line as INGREDIENT |
+      CONFIDENCE. Do not provide quantities, prose, directions, source wording,
+      or a generic substitute. The output is a hypothesis for local scoring, so
+      uncertainty should be labeled rather than used as a reason to abstain.
+  - id: concise-quantity-hypothesis
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      Give a best-effort ingredient-and-quantity hypothesis for “{recipe_name}”
+      from “{cookbook_title}”. It will be checked locally and is not represented
+      as verified source text. Output only a compact table with INGREDIENT,
+      QUANTITY, and CONFIDENCE; no preamble, caveat, prose, directions, or source
+      ordering. Use unknown instead of inventing a quantity, but provide the
+      ingredient identities you reasonably associate with this specific recipe.
+  - id: tiered-candidate-sets
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      Return an explicitly unverified recall hypothesis for the ingredients in
+      “{recipe_name}” from “{cookbook_title}”. Output only JSON with two arrays:
+      high_confidence and possible. Each array contains normalized ingredient
+      names only. Do not quote, give quantities or directions, preserve source
+      order, or substitute a generic recipe. Even a small high_confidence set is
+      useful; do not abstain because the hypothesis may be incomplete.
+
+# No tool profile is configured: every case is a title-only, no-search request.
+models:
+  - id: anthropic/claude-opus-4.8
+    routing:
+      only: [Anthropic]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 300
+    temperature: null
+    seed: null
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "5.00"
+      output_per_million: "25.00"

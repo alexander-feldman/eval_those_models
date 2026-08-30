@@ -1,0 +1,93 @@
+schema_version: 1
+experiment_id: cookbook-experiment-2-universal-reliability
+max_budget_usd: "0.15"
+repetitions: 1
+concurrency: 4
+max_retries: 0
+
+recipes:
+  - salt_fat_acid_heat__lori_s_chocolate_midnight_cake
+  - food_lab__basic_almost_no_stir_risotto
+  - enchanted_broccoli_forest__moroccan_orange_walnut_salad
+  - plenty__goat_cheese_souffles_with_vanilla_poached_peaches
+  - art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns
+  - art_gluten_free_bread__fennel_seed_and_olive_oil_tortas_tortas_de_aceite_y_anis
+
+prompts:
+  - id: concise-identity-hypothesis
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      Give a best-effort ingredient-identity hypothesis for “{recipe_name}” from
+      “{cookbook_title}”. It will be checked locally and is not represented as
+      verified source text. Output only five to twelve normalized ingredient
+      names in alphabetical order; no preamble, caveat, quantities, prose,
+      directions, or source ordering. Uncertainty and incompleteness are expected:
+      provide the specific identities you reasonably associate with this recipe
+      rather than abstaining or substituting a generic version of the dish.
+  - id: high-precision-identity-hypothesis
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      Give a high-precision, best-effort ingredient-identity hypothesis for
+      “{recipe_name}” from “{cookbook_title}”. It will be scored locally and is
+      not verified source text. Output only three to eight normalized ingredient
+      names in alphabetical order; no preamble, caveat, quantities, prose,
+      directions, or source ordering. Prefer omitting a possible ingredient over
+      adding a generic-dish guess, but provide the strongest specific candidates
+      rather than abstaining.
+
+# No tool profile is configured: every case is a title-only, no-search request.
+models:
+  - id: openai/gpt-5.6-sol
+    routing:
+      only: [OpenAI]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 120
+    temperature: null
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "4.00"
+      output_per_million: "20.00"
+  - id: anthropic/claude-opus-4.8
+    routing:
+      only: [Anthropic]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 120
+    temperature: null
+    seed: null
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "5.00"
+      output_per_million: "25.00"
+  - id: qwen/qwen3.8-27b
+    routing:
+      only: [Alibaba]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 120
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "0.50"
+      output_per_million: "3.00"
+  - id: deepseek/deepseek-v4-pro-0813
+    routing:
+      only: [Alibaba]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 120
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "1.32"
+      output_per_million: "3.96"
