@@ -53,6 +53,7 @@ class _CaseResult:
     succeeded: bool
     attempts: int
     reported_cost_usd: Decimal
+    stop_reason: str | None = None
 
 
 def run_experiment(
@@ -154,6 +155,9 @@ def _run_budgeted_sequentially(
         result = _run_case(case, run_id, config.max_retries, client, events, sleep)
         results.append(result)
         reported_cost += result.reported_cost_usd
+        if result.stop_reason is not None:
+            _record_stop(events, run_id, None, result.stop_reason)
+            return results, result.stop_reason
         if index + 1 < len(
             plan.cases
         ) and result.reported_cost_usd > case.estimated_cost_usd * Decimal("1.25"):
@@ -266,7 +270,7 @@ def _run_case(
                         "raw_response": result.raw_response,
                     }
                 )
-                return _CaseResult(False, attempt_number, cumulative_cost)
+                return _CaseResult(False, attempt_number, cumulative_cost, terminal_error)
             events.append(
                 {
                     "event": "attempt_succeeded",

@@ -73,7 +73,8 @@ tool_profiles:
       max_results: 3
       max_total_results: 3
       max_characters: 1500
-      estimated_input_tokens_per_use: 5000""",
+      estimated_input_tokens_per_use: 5000
+      max_cost_usd: 0.08""",
     ).replace(
         'output_per_million: "2.00"',
         'output_per_million: "2.00"\n      web_search_per_request: "0.01"',
@@ -86,6 +87,7 @@ tool_profiles:
     assert profile.web_search is not None
     assert profile.web_search.engine == "auto"
     assert profile.web_search.max_uses == 1
+    assert profile.web_search.max_cost_usd == Decimal("0.08")
     assert config.models[0].pricing_ceiling.web_search_per_request == Decimal("0.01")
 
 

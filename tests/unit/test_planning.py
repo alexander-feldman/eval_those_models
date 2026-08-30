@@ -145,7 +145,6 @@ def test_plan_adds_web_search_to_request_and_budget() -> None:
             "type": "openrouter:web_search",
             "parameters": {
                 "engine": "auto",
-                "max_uses": 1,
                 "max_results": 3,
                 "max_total_results": 3,
                 "max_characters": 1500,
@@ -155,6 +154,34 @@ def test_plan_adds_web_search_to_request_and_budget() -> None:
     assert case.parameters["max_tool_calls"] == 1
     assert case.estimated_input_tokens >= 16_000
     assert case.estimated_cost_usd > Decimal("0.01")
+
+
+def test_plan_adds_documented_server_tool_stop_conditions() -> None:
+    model = replace(
+        _model(),
+        pricing_ceiling=PricingCeiling(Decimal("1"), Decimal("2"), Decimal("0.01")),
+    )
+    config = replace(
+        _config(),
+        recipe_ids=("complete",),
+        repetitions=1,
+        models=(model,),
+        tool_profiles=(
+            ToolProfileConfig(
+                "web-auto",
+                WebSearchConfig("auto", 10, 3, 15, 1500, 5000, Decimal("0.08")),
+            ),
+        ),
+    )
+
+    plan = build_plan(config, {"complete": _reference("complete")}, "abc123")
+
+    case = plan.cases[0]
+    assert case.parameters["stop_server_tools_when"] == [
+        {"type": "step_count_is", "step_count": 10},
+        {"type": "max_cost", "max_cost_in_dollars": 0.08},
+    ]
+    assert case.estimated_cost_usd >= Decimal("0.10")
 
 
 def test_plan_requires_search_cost_ceiling_when_search_is_enabled() -> None:

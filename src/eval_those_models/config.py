@@ -46,6 +46,7 @@ class WebSearchConfig:
     max_total_results: int
     max_characters: int
     estimated_input_tokens_per_use: int
+    max_cost_usd: Decimal | None = None
 
 
 @dataclass(frozen=True)
@@ -212,7 +213,7 @@ def _parse_tool_profile(value: Any, index: int) -> ToolProfileConfig:
             "max_characters",
             "estimated_input_tokens_per_use",
         },
-        set(),
+        {"max_cost_usd"},
         f"{where}.web_search",
     )
     engine = _nonempty_string(search["engine"], f"{where}.web_search.engine")
@@ -224,6 +225,13 @@ def _parse_tool_profile(value: Any, index: int) -> ToolProfileConfig:
     )
     if max_total_results < max_results:
         raise ConfigError(f"{where}.web_search.max_total_results must be at least max_results")
+    max_cost = (
+        _decimal(search["max_cost_usd"], f"{where}.web_search.max_cost_usd")
+        if "max_cost_usd" in search
+        else None
+    )
+    if max_cost is not None and max_cost <= 0:
+        raise ConfigError(f"{where}.web_search.max_cost_usd must be greater than zero")
     return ToolProfileConfig(
         profile_id=_identifier(item["id"], f"{where}.id"),
         web_search=WebSearchConfig(
@@ -238,6 +246,7 @@ def _parse_tool_profile(value: Any, index: int) -> ToolProfileConfig:
                 search["estimated_input_tokens_per_use"],
                 f"{where}.web_search.estimated_input_tokens_per_use",
             ),
+            max_cost_usd=max_cost,
         ),
     )
 
