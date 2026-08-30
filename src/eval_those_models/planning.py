@@ -17,6 +17,9 @@ class PlanningError(ValueError):
     """Raised when an experiment cannot be planned safely."""
 
 
+AUTO_SEARCH_INPUT_TOKEN_FLOOR = 16_000
+
+
 @dataclass(frozen=True)
 class PlannedCase:
     case_id: str
@@ -220,8 +223,15 @@ def _make_case(
                 },
             }
         ]
+        parameters["max_tool_calls"] = search.max_uses
         search_cost = model.pricing_ceiling.web_search_per_request * search.max_uses
-        search_input_tokens = search.estimated_input_tokens_per_use * search.max_uses
+        estimated_tokens_per_use = search.estimated_input_tokens_per_use
+        if search.engine in {"auto", "native"}:
+            estimated_tokens_per_use = max(
+                estimated_tokens_per_use,
+                AUTO_SEARCH_INPUT_TOKEN_FLOOR,
+            )
+        search_input_tokens = estimated_tokens_per_use * search.max_uses
     identity = {
         "experiment_id": config.experiment_id,
         "reference_id": reference.recipe_id,

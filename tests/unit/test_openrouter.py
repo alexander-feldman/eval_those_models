@@ -84,8 +84,10 @@ def test_http_429_is_marked_transient() -> None:
 def test_malformed_success_response_is_rejected() -> None:
     client = OpenRouterClient("secret", transport=FakeTransport(200, {"choices": []}))
 
-    with pytest.raises(OpenRouterError, match="choice"):
+    with pytest.raises(OpenRouterError, match="choice") as caught:
         client.generate(_case())
+
+    assert caught.value.raw_response == {"choices": []}
 
 
 def test_list_model_endpoints_uses_model_path() -> None:

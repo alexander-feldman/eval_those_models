@@ -125,7 +125,9 @@ def _run_experiment(args: argparse.Namespace) -> int:
     print(f"Cases: {summary.succeeded} succeeded, {summary.failed} failed")
     print(f"Attempts: {summary.attempts}")
     print(f"Reported cost: ${summary.reported_cost_usd}")
-    return 1 if summary.failed else 0
+    if summary.budget_exceeded:
+        print("WARNING: provider-reported cost exceeded the configured budget", file=sys.stderr)
+    return 1 if summary.failed or summary.budget_exceeded else 0
 
 
 def _git_commit() -> str:

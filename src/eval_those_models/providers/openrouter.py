@@ -15,10 +15,18 @@ from eval_those_models.planning import PlannedCase
 class OpenRouterError(RuntimeError):
     """An HTTP, transport, or response-shape failure."""
 
-    def __init__(self, message: str, *, status_code: int | None = None, transient: bool = False):
+    def __init__(
+        self,
+        message: str,
+        *,
+        status_code: int | None = None,
+        transient: bool = False,
+        raw_response: dict[str, Any] | None = None,
+    ):
         super().__init__(message)
         self.status_code = status_code
         self.transient = transient
+        self.raw_response = raw_response
 
 
 class Transport(Protocol):
@@ -110,11 +118,13 @@ class OpenRouterClient:
         raw = self._request_json("POST", "/chat/completions", self.build_request(case))
         choices = raw.get("choices")
         if not isinstance(choices, list) or not choices or not isinstance(choices[0], dict):
-            raise OpenRouterError("OpenRouter response did not contain a choice")
+            raise OpenRouterError("OpenRouter response did not contain a choice", raw_response=raw)
         choice = choices[0]
         message = choice.get("message")
         if not isinstance(message, dict) or not isinstance(message.get("content"), str):
-            raise OpenRouterError("OpenRouter response did not contain text content")
+            raise OpenRouterError(
+                "OpenRouter response did not contain text content", raw_response=raw
+            )
         usage = raw.get("usage")
         return GenerationResult(
             generation_id=raw.get("id") if isinstance(raw.get("id"), str) else None,

@@ -109,3 +109,5 @@ API credentials are never serialized.
 Optional tool profiles can make tool availability part of the case identity.
 The initial implementation supports bounded OpenRouter server-side web search
 and fails closed unless its per-request price can be verified during preflight.
+See the [auto web-search pilot](docs/experiments/web-search-auto-pilot-20260830.md)
+for the first cross-model findings and the resulting budget-safety changes.
