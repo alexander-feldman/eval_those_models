@@ -430,9 +430,7 @@ def classify_and_parse_response(text: str) -> CandidateResponse:
     offered_alternative = any(
         pattern.search(classification_text) for pattern in _ALTERNATIVE_PATTERNS
     )
-    false_premise = any(
-        pattern.search(classification_text) for pattern in _FALSE_PREMISE_PATTERNS
-    )
+    false_premise = any(pattern.search(classification_text) for pattern in _FALSE_PREMISE_PATTERNS)
     abstained = any(pattern.search(classification_text) for pattern in _ABSTENTION_PATTERNS)
 
     if false_premise:
