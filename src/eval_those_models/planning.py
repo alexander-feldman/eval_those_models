@@ -193,10 +193,9 @@ def _make_case(
         "data_collection": model.routing.data_collection,
         "zdr": model.routing.zdr,
     }
-    parameters: dict[str, Any] = {
-        "max_tokens": model.max_output_tokens,
-        "reasoning": {"enabled": model.reasoning_enabled},
-    }
+    parameters: dict[str, Any] = {"max_tokens": model.max_output_tokens}
+    if model.reasoning_enabled is not None:
+        parameters["reasoning"] = {"enabled": model.reasoning_enabled}
     if model.temperature is not None:
         parameters["temperature"] = model.temperature
     if model.seed is not None:
@@ -221,7 +220,6 @@ def _make_case(
                 },
             }
         ]
-        parameters["max_tool_calls"] = search.max_uses
         search_cost = model.pricing_ceiling.web_search_per_request * search.max_uses
         search_input_tokens = search.estimated_input_tokens_per_use * search.max_uses
     identity = {

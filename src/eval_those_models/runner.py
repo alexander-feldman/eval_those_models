@@ -285,6 +285,10 @@ def _validate_preflight(
                     web_search_enabled=any(
                         profile.web_search is not None for profile in config.tool_profiles
                     ),
+                    native_search_required=any(
+                        profile.web_search is not None and profile.web_search.engine == "native"
+                        for profile in config.tool_profiles
+                    ),
                 )
 
 
@@ -294,6 +298,7 @@ def _validate_endpoint(
     endpoint: dict[str, Any],
     *,
     web_search_enabled: bool,
+    native_search_required: bool,
 ) -> None:
     pricing = endpoint.get("pricing")
     if not isinstance(pricing, dict):
@@ -310,22 +315,31 @@ def _validate_endpoint(
             f"live {provider} output price for {model.model_id} (${live_output}/M) exceeds "
             f"configured ceiling (${model.pricing_ceiling.output_per_million}/M)"
         )
-    if web_search_enabled and pricing.get("web_search") is not None:
-        try:
-            live_search = Decimal(str(pricing["web_search"]))
-        except InvalidOperation as exc:
-            raise RunError(
-                f"live {provider} endpoint has invalid web-search pricing for {model.model_id}"
-            ) from exc
-        if live_search > model.pricing_ceiling.web_search_per_request:
-            raise RunError(
-                f"live {provider} web-search price for {model.model_id} (${live_search}) "
-                f"exceeds configured ceiling "
-                f"(${model.pricing_ceiling.web_search_per_request})"
-            )
+    if web_search_enabled:
+        if pricing.get("web_search") is None:
+            if native_search_required:
+                raise RunError(
+                    f"live {provider} endpoint does not expose verifiable web-search pricing "
+                    f"for {model.model_id}"
+                )
+        else:
+            try:
+                live_search = Decimal(str(pricing["web_search"]))
+            except InvalidOperation as exc:
+                raise RunError(
+                    f"live {provider} endpoint has invalid web-search pricing for {model.model_id}"
+                ) from exc
+            if live_search > model.pricing_ceiling.web_search_per_request:
+                raise RunError(
+                    f"live {provider} web-search price for {model.model_id} (${live_search}) "
+                    f"exceeds configured ceiling "
+                    f"(${model.pricing_ceiling.web_search_per_request})"
+                )
     supported = endpoint.get("supported_parameters")
     if isinstance(supported, list):
-        requested = {"max_tokens", "reasoning"}
+        requested = {"max_tokens"}
+        if model.reasoning_enabled is not None:
+            requested.add("reasoning")
         if web_search_enabled:
             requested.add("tools")
         if model.temperature is not None:

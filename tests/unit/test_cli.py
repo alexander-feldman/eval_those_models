@@ -1,4 +1,10 @@
+from types import SimpleNamespace
+
+import pytest
+
+from eval_those_models import cli
 from eval_those_models.cli import build_parser
+from eval_those_models.runner import RunError
 
 
 def test_dataset_validate_command_is_available() -> None:
@@ -21,3 +27,14 @@ def test_run_execute_acknowledgement_defaults_off() -> None:
 
     assert args.command == "run"
     assert args.execute is False
+
+
+def test_dirty_checkout_cannot_dispatch(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(
+        cli.subprocess,
+        "run",
+        lambda *args, **kwargs: SimpleNamespace(returncode=0, stdout=" M changed.py\n"),
+    )
+
+    with pytest.raises(RunError, match="clean Git checkout"):
+        cli._require_reproducible_checkout()

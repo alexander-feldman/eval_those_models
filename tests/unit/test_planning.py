@@ -152,7 +152,6 @@ def test_plan_adds_web_search_to_request_and_budget() -> None:
             },
         }
     ]
-    assert case.parameters["max_tool_calls"] == 1
     assert case.estimated_input_tokens >= 5000
     assert case.estimated_cost_usd > Decimal("0.01")
 

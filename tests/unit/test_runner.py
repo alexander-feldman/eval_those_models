@@ -11,6 +11,8 @@ from eval_those_models.config import (
     ModelConfig,
     PricingCeiling,
     RoutingConfig,
+    ToolProfileConfig,
+    WebSearchConfig,
 )
 from eval_those_models.planning import ExperimentPlan, PlannedCase
 from eval_those_models.providers.openrouter import GenerationResult, OpenRouterError
@@ -181,3 +183,13 @@ def test_run_refuses_plan_above_budget_before_catalog_request(tmp_path: Path) ->
         run_experiment(low_budget_config, _plan(), client, tmp_path)
 
     assert client.catalog_calls == 0
+
+
+def test_run_refuses_native_web_search_without_verifiable_live_price(tmp_path: Path) -> None:
+    search_config = replace(
+        _config(),
+        tool_profiles=(ToolProfileConfig("web", WebSearchConfig("native", 1, 3, 3, 1500, 5000)),),
+    )
+
+    with pytest.raises(RunError, match="verifiable web-search pricing"):
+        run_experiment(search_config, _plan(), FakeClient(), tmp_path)
