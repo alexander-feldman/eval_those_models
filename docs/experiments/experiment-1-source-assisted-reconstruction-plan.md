@@ -1,6 +1,9 @@
 # Experiment 1: Source-assisted recipe reconstruction
 
-Status: planned
+Status: paused after Gate B; Gate C was not run
+
+Final outbrief:
+[Experiment 1 Gate B results](experiment-1-gate-b-20260830.md)
 
 Predecessors:
 
@@ -8,9 +11,9 @@ Predecessors:
 - the auto web-search pilot;
 - Title-only baseline v1 (`cookbook-title-only-baseline-v1`).
 
-No paid execution is authorized by this document. Freeze live model routes,
-produce a dry-run cost plan, and obtain a separate spending authorization before
-dispatch.
+This document records the predeclared design. Gate B was subsequently authorized
+up to $1.00 and used $0.61500754056. No further paid execution is authorized;
+see the final outbrief for results and the pause decision.
 
 ## 1. Purpose
 
@@ -343,6 +346,10 @@ Proceed only if:
 Run the remaining recipes and second repetitions only after reviewing Gate B.
 Dispatch one model at a time so actual spend can be reconciled before another
 model family begins.
+
+Gate C was not run. The final review paused Experiment 1 because only 62.5% of
+active attempts reached a clean terminal response and output-contract failures
+prevented the planned paired ingredient analysis.
 
 ## 11. Budget controls
 
