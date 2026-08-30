@@ -43,6 +43,7 @@ class RunSummary:
     failed: int
     attempts: int
     reported_cost_usd: Decimal
+    budget_exceeded: bool
 
 
 @dataclass(frozen=True)
@@ -123,6 +124,7 @@ def run_experiment(
         failed=sum(not result.succeeded for result in results),
         attempts=sum(result.attempts for result in results),
         reported_cost_usd=reported_cost,
+        budget_exceeded=reported_cost > config.max_budget_usd,
     )
     events.append(
         {
@@ -133,6 +135,7 @@ def run_experiment(
             "failed": summary.failed,
             "attempts": summary.attempts,
             "reported_cost_usd": str(summary.reported_cost_usd),
+            "budget_exceeded": summary.budget_exceeded,
         }
     )
     return summary
@@ -180,8 +183,8 @@ def _run_case(
                     "model_requested": case.model_requested,
                     "model_returned": result.model_returned,
                     "provider_policy_requested": case.provider_policy,
-                    "provider_actual": result.provider_actual
-                    or (metadata or {}).get("provider_name"),
+                    "provider_actual": (metadata or {}).get("provider_name")
+                    or result.provider_actual,
                     "parameters_requested": case.parameters,
                     "output_text": result.output_text,
                     "finish_reason": result.finish_reason,
@@ -209,6 +212,7 @@ def _run_case(
                     "status_code": exc.status_code,
                     "transient": exc.transient,
                     "will_retry": will_retry,
+                    "raw_response": exc.raw_response,
                 }
             )
             if not will_retry:
@@ -221,7 +225,7 @@ def _run_case(
 def _metadata(
     client: RunnerClient, result: GenerationResult
 ) -> tuple[dict[str, Any] | None, str | None]:
-    if result.provider_actual is not None or result.generation_id is None:
+    if result.generation_id is None:
         return None, None
     try:
         return client.get_generation_metadata(result.generation_id), None

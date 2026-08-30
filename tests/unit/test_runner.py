@@ -85,7 +85,7 @@ class FakeClient:
         )
 
     def get_generation_metadata(self, generation_id: str) -> dict[str, Any] | None:
-        raise AssertionError("metadata lookup is unnecessary when the provider is returned")
+        return {"provider_name": "Example"}
 
 
 def _config() -> ExperimentConfig:
@@ -144,6 +144,7 @@ def test_run_retries_transient_failure_and_preserves_both_attempts(tmp_path: Pat
     assert summary.failed == 0
     assert summary.attempts == 2
     assert summary.reported_cost_usd == Decimal("0.001")
+    assert summary.budget_exceeded is False
     assert sleeps == [1]
     events = read_events(summary.run_directory / "attempts.jsonl")
     failed = next(event for event in events if event["event"] == "attempt_failed")
@@ -164,6 +165,19 @@ def test_run_does_not_retry_permanent_failure(tmp_path: Path) -> None:
 
     assert summary.failed == 1
     assert summary.attempts == 1
+
+
+def test_run_flags_actual_cost_above_budget(tmp_path: Path) -> None:
+    config = replace(_config(), max_budget_usd=Decimal("0.0005"), max_retries=0)
+    case = replace(_plan().cases[0], estimated_cost_usd=Decimal("0.0001"))
+    plan = ExperimentPlan("smoke", (case,), (), Decimal("0.0005"))
+
+    summary = run_experiment(config, plan, FakeClient(), tmp_path)
+
+    assert summary.reported_cost_usd == Decimal("0.001")
+    assert summary.budget_exceeded is True
+    events = read_events(summary.run_directory / "attempts.jsonl")
+    assert events[-1]["budget_exceeded"] is True
 
 
 def test_run_refuses_live_price_above_configured_ceiling(tmp_path: Path) -> None:
