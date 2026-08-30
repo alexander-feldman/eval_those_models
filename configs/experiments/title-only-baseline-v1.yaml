@@ -75,8 +75,8 @@ models:
     seed: 0
     reasoning_enabled: false
     pricing_ceiling:
-      input_per_million: "0.50"
-      output_per_million: "3.00"
+      input_per_million: "0.60"
+      output_per_million: "5.00"
   - id: qwen/qwen3.8-27b
     routing:
       only: [Alibaba]
