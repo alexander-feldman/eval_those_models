@@ -8,19 +8,20 @@ import source and backup. Neither file is committed.
 Rebuild the database atomically with Python's standard library:
 
 ```bash
-python3 scripts/import_recipe_metadata.py
+make build-data
 ```
 
 Validate an existing database without changing it:
 
 ```bash
-python3 scripts/import_recipe_metadata.py --validate-only
+make validate-data
 ```
 
-The importer uses `sql/recipe_eval_schema.sql`, validates the source arrays and
-hashes before loading, turns on foreign keys, and reconciles the frozen dataset
-totals: 5 cookbooks, 27 recipes, 362 ingredients, 135 ratings, 71 evidence
-source rows, 54 quantity/tier provenance rows, and 1 explicitly partial recipe.
+The importer uses `src/eval_those_models/dataset/schema.sql`, validates the
+source arrays and hashes before loading, turns on foreign keys, and reconciles
+the frozen dataset totals: 5 cookbooks, 27 recipes, 362 ingredients, 135
+ratings, 71 evidence source rows, 54 quantity/tier provenance rows, and 1
+explicitly partial recipe.
 It also hashes the exact recipe text stored in SQLite and checks it against each
 private reference hash.
 
