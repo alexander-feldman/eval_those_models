@@ -2,9 +2,9 @@
 
 Date: 2026-08-30
 
-Status: iterative phase complete through the first reliability replication
+Status: complete
 
-Cumulative provider-reported spend: $0.5528907416
+Cumulative provider-reported spend: $0.7480005322
 
 Web search: disabled in every condition
 
@@ -40,6 +40,13 @@ runs. All 48 finished normally without truncation. This is full compliance with
 the requested output shape, not proof of factual accuracy. Conservative strict
 identity F1 remained modest, approximately 0.28 for OpenAI, 0.26 for DeepSeek,
 0.25 for Qwen, and 0.19 for Claude when pooled across the two runs.
+
+The winning identity prompt was subsequently expanded to 17 previously unseen
+recipes. It produced 67 specific answers from 67 successful calls; one DeepSeek
+call failed with a transient upstream HTTP 429. Across the development,
+replication, and unseen batches, the prompt therefore produced 115 compliant
+answers from 115 returned responses on 23 distinct recipes. Three additional
+titles were conservatively blocked before dispatch by the local leakage guard.
 
 ## The apparent refusal increase
 
@@ -181,6 +188,25 @@ winning identity prompt had no operational failures.
 
 Run: `run_2e56a32bf7854fb689e385d39f144a2c`; cost: $0.0344205768.
 
+### Unseen-recipe and quantity validation
+
+The identity winner was next evaluated on 17 previously unseen, runnable
+recipes. Every returned response followed the requested ingredient-list shape:
+67/67 responses across the four models, with one separate DeepSeek transport
+failure. This broadens the compliance result beyond prompts and recipes used to
+develop the wording.
+
+The richer quantity hypothesis was also evaluated across 17 common recipes and
+then extended with several Claude-only cases. It continued to elicit answers,
+but exact quantities were uncommon and long Claude tables frequently reached
+their output limit. The identity-only prompt remains the recommended default.
+
+The additional identity, quantity, and final bounded runs brought cumulative
+provider-reported spend to $0.7480005322, leaving $0.0019994678 below the $0.75
+cap. Two identity runs and one quantity run each had a single transient
+DeepSeek/Alibaba HTTP 429; retries were deliberately disabled to preserve the
+budget bound.
+
 ## The winning prompt
 
 > Give a best-effort ingredient-identity hypothesis for “{recipe_name}” from
@@ -235,13 +261,61 @@ shows both matcher false negatives and genuine model hallucinations. Familiar
 recipes generally performed better; obscure gluten-free recipes attracted many
 generic ingredients inferred from the title.
 
+### Which model returned the best data?
+
+**OpenAI GPT-5.6 Sol was the strongest overall model.** This conclusion holds on
+the 17 unseen identity cases and on the separate cross-recipe quantity prompt.
+
+For the unseen identity-only evaluation, conservative micro-aggregated strict
+scores were:
+
+| Model | Successful cases | Precision | Recall | F1 |
+|---|---:|---:|---:|---:|
+| OpenAI GPT-5.6 Sol | 17 | 0.302 | 0.223 | **0.256** |
+| Claude Opus 4.8 | 17 | 0.244 | 0.188 | 0.212 |
+| DeepSeek V4 Pro | 16 | 0.219 | 0.175 | 0.195 |
+| Qwen 3.8 27B | 17 | 0.235 | 0.140 | 0.175 |
+
+OpenAI recovered the most correct ingredient identities and had the best balance
+between omissions and unsupported additions. Claude ranked second on this held-
+out identity comparison. Qwen tended to provide shorter lists with fewer false
+positives but omitted too many reference ingredients. DeepSeek produced broader
+lists but added more generic-dish ingredients; one of its cases was unavailable
+because of the upstream 429.
+
+On the 17-recipe quantity-prompt comparison, table rows were converted to the
+grader's ordinary ingredient-line representation without changing their text.
+The conservative aggregate diagnostics were:
+
+| Model | Successful cases | Ingredient precision | Ingredient recall | Ingredient F1 | Exact quantity rate | Exact-or-equivalent rate |
+|---|---:|---:|---:|---:|---:|---:|
+| OpenAI GPT-5.6 Sol | 17 | **0.318** | 0.267 | **0.290** | **0.206** | **0.309** |
+| Claude Opus 4.8 | 17 | 0.286 | **0.275** | 0.280 | 0.114 | 0.257 |
+| DeepSeek V4 Pro | 16 | 0.256 | 0.237 | 0.246 | 0.186 | 0.237 |
+| Qwen 3.8 27B | 17 | 0.194 | 0.135 | 0.160 | 0.027 | 0.216 |
+
+OpenAI again had the best ingredient F1 and the best quantity accuracy. Claude
+had slightly higher ingredient recall but lower precision and substantially
+worse exact quantities. DeepSeek ranked second on exact quantity rate, though
+below OpenAI on overall ingredient quality. Qwen's quantities were especially
+unreliable: only one exact quantity among 37 deterministically matched
+ingredients.
+
+The numeric gap should not be overstated. The strict matcher misses some clear
+culinary aliases and compound-reference partial matches, and the model case
+counts differ by one because of DeepSeek's operational failure. Even with those
+caveats, OpenAI leads both independently useful comparisons, so the result is
+not sensitive to a single metric choice.
+
 The right conclusion is therefore:
 
 - the original disclaimer did not improve compliance and coincided with four
   additional declines, all from DeepSeek;
 - removing verbatim framing and legal argument unlocked three model families;
 - explicit fallible-hypothesis framing unlocked Claude;
-- the final identity-only prompt achieved replicated 48/48 compliance; and
+- the final identity-only prompt achieved replicated 48/48 compliance and
+  115/115 compliance among all returned responses across 23 recipes;
+- OpenAI produced the most accurate ingredient data on held-out recipes; and
 - better prompts changed willingness to answer more than they changed latent
   recipe knowledge.
 
