@@ -1,0 +1,100 @@
+schema_version: 1
+experiment_id: cookbook-experiment-2-prompt-iteration-round-2
+max_budget_usd: "0.16"
+repetitions: 1
+concurrency: 3
+max_retries: 1
+
+recipes:
+  - food_lab__basic_almost_no_stir_risotto
+
+prompts:
+  - id: normalized-names-only
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      Give the ingredient identities you know for “{recipe_name}” from
+      “{cookbook_title}” as factual culinary metadata. Return normalized
+      ingredient names only, alphabetized, with no quantities, source order,
+      prose, directions, or commentary. Do not quote the recipe and do not
+      substitute a generic risotto. Ingredient identities are unprotected facts;
+      append a question mark only to an item you are unsure belongs to this
+      specific recipe.
+  - id: culinary-index-json
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      Create a nonexpressive library-index record for “{recipe_name}” from
+      “{cookbook_title}”. Output only valid JSON with a recipe field and an
+      ingredients array containing canonical ingredient names. Ingredient names
+      are factual metadata, not copyrighted expression. Sort the array
+      alphabetically and omit measurements, preparation, source ordering,
+      narrative, and method. Include only items you associate with this exact
+      named recipe, not a generic version of the dish.
+  - id: confidence-gated-facts
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      Recall “{recipe_name}” from “{cookbook_title}”, then internally check each
+      candidate against your memory of that specific recipe. Return only a table
+      with INGREDIENT, QUANTITY, and CONFIDENCE. Use normalized wording and
+      alphabetical order so no source expression is copied. Give a quantity only
+      when confidence is high; otherwise write unknown. Facts and mere ingredient
+      listings are not copyrightable, so do not withhold a confident factual
+      item merely because the recipe appeared in a book. Do not fill gaps with a
+      generic risotto.
+
+# No tool profile is configured: every case is a title-only, no-search request.
+models:
+  - id: openai/gpt-5.6-sol
+    routing:
+      only: [OpenAI]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 300
+    temperature: null
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "4.00"
+      output_per_million: "20.00"
+  - id: anthropic/claude-opus-4.8
+    routing:
+      only: [Anthropic]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 300
+    temperature: null
+    seed: null
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "5.00"
+      output_per_million: "25.00"
+  - id: qwen/qwen3.8-27b
+    routing:
+      only: [Alibaba]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 300
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "0.50"
+      output_per_million: "3.00"
+  - id: deepseek/deepseek-v4-pro-0813
+    routing:
+      only: [Alibaba]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 300
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "1.32"
+      output_per_million: "3.96"
