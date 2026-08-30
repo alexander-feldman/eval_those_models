@@ -16,6 +16,7 @@ from eval_those_models.grading.models import (
     ReviewItem,
 )
 from eval_those_models.grading.normalization import normalize_ingredient_key
+from eval_those_models.grading.parsing import parse_ingredient_line
 
 _LEADING_MEASURE = ("tsp ", "tbsp ", "tbs ", "teaspoon ", "tablespoon ")
 
@@ -31,12 +32,41 @@ def _reference_variants(reference: ReferenceIngredient) -> set[str]:
     variants = {_clean_reference_variant(reference.ingredient_key)}
     base_ingredient = reference.ingredient_text.partition(",")[0]
     variants.add(_clean_reference_variant(base_ingredient))
+    for value in (reference.ingredient_key, reference.ingredient_text):
+        parsed = parse_ingredient_line(value, 0)
+        if parsed is not None and parsed.ambiguous_reason != "negated ingredient mention":
+            variants.add(_clean_reference_variant(parsed.normalized_key))
     expanded = set(variants)
     for variant in variants:
         for measure in _LEADING_MEASURE:
             if variant.startswith(measure):
                 expanded.add(variant.removeprefix(measure))
     return {variant for variant in expanded if variant}
+
+
+def _reference_identity_variants(reference: ReferenceIngredient) -> set[str]:
+    variants = set(_reference_variants(reference))
+    for value in (reference.ingredient_key, reference.ingredient_text):
+        parsed = parse_ingredient_line(value, 0)
+        if parsed is not None and parsed.identity_key:
+            variants.add(_clean_reference_variant(parsed.identity_key))
+    return variants
+
+
+def _matching_key(candidate: CandidateIngredient) -> str:
+    return candidate.identity_key or candidate.normalized_key
+
+
+def _qualifier_values(candidate: CandidateIngredient) -> dict[str, str]:
+    return {qualifier.kind: qualifier.value for qualifier in candidate.qualifiers}
+
+
+def _reference_qualifier_values(reference: ReferenceIngredient) -> dict[str, str]:
+    for value in (reference.ingredient_text, reference.ingredient_key):
+        parsed = parse_ingredient_line(value, 0)
+        if parsed is not None and parsed.qualifiers:
+            return _qualifier_values(parsed)
+    return {}
 
 
 @dataclass(frozen=True)
@@ -83,6 +113,9 @@ def match_ingredients(
     reference_variants = {
         reference.position: _reference_variants(reference) for reference in references
     }
+    reference_identity_variants = {
+        reference.position: _reference_identity_variants(reference) for reference in references
+    }
     normalized_references = {
         reference.position: normalize_ingredient_key(reference.ingredient_key)
         for reference in references
@@ -117,6 +150,25 @@ def match_ingredients(
         )
         unmatched_candidates.remove(candidate.index)
         unmatched_references.remove(reference.position)
+        candidate_qualifiers = _qualifier_values(candidate)
+        reference_qualifiers = _reference_qualifier_values(reference)
+        shared_kinds = candidate_qualifiers.keys() & reference_qualifiers.keys()
+        if any(candidate_qualifiers[kind] != reference_qualifiers[kind] for kind in shared_kinds):
+            qualifier_reason = "ingredient qualifiers conflict"
+        elif reference_qualifiers.keys() - candidate_qualifiers.keys():
+            qualifier_reason = "ingredient qualifier missing"
+        elif candidate_qualifiers.keys() - reference_qualifiers.keys():
+            qualifier_reason = "ingredient qualifier added"
+        else:
+            qualifier_reason = None
+        if qualifier_reason is not None:
+            reviews.append(
+                ReviewItem(
+                    reason=qualifier_reason,
+                    candidate_evidence=candidate.raw,
+                    reference_evidence=(reference.ingredient_text,),
+                )
+            )
 
     # Match duplicate keys in stable order rather than collapsing them into a set.
     exact_positions: dict[str, deque[int]] = defaultdict(deque)
@@ -132,6 +184,24 @@ def match_ingredients(
         if positions:
             record(candidate, reference_by_position[positions.popleft()], MatchMethod.EXACT_KEY)
 
+    identity_positions: dict[str, deque[int]] = defaultdict(deque)
+    for reference in references:
+        if reference.position not in unmatched_references:
+            continue
+        for variant in reference_identity_variants[reference.position]:
+            identity_positions[variant].append(reference.position)
+    for candidate in candidates:
+        if (
+            candidate.index not in unmatched_candidates
+            or candidate.ambiguous_reason == "negated ingredient mention"
+        ):
+            continue
+        positions = identity_positions[_matching_key(candidate)]
+        while positions and positions[0] not in unmatched_references:
+            positions.popleft()
+        if positions:
+            record(candidate, reference_by_position[positions.popleft()], MatchMethod.EXACT_KEY)
+
     for candidate in candidates:
         if candidate.index not in unmatched_candidates or candidate.ambiguous_reason is not None:
             continue
@@ -139,7 +209,7 @@ def match_ingredients(
             reference
             for reference in references
             if reference.position in unmatched_references
-            and candidate.normalized_key
+            and _matching_key(candidate)
             in normalized_aliases[normalized_references[reference.position]]
         ]
         possible_keys = {normalized_references[reference.position] for reference in possible}
@@ -166,8 +236,8 @@ def match_ingredients(
             (
                 (
                     max(
-                        ingredient_similarity(candidate.normalized_key, reference_variant)
-                        for reference_variant in reference_variants[reference_position]
+                        ingredient_similarity(_matching_key(candidate), reference_variant)
+                        for reference_variant in reference_identity_variants[reference_position]
                     ),
                     reference_position,
                 )

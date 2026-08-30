@@ -8,6 +8,7 @@ from fractions import Fraction
 from eval_those_models.grading.models import (
     CandidateIngredient,
     CandidateResponse,
+    IngredientQualifier,
     ParsedQuantity,
     ResponseClass,
 )
@@ -54,7 +55,14 @@ _CATEGORY = re.compile(
 _NUMBER = r"(?:\d+\s+\d+/\d+|\d+/\d+|\d+(?:\.\d+)?)"
 _PACKAGED_QUANTITY = re.compile(
     rf"^\s*(?P<count>one|{_NUMBER})\s+(?P<size>{_NUMBER})\s*"
-    r"(?:-|\u2013|\u2014)\s*(?P<size_unit>ounces?|oz\.?)\s+(?P<container>cans?)\b",
+    r"(?:-|\u2013|\u2014)\s*(?P<size_unit>ounces?|oz\.?)\s+"
+    r"(?P<container>cans?|jars?|packages?|packets?)\b",
+    re.I,
+)
+_SIZED_CONTAINER_QUANTITY = re.compile(
+    rf"^\s*(?P<count>one|{_NUMBER})\s+(?P<container>bottles?|cans?|jars?|packages?|packets?)"
+    rf"\s*\(\s*(?P<size>{_NUMBER})\s*(?:-|\s)\s*"
+    r"(?P<size_unit>milliliters?|ml|liters?|l|ounces?|oz\.?)\s*\)",
     re.I,
 )
 _QUANTITY_PREFIX = re.compile(
@@ -78,6 +86,24 @@ _UNITS = sorted(
         "stick",
         "pinches",
         "pinch",
+        "bottles",
+        "bottle",
+        "bunches",
+        "bunch",
+        "heads",
+        "head",
+        "jars",
+        "jar",
+        "packets",
+        "packet",
+        "pieces",
+        "piece",
+        "slices",
+        "slice",
+        "sprigs",
+        "sprig",
+        "stalks",
+        "stalk",
         "cloves",
         "clove",
         "ounces",
@@ -99,6 +125,7 @@ _UNITS = sorted(
         "tsp.",
         "tsp",
         "lbs",
+        "lbs.",
         "lb.",
         "lb",
         "oz.",
@@ -115,17 +142,50 @@ _UNITS = sorted(
     reverse=True,
 )
 _UNIT_AFTER_QUANTITY = re.compile(
-    rf"^\s*(?P<unit>{'|'.join(re.escape(unit) for unit in _UNITS)})(?=\s|,|$)", re.I
+    rf"^\s*(?:-|\u2013|\u2014)?\s*"
+    rf"(?P<unit>{'|'.join(re.escape(unit) for unit in _UNITS)})(?=\s|,|$)",
+    re.I,
 )
 _MARKDOWN_SECTION_HEADING = re.compile(r"^\s*(?:#{1,6}\s+.+|\*\*.+\*\*:?)\s*$")
 _PARENTHETICAL_QUANTITY_PREFIX = re.compile(
-    rf"^\s*\(\s*{_NUMBER}\s+(?:{'|'.join(re.escape(unit) for unit in _UNITS)})\s*\)\s*",
+    rf"^\s*\(\s*(?:about\s+)?{_NUMBER}"
+    rf"(?:\s*(?:-|\u2013|\u2014|to)\s*{_NUMBER})?\s+"
+    rf"(?:{'|'.join(re.escape(unit) for unit in _UNITS)}|small|medium|large)\s*\)\s*",
     re.I,
 )
 _TRAILING_IDENTITY_METADATA = re.compile(
-    r"(?:\s*\(?optional\)?|\s*,?\s+page\s+\d+)\s*$",
+    r"(?:\s*\(?optional\)?|\s*,?\s+page\s+\d+|"
+    r"\s*\((?:page\s+\d+|see\s+[^)]+)\))\s*$",
     re.I,
 )
+_SIZE_QUALIFIER = re.compile(r"^(?P<size>small|medium|large)\s+(?P<ingredient>.+)$", re.I)
+_SIZE_QUALIFIED_HEADS = {
+    "apple",
+    "apricot",
+    "artichoke",
+    "avocado",
+    "banana",
+    "beet",
+    "carrot",
+    "chile",
+    "chili",
+    "cucumber",
+    "egg",
+    "eggplant",
+    "lemon",
+    "lime",
+    "onion",
+    "orange",
+    "peach",
+    "pear",
+    "pepper",
+    "potato",
+    "shallot",
+    "shrimp",
+    "squash",
+    "tomato",
+    "zucchini",
+}
 
 
 def _heading_kind(line: str) -> str | None:
@@ -162,8 +222,24 @@ def parse_quantity_text(text: str | None) -> ParsedQuantity | None:
         return ParsedQuantity(
             raw=normalized[: packaged.end()].strip(),
             value=count,
-            unit="can",
-            category=f"package:{size}:ounce:can",
+            unit=normalize_unit(packaged.group("container")),
+            category=(
+                f"package:{size}:{normalize_unit(packaged.group('size_unit'))}:"
+                f"{normalize_unit(packaged.group('container'))}"
+            ),
+        )
+    sized_container = _SIZED_CONTAINER_QUANTITY.match(normalized)
+    if sized_container is not None:
+        count_text = sized_container.group("count")
+        count = Fraction(1) if count_text.casefold() == "one" else parse_number(count_text)
+        size = parse_number(sized_container.group("size"))
+        container = normalize_unit(sized_container.group("container"))
+        size_unit = normalize_unit(sized_container.group("size_unit"))
+        return ParsedQuantity(
+            raw=normalized[: sized_container.end()].strip(),
+            value=count,
+            unit=container,
+            category=f"package:{size}:{size_unit}:{container}",
         )
     category = _CATEGORY.search(normalized)
     if category is not None and _QUANTITY_PREFIX.match(normalized) is None:
@@ -193,6 +269,12 @@ def _split_quantity(line: str) -> tuple[ParsedQuantity | None, str]:
     packaged = _PACKAGED_QUANTITY.match(normalized)
     if packaged is not None:
         return parse_quantity_text(packaged.group(0)), normalized[packaged.end() :].lstrip(" ,–—-")
+    sized_container = _SIZED_CONTAINER_QUANTITY.match(normalized)
+    if sized_container is not None:
+        return (
+            parse_quantity_text(sized_container.group(0)),
+            normalized[sized_container.end() :].lstrip(" ,–—-"),
+        )
     quantity = parse_quantity_text(normalized)
     if quantity is not None and _QUANTITY_PREFIX.match(normalized) is not None:
         quantity_match = _QUANTITY_PREFIX.match(normalized)
@@ -208,6 +290,21 @@ def _split_quantity(line: str) -> tuple[ParsedQuantity | None, str]:
         ingredient = (normalized[: category.start()] + normalized[category.end() :]).strip(" ,;-")
         return parse_quantity_text(category.group(1)), ingredient
     return None, normalized
+
+
+def _split_identity_qualifiers(
+    phrase: str,
+) -> tuple[str, tuple[IngredientQualifier, ...]]:
+    """Split only high-confidence size adjectives from countable ingredient identities."""
+    normalized = normalize_ingredient_key(phrase)
+    match = _SIZE_QUALIFIER.match(phrase)
+    if match is None:
+        return normalized, ()
+    identity_key = normalize_ingredient_key(match.group("ingredient"))
+    if not (_SIZE_QUALIFIED_HEADS & set(identity_key.split())):
+        return normalized, ()
+    qualifier = IngredientQualifier(kind="size", value=match.group("size").casefold())
+    return identity_key, (qualifier,)
 
 
 def parse_ingredient_line(line: str, index: int) -> CandidateIngredient | None:
@@ -230,14 +327,19 @@ def parse_ingredient_line(line: str, index: int) -> CandidateIngredient | None:
     elif re.search(r"\bor\b", phrase, re.I):
         ambiguous_reason = "ingredient alternative"
 
+    normalized_key = normalize_ingredient_key(phrase)
+    identity_key, qualifiers = _split_identity_qualifiers(phrase)
+
     return CandidateIngredient(
         index=index,
         raw=raw,
         quantity=quantity,
         ingredient_phrase=phrase,
-        normalized_key=normalize_ingredient_key(phrase),
+        normalized_key=normalized_key,
         modifier=modifier.strip() if separator and modifier.strip() else None,
         ambiguous_reason=ambiguous_reason,
+        identity_key=identity_key,
+        qualifiers=qualifiers,
     )
 
 

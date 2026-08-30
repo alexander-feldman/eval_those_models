@@ -62,6 +62,14 @@ class ParsedQuantity:
 
 
 @dataclass(frozen=True)
+class IngredientQualifier:
+    """A structured identity qualifier retained separately from the core ingredient."""
+
+    kind: Literal["size"]
+    value: str
+
+
+@dataclass(frozen=True)
 class CandidateIngredient:
     """A candidate ingredient line and its deterministic parse."""
 
@@ -72,6 +80,8 @@ class CandidateIngredient:
     normalized_key: str
     modifier: str | None = None
     ambiguous_reason: str | None = None
+    identity_key: str | None = None
+    qualifiers: tuple[IngredientQualifier, ...] = ()
 
 
 @dataclass(frozen=True)

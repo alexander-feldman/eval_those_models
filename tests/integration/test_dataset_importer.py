@@ -9,6 +9,7 @@ from pathlib import Path
 
 import pytest
 
+from eval_those_models.cli import main as cli_main
 from eval_those_models.dataset import importer
 
 
@@ -114,6 +115,27 @@ def test_builds_and_validates_a_synthetic_database(tmp_path: Path) -> None:
     }
     with sqlite3.connect(output) as connection:
         assert importer.validate_database(connection, args) == counts
+
+
+def test_grading_audit_reports_only_locations_and_issue_kinds(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    source = tmp_path / "metadata.csv"
+    output = tmp_path / "references.sqlite"
+    write_source(source, synthetic_row())
+    importer.build_database(importer_args(source, output))
+
+    assert cli_main(["dataset", "audit-grading", "--output", str(output)]) == 0
+    assert "identities=1/1, quantities=1/1, perfect_recipes=1/1" in capsys.readouterr().out
+
+    with sqlite3.connect(output) as connection:
+        connection.execute("UPDATE ingredients SET quantity_text_exact = '2 cups'")
+
+    assert cli_main(["dataset", "audit-grading", "--output", str(output)]) == 1
+    output_text = capsys.readouterr().out
+    assert "quantity_mismatch" in output_text
+    assert "synthetic__recipe ingredient 1" in output_text
+    assert "synthetic flour" not in output_text
 
 
 def test_invalid_reference_hash_does_not_replace_existing_database(tmp_path: Path) -> None:
