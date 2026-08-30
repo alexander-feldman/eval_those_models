@@ -132,7 +132,10 @@ created 71 review items across 90 responses, too many to function as a focused
 exception queue. Quantity and order results should not be reported until the
 reference round-trip work and response parsing are repaired.
 
+The eight truncated neutral cases were subsequently repeated with an 800-token
+ceiling; all ended normally, without materially improving factual quality. See
+[`title-only-neutral-completion-20260830.md`](title-only-neutral-completion-20260830.md).
 The next review step is to verify one-to-one ingredient matches for the 34
-specific attempts after those repairs, then repeat only the eight truncated
-neutral cases with a larger output ceiling. Raw requests, responses, usage,
-catalogs, endpoints, and private review packets remain ignored local artifacts.
+specific baseline attempts after the grader repairs. Raw requests, responses,
+usage, catalogs, endpoints, and private review packets remain ignored local
+artifacts.

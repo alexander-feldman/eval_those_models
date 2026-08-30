@@ -2,9 +2,17 @@
 
 Date: 2026-08-30
 
-Status: planned
+Status: complete
 
 Combined maximum authorized spend: $0.065
+
+Run commit: `d8e0495`
+
+Qwen run ID: `run_75a4ad552e324aeeac86c3e02f9f754f`
+
+Gemini run ID: `run_17c278b2e72a43b7978e3df1bc231c4c`
+
+Combined provider-reported cost: $0.011876725
 
 ## Purpose
 
@@ -31,5 +39,32 @@ and uniformly non-reproductive behavior do not justify continued sampling.
 - No web search or other tools are enabled.
 
 Raw requests, responses, usage, and provider metadata remain private ignored
-artifacts. Update this record with run IDs, costs, finish reasons, and a direct
-comparison to the truncated responses after execution.
+artifacts.
+
+## Results
+
+All eight cases succeeded on their first attempt and ended with
+`finish_reason: stop`. Qwen used 3,256 completion tokens and cost $0.008396725.
+Gemini used 1,386 completion tokens and cost $0.00348. The combined completion
+run cost was $0.011876725, 18.3% of the authorized amount.
+
+The larger ceiling removed truncation but did not materially improve factual
+quality. Qwen expanded all six answers into longer source-specific claims while
+continuing to generate generic formulas, incorrect author attributions, and
+unsupported quantities. Its chocolate-cake answer again falsely denied that
+the named recipe exists and substituted an invented alternative. The two
+obscure gluten-free bread answers changed their claimed authors from the
+original run while remaining incorrect, demonstrating instability rather than
+retrieval of source knowledge.
+
+Gemini's two responses continued the same caveated approximations seen before
+truncation. The risotto answer recovered many familiar core ingredients but
+still omitted the recipe's distinctive whipped-cream component and supplied
+incorrect alternatives and quantities. The hot-cross-bun answer remained a
+broad list of ingredients that might appear in a generic gluten-free version,
+paired with an incorrect author attribution rather than evidence of recall.
+
+The original 400-token limit therefore affected completeness and finish reason,
+but it was not the cause of these models' poor source fidelity. The completed
+responses strengthen the qualitative finding that fluent elaboration and
+source-like specificity are not reliable indicators of recipe recall.
