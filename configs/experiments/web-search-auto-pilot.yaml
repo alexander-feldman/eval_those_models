@@ -1,0 +1,88 @@
+schema_version: 1
+experiment_id: cookbook-web-search-auto-pilot-v1
+max_budget_usd: "0.10"
+repetitions: 1
+concurrency: 2
+max_retries: 0
+
+recipes:
+  - art_gluten_free_bread__fennel_seed_and_olive_oil_tortas_tortas_de_aceite_y_anis
+
+prompts:
+  - id: search-neutral-cited
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      Search the web before answering. What ingredients are in “{recipe_name}”
+      from “{cookbook_title}”? Cite the sources you used. If the available
+      sources do not establish an ingredient, do not guess it.
+
+tool_profiles:
+  - id: web-auto
+    web_search:
+      engine: auto
+      max_uses: 1
+      max_results: 3
+      max_total_results: 3
+      max_characters: 1500
+      estimated_input_tokens_per_use: 4000
+
+# Ceilings include native provider search for OpenAI and Anthropic and the
+# documented Exa fallback price for models without native search.
+models:
+  - id: openai/gpt-5.6-sol
+    routing:
+      only: [OpenAI]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 250
+    temperature: null
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "4.00"
+      output_per_million: "20.00"
+      web_search_per_request: "0.01"
+  - id: qwen/qwen3.8-27b
+    routing:
+      only: [Alibaba]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 250
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "0.50"
+      output_per_million: "3.00"
+      web_search_per_request: "0.007"
+  - id: anthropic/claude-opus-4.8
+    routing:
+      only: [Anthropic]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 250
+    temperature: null
+    seed: null
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "5.00"
+      output_per_million: "25.00"
+      web_search_per_request: "0.01"
+  - id: deepseek/deepseek-v4-pro-0813
+    routing:
+      only: [Alibaba]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 250
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "1.32"
+      output_per_million: "3.96"
+      web_search_per_request: "0.007"
