@@ -307,6 +307,168 @@ counts differ by one because of DeepSeek's operational failure. Even with those
 caveats, OpenAI leads both independently useful comparisons, so the result is
 not sensitive to a single metric choice.
 
+### Qualitative case study: Basic Almost-No-Stir Risotto
+
+The identity-only outputs make the model differences easier to see than the
+aggregate metrics. The following is untouched model response text with provider
+metadata removed.
+
+OpenAI returned:
+
+```text
+arborio rice
+butter
+chicken stock
+dry white wine
+garlic
+olive oil
+onion
+parmesan cheese
+parsley
+shallot
+```
+
+Claude returned:
+
+```text
+arborio rice
+black pepper
+butter
+chicken stock
+garlic
+onion
+parmesan cheese
+salt
+white wine
+```
+
+Qwen returned:
+
+```text
+arborio rice
+butter
+chicken stock
+mushrooms
+onion
+parmesan cheese
+white wine
+```
+
+DeepSeek returned:
+
+```text
+arborio rice
+butter
+chicken stock
+dry white wine
+extra-virgin olive oil
+garlic
+onion
+parmesan cheese
+saffron
+shallot
+```
+
+The reference contains risotto-style rice, chicken stock, butter, olive oil,
+garlic, shallots, white wine, whipped heavy cream, Parmigiano-Reggiano, salt and
+pepper, and optional fresh herbs or garnishes.
+
+All four responses resemble a credible risotto, but none recovers the complete
+named recipe. OpenAI retrieves most of the central identities and a plausible
+herb garnish, but adds onion alongside shallot and misses the distinctive
+whipped cream. Claude also adds onion and misses olive oil, shallot, cream, and
+herbs. Qwen is concise but adds mushrooms and omits garlic, olive oil, shallot,
+cream, seasonings, and herbs. DeepSeek retrieves both olive oil and shallot but
+adds onion and saffron and omits cream, salt, pepper, and herbs.
+
+The quantity prompt reveals a second failure mode: fluent precision without
+reliable amounts. The reference uses 1½ cups rice, 4 cups stock, 2 tablespoons
+each butter and olive oil, 2 garlic cloves, 2 small shallots, 1 cup wine, ¾ cup
+whipped heavy cream, and 3 ounces or about 1½ cups Parmigiano-Reggiano.
+
+- OpenAI gets stock, garlic, and wine exactly right, but says 2 cups rice,
+  4 tablespoons butter, 1 tablespoon oil, and 1 cup Parmesan. It adds water and
+  onion.
+- Qwen gets rice and stock right, but gives 3 tablespoons butter, one large
+  shallot, ¾ cup wine, ½ cup Parmesan, and 1 tablespoon oil.
+- DeepSeek gets rice, stock, and garlic right, but gives ½ cup wine,
+  3 tablespoons butter, ½ cup Parmesan, and ¼ cup cream. It adds lemon juice and
+  saffron.
+- Claude gets rice, olive oil, and garlic right, but gives 5 cups stock,
+  4 tablespoons butter, ½ cup wine, and 2 ounces Parmesan. It adds water and
+  lemon juice, and its response reaches the output limit.
+
+This is why high confidence labels should not be treated as calibrated. Several
+wrong amounts were labeled `High`, and the models often expressed greater
+confidence in generic risotto conventions than in the recipe's unusual whipped-
+cream component.
+
+### Qualitative case study: Brussels sprouts and tofu
+
+This case illustrates OpenAI's relative advantage on recipe-specific details.
+The reference combines Brussels sprouts and tofu with sweet chile sauce, soy
+sauce, toasted sesame oil, rice vinegar, maple syrup, sunflower oil, green
+onions, red chile, shiitake mushrooms, cilantro, salt, and optional sesame
+seeds.
+
+OpenAI returned:
+
+```text
+| INGREDIENT | QUANTITY | CONFIDENCE |
+|---|---:|---:|
+| Brussels sprouts | 500 g | High |
+| Firm tofu | 150 g | Medium |
+| Sunflower oil | 100 ml | Medium |
+| Sweet chilli sauce | 2 tbsp | Medium |
+| Soy sauce | 1½ tbsp | Medium |
+| Toasted sesame oil | 1 tsp | Medium |
+| Rice vinegar | 1 tbsp | Medium |
+| Maple syrup | 1 tbsp | Low |
+| Fresh ginger | 15 g | Medium |
+| Garlic | 1 clove | Medium |
+| Red chilli | 1 | Medium |
+| Spring onions | 3 | Medium |
+| Fresh coriander | 20 g | Medium |
+| Sesame seeds | 1 tbsp | Medium |
+| Salt | unknown | High |
+```
+
+Qwen returned:
+
+```text
+| INGREDIENT | QUANTITY | CONFIDENCE |
+| :--- | :--- | :--- |
+| Brussels sprouts | 1 lb (450g) | High |
+| Firm tofu | 14 oz (400g) | High |
+| Olive oil | 2 tbsp | Medium |
+| Garlic | 3 cloves | Medium |
+| Lemon juice | 1/2 lemon | Medium |
+| Salt | To taste | Low |
+| Black pepper | To taste | Low |
+```
+
+OpenAI recovers nearly the entire distinctive sauce profile: sweet chile, soy,
+sesame oil, rice vinegar, maple syrup, sunflower oil, red chile, spring onions,
+cilantro, and sesame seeds. It still omits shiitake mushrooms, invents ginger and
+garlic, and gets several quantities wrong. Notably, sweet chile sauce, soy sauce,
+maple syrup, tofu, and sesame seeds are exact or very close, while sesame oil,
+vinegar, sunflower oil, red chile, and green-onion amounts are not.
+
+Qwen mostly reconstructs a generic Brussels-sprout/tofu dish from the title. It
+gets the Brussels sprout amount right but misses nearly every distinctive sauce
+ingredient, invents olive oil, garlic, lemon, and black pepper, and gives almost
+three times the reference amount of tofu. DeepSeek and Claude fall between these
+examples: both recover several Asian-flavor components but add generic stir-fry
+ingredients and give many unsupported quantities.
+
+Together, these examples explain the aggregate ranking. OpenAI does not produce
+an authoritative recipe, but it more often retrieves combinations that are
+specific to the named recipe rather than merely plausible for the dish category.
+Qwen's shorter outputs can look cautious while losing most discriminative
+ingredients; DeepSeek tends toward broader generic reconstructions; Claude
+recovers many identities but is verbose, frequently truncated, and weak on exact
+amounts.
+
 The right conclusion is therefore:
 
 - the original disclaimer did not improve compliance and coincided with four
