@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import sqlite3
 import subprocess
 import sys
 from pathlib import Path
@@ -23,7 +24,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--version", action="version", version=__version__)
     commands = parser.add_subparsers(dest="command", required=True)
 
-    dataset = commands.add_parser("dataset", help="build or validate private reference data")
+    dataset = commands.add_parser("dataset", help="build or validate reference data")
     operation = dataset.add_subparsers(dest="dataset_command", required=True)
 
     dataset_options = importer.build_parser(include_operation=False)
@@ -32,6 +33,14 @@ def build_parser() -> argparse.ArgumentParser:
 
     validate = operation.add_parser("validate", parents=[dataset_options], add_help=False)
     validate.set_defaults(handler=_run_dataset_validate)
+
+    audit = operation.add_parser(
+        "audit-grading",
+        parents=[dataset_options],
+        add_help=False,
+        help="check that exact reference lines round-trip through the deterministic grader",
+    )
+    audit.set_defaults(handler=_run_dataset_grading_audit)
 
     plan = commands.add_parser("plan", help="expand and validate an experiment without dispatching")
     _add_experiment_arguments(plan)
@@ -65,13 +74,39 @@ def _run_dataset_validate(args: argparse.Namespace) -> int:
     return importer.run(args)
 
 
+def _run_dataset_grading_audit(args: argparse.Namespace) -> int:
+    try:
+        connection = sqlite3.connect(f"file:{args.output}?mode=ro", uri=True)
+        try:
+            report = importer.audit_grading_references(connection)
+        finally:
+            connection.close()
+    except (OSError, sqlite3.Error, ValueError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+
+    print(
+        "Grading reference audit: "
+        f"identities={report.identity_match_count}/{report.ingredient_count}, "
+        f"quantities={report.quantity_match_count}/{report.populated_quantity_count}, "
+        f"perfect_recipes={report.perfect_recipe_count}/{report.recipe_count}"
+    )
+    if report.issues:
+        print(f"Issue counts: {json.dumps(report.issue_counts(), sort_keys=True)}")
+        print("Locations (protected text omitted):")
+        for issue in report.issues:
+            print(f"  {issue.recipe_id} ingredient {issue.position}: {issue.kind.value}")
+        return 1
+    return 0
+
+
 def _add_experiment_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("config", type=Path, help="versioned experiment YAML")
     parser.add_argument(
         "--database",
         type=Path,
         default=Path("data/private/cookbook_eval.sqlite"),
-        help="private reference SQLite database",
+        help="reference SQLite database",
     )
 
 

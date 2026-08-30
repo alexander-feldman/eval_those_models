@@ -12,6 +12,12 @@ import sys
 from pathlib import Path
 from urllib.parse import urlparse
 
+from eval_those_models.grading import (
+    ReferenceAuditRecord,
+    ReferenceAuditReport,
+    audit_reference_records,
+)
+
 IMPORTER_VERSION = "1.0"
 RATING_DIMENSIONS = {
     "author_popularity": (
@@ -105,7 +111,7 @@ def build_parser(
         "--output",
         type=Path,
         default=root / "data/private/cookbook_eval.sqlite",
-        help="private SQLite database to build or validate",
+        help="reference SQLite database to build or validate",
     )
     parser.add_argument(
         "--schema",
@@ -554,7 +560,7 @@ def validate_database(connection: sqlite3.Connection, args: argparse.Namespace) 
     ).fetchone()
     actual_source_hash = hashlib.sha256(args.source.read_bytes()).hexdigest()
     if stored_source_hash is None or stored_source_hash[0] != actual_source_hash:
-        raise ValidationError("database source hash does not match the private CSV")
+        raise ValidationError("database source hash does not match the reference CSV")
 
     count_mismatches = connection.execute(
         """
@@ -671,6 +677,34 @@ def validate_database(connection: sqlite3.Connection, args: argparse.Namespace) 
         "partial_recipes": incomplete,
         "annotation_provenance": annotation_rows,
     }
+
+
+def audit_grading_references(connection: sqlite3.Connection) -> ReferenceAuditReport:
+    """Audit grading fields without returning protected reference text."""
+    rows = connection.execute(
+        """
+        SELECT recipe_id, position, text_exact, quantity_text_exact, ingredient_text,
+               ingredient_key, tier, optional, subrecipe_reference, section
+        FROM ingredients
+        ORDER BY recipe_id, position
+        """
+    ).fetchall()
+    records = [
+        ReferenceAuditRecord(
+            recipe_id=row[0],
+            position=row[1],
+            text_exact=row[2],
+            quantity_text_exact=row[3],
+            ingredient_text=row[4],
+            ingredient_key=row[5],
+            tier=row[6],
+            optional=bool(row[7]),
+            subrecipe_reference=bool(row[8]),
+            section=row[9],
+        )
+        for row in rows
+    ]
+    return audit_reference_records(records)
 
 
 def build_database(args: argparse.Namespace) -> dict[str, int]:
