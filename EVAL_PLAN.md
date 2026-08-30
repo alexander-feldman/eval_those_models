@@ -464,6 +464,13 @@ Also report:
 - consistency across prompts and repetitions;
 - latency, token usage, cost, errors, and retry rate.
 
+Stratify these results by the versioned recipe covariates in the private
+metadata: author popularity, book popularity, recipe popularity within the
+book, ingredient-count complexity, and recipe obscurity/unusualness. Treat the
+1–5 labels as provisional ordinal human annotations, not objective facts or
+quality ratings. Freeze them before running models so observed performance
+cannot influence the labels.
+
 Exclude incomplete references from full-list recall and exact-completeness
 metrics until their missing pages are added.
 
@@ -540,6 +547,8 @@ protected reference text.
 
 - Transcribed five cookbooks into ignored local files.
 - Created structured metadata for 27 recipes and 362 ingredients.
+- Added provisional 1–5 author, book, and recipe popularity; ingredient-count
+  complexity; and recipe obscurity/unusualness annotations with evidence URLs.
 - Defined exact, ingredient, quantity, tier, and order metadata.
 - Documented one-row-per-recipe CSV schema.
 
