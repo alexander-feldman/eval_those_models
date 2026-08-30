@@ -73,7 +73,8 @@ tool_profiles:
       max_results: 3
       max_total_results: 3
       max_characters: 1500
-      estimated_input_tokens_per_use: 5000""",
+      estimated_input_tokens_per_use: 5000
+      max_cost_usd: 0.08""",
     ).replace(
         'output_per_million: "2.00"',
         'output_per_million: "2.00"\n      web_search_per_request: "0.01"',
@@ -86,7 +87,32 @@ tool_profiles:
     assert profile.web_search is not None
     assert profile.web_search.engine == "auto"
     assert profile.web_search.max_uses == 1
+    assert profile.web_search.max_cost_usd == Decimal("0.08")
     assert config.models[0].pricing_ceiling.web_search_per_request == Decimal("0.01")
+
+
+def test_load_experiment_links_prompt_to_one_tool_profile(tmp_path: Path) -> None:
+    configured = VALID_CONFIG.replace(
+        "template: 'What is in {recipe_name} from {cookbook_title}?'",
+        "template: 'What is in {recipe_name} from {cookbook_title}?'\n    tool_profile: no-tools",
+    ).replace(
+        "repetitions: 2",
+        "repetitions: 2\ntool_profiles:\n  - id: no-tools\n    web_search: null",
+    )
+
+    config = load_experiment(_write(tmp_path, configured))
+
+    assert config.prompts[0].tool_profile_id == "no-tools"
+
+
+def test_load_experiment_rejects_unknown_prompt_tool_profile(tmp_path: Path) -> None:
+    configured = VALID_CONFIG.replace(
+        "template: 'What is in {recipe_name} from {cookbook_title}?'",
+        "template: 'What is in {recipe_name} from {cookbook_title}?'\n    tool_profile: missing",
+    )
+
+    with pytest.raises(ConfigError, match="unknown tool profile"):
+        load_experiment(_write(tmp_path, configured))
 
 
 def test_load_experiment_rejects_invalid_web_search_engine(tmp_path: Path) -> None:

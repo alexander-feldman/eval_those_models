@@ -19,6 +19,11 @@ ingredient lists, and 1 explicitly partial list. The OpenRouter smoke-test
 harness and deterministic grader are implemented; calibration against the
 recorded pilot and blinded human labels is the next phase.
 
+The first broader title-only baseline is specified in
+[`configs/experiments/title-only-baseline-v1.yaml`](configs/experiments/title-only-baseline-v1.yaml),
+with its stratification and review protocol documented in
+[`docs/experiments/title-only-baseline-v1-20260830.md`](docs/experiments/title-only-baseline-v1-20260830.md).
+
 ## Development setup
 
 The project is pinned to Python 3.11 and uses `uv` for Python installation,
@@ -120,6 +125,12 @@ The initial implementation supports bounded OpenRouter server-side web search
 and fails closed unless its per-request price can be verified during preflight.
 See the [auto web-search pilot](docs/experiments/web-search-auto-pilot-20260830.md)
 for the first cross-model findings and the resulting budget-safety changes.
+
+The next planned study is
+[Experiment 1: source-assisted recipe reconstruction](docs/experiments/experiment-1-source-assisted-reconstruction-plan.md).
+Its first [Gate B calibration report](docs/experiments/experiment-1-gate-b-20260830.md)
+compares source-assisted behavior with Title-only baseline v1.
+
 
 The [Experiment 2 ingredient-disclaimer
 run](docs/experiments/experiment-2-ingredient-disclaimer-20260830.md) tested
