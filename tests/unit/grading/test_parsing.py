@@ -1,3 +1,5 @@
+import pytest
+
 from eval_those_models.grading import (
     ResponseClass,
     classify_and_parse_response,
@@ -102,3 +104,59 @@ def test_plain_quantity_led_block_keeps_unquantified_ingredient_lines() -> None:
     response = classify_and_parse_response("1 cup flour\nsalt\n2 eggs")
 
     assert [item.normalized_key for item in response.ingredients] == ["flour", "salt", "egg"]
+
+
+@pytest.mark.parametrize(
+    ("line", "key", "unit"),
+    [
+        ("2 stalks celery, diced", "celery", "stalk"),
+        ("4 sprigs fresh thyme", "fresh thyme", "sprig"),
+        ("4-pound chicken", "chicken", "pound"),
+        ("2 lbs. fresh spinach", "fresh spinach", "pound"),
+    ],
+)
+def test_strips_count_and_hyphenated_units(line: str, key: str, unit: str) -> None:
+    parsed = parse_ingredient_line(line, 0)
+
+    assert parsed is not None
+    assert parsed.normalized_key == key
+    assert parsed.quantity is not None
+    assert parsed.quantity.unit == unit
+
+
+@pytest.mark.parametrize(
+    ("line", "key", "unit", "category"),
+    [
+        ("1 32-oz. jar sauerkraut", "sauerkraut", "jar", "package:32:ounce:jar"),
+        (
+            "1 bottle (750 ml) dry red wine",
+            "dry red wine",
+            "bottle",
+            "package:750:milliliter:bottle",
+        ),
+    ],
+)
+def test_parses_sized_containers(line: str, key: str, unit: str, category: str) -> None:
+    parsed = parse_ingredient_line(line, 0)
+
+    assert parsed is not None
+    assert parsed.normalized_key == key
+    assert parsed.quantity is not None
+    assert parsed.quantity.unit == unit
+    assert parsed.quantity.category == category
+
+
+def test_removes_secondary_measure_and_trailing_cross_reference() -> None:
+    parsed = parse_ingredient_line(
+        "1 1/2 cups (about 13 1/2 ounces) risotto-style rice (see Note above)", 0
+    )
+
+    assert parsed is not None
+    assert parsed.normalized_key == "risotto style rice"
+
+
+def test_removes_parenthesized_page_reference() -> None:
+    parsed = parse_ingredient_line("1 cup Basic Pepper Paste (page 379)", 0)
+
+    assert parsed is not None
+    assert parsed.normalized_key == "basic pepper paste"

@@ -104,3 +104,11 @@ def test_combined_line_does_not_receive_credit_for_two_reference_rows() -> None:
         if match.method in {MatchMethod.EXACT_KEY, MatchMethod.KNOWN_ALIAS}
     }
     assert accepted == set()
+
+
+def test_reference_surface_form_is_parsed_into_an_exact_variant() -> None:
+    references = [ReferenceIngredient(1, "fresh thyme", "4 sprigs fresh thyme")]
+
+    result = match_ingredients([_candidate("- fresh thyme", 0)], references)
+
+    assert result.matches[0].method == MatchMethod.EXACT_KEY

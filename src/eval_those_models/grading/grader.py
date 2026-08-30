@@ -96,7 +96,7 @@ def grade_response(
 
     return GradeResult(
         config=GradingConfig(
-            normalization_profile="deterministic-v1",
+            normalization_profile="deterministic-v2",
             alias_version=alias_table.version if alias_table is not None else None,
             fuzzy_threshold=fuzzy_threshold,
             ambiguity_threshold=ambiguity_threshold,

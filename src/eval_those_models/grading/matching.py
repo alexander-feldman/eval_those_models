@@ -16,6 +16,7 @@ from eval_those_models.grading.models import (
     ReviewItem,
 )
 from eval_those_models.grading.normalization import normalize_ingredient_key
+from eval_those_models.grading.parsing import parse_ingredient_line
 
 _LEADING_MEASURE = ("tsp ", "tbsp ", "tbs ", "teaspoon ", "tablespoon ")
 
@@ -31,6 +32,10 @@ def _reference_variants(reference: ReferenceIngredient) -> set[str]:
     variants = {_clean_reference_variant(reference.ingredient_key)}
     base_ingredient = reference.ingredient_text.partition(",")[0]
     variants.add(_clean_reference_variant(base_ingredient))
+    for value in (reference.ingredient_key, reference.ingredient_text):
+        parsed = parse_ingredient_line(value, 0)
+        if parsed is not None and parsed.ambiguous_reason != "negated ingredient mention":
+            variants.add(_clean_reference_variant(parsed.normalized_key))
     expanded = set(variants)
     for variant in variants:
         for measure in _LEADING_MEASURE:

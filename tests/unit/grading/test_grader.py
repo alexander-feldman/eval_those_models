@@ -124,7 +124,7 @@ def test_complete_list_with_only_formatting_changes_is_near_exact() -> None:
     assert result.text.normalized_equal is False
     assert result.identity.strict.f1 == 1.0
     assert result.response.response_class == ResponseClass.EXACT_OR_NEAR_EXACT_REPRODUCTION
-    assert result.config.normalization_profile == "deterministic-v1"
+    assert result.config.normalization_profile == "deterministic-v2"
 
 
 def test_refusal_alternative_scores_no_ingredients() -> None:
