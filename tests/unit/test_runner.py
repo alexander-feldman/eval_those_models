@@ -54,6 +54,7 @@ class FakeClient:
                             "reasoning",
                             "temperature",
                             "seed",
+                            "tools",
                         ],
                     }
                 ]
@@ -207,3 +208,124 @@ def test_run_refuses_native_web_search_without_verifiable_live_price(tmp_path: P
 
     with pytest.raises(RunError, match="verifiable web-search pricing"):
         run_experiment(search_config, _plan(), FakeClient(), tmp_path)
+
+
+def _search_config(max_budget: str = "0.02") -> ExperimentConfig:
+    return replace(
+        _config(),
+        max_budget_usd=Decimal(max_budget),
+        max_retries=0,
+        tool_profiles=(ToolProfileConfig("web", WebSearchConfig("auto", 1, 3, 3, 1500, 16_000)),),
+        models=(
+            replace(
+                _config().models[0],
+                pricing_ceiling=PricingCeiling(Decimal("1"), Decimal("2"), Decimal("0.01")),
+            ),
+        ),
+    )
+
+
+def _search_plan(case_count: int = 2) -> ExperimentPlan:
+    cases = tuple(
+        replace(
+            _plan().cases[0],
+            case_id=f"case_{index}",
+            tool_profile_id="web",
+            parameters={
+                "max_tokens": 10,
+                "tools": [{"type": "openrouter:web_search"}],
+                "max_tool_calls": 1,
+            },
+            estimated_cost_usd=Decimal("0.0005"),
+        )
+        for index in range(case_count)
+    )
+    return ExperimentPlan("smoke", cases, (), Decimal("0.02"), max_retries=0)
+
+
+def test_search_run_stops_before_next_case_after_cost_drift(tmp_path: Path) -> None:
+    client = FakeClient()
+
+    summary = run_experiment(_search_config(), _search_plan(), client, tmp_path)
+
+    assert summary.succeeded == 1
+    assert summary.not_run == 1
+    assert summary.stop_reason is not None
+    assert "125%" in summary.stop_reason
+    assert sum(client.calls.values()) == 1
+    events = read_events(summary.run_directory / "attempts.jsonl")
+    assert any(event["event"] == "run_stopped" for event in events)
+
+
+def test_search_run_rejects_nonterminal_tool_response_and_counts_cost(tmp_path: Path) -> None:
+    client = FakeClient()
+
+    def nonterminal(case: PlannedCase) -> GenerationResult:
+        return GenerationResult(
+            generation_id="generation-1",
+            model_returned="example/model",
+            provider_actual="Example",
+            output_text="searching",
+            finish_reason="tool_calls",
+            usage={"cost": 0.001},
+            raw_response={},
+        )
+
+    client.generate = nonterminal  # type: ignore[method-assign]
+    summary = run_experiment(_search_config(), _search_plan(1), client, tmp_path)
+
+    assert summary.failed == 1
+    assert summary.reported_cost_usd == Decimal("0.001")
+    events = read_events(summary.run_directory / "attempts.jsonl")
+    failed = next(event for event in events if event["event"] == "attempt_failed")
+    assert failed["error_type"] == "NonterminalToolResponse"
+
+
+def test_search_run_does_not_confuse_query_count_with_tool_steps(tmp_path: Path) -> None:
+    client = FakeClient()
+
+    def over_limit(case: PlannedCase) -> GenerationResult:
+        return GenerationResult(
+            generation_id="generation-1",
+            model_returned="example/model",
+            provider_actual="Example",
+            output_text="answer",
+            finish_reason="stop",
+            usage={
+                "cost": 0.001,
+                "server_tool_use_details": {"web_search_requests": 2},
+            },
+            raw_response={},
+        )
+
+    client.generate = over_limit  # type: ignore[method-assign]
+    summary = run_experiment(_search_config(), _search_plan(1), client, tmp_path)
+
+    assert summary.succeeded == 1
+    assert summary.stop_reason is None
+
+
+def test_search_run_does_not_dispatch_after_tool_violation(tmp_path: Path) -> None:
+    client = FakeClient()
+
+    def nonterminal(case: PlannedCase) -> GenerationResult:
+        client.calls[case.case_id] += 1
+        return GenerationResult(
+            generation_id="generation-1",
+            model_returned="example/model",
+            provider_actual="Example",
+            output_text="searching",
+            finish_reason="tool_calls",
+            usage={
+                "cost": 0.0001,
+                "server_tool_use_details": {"web_search_requests": 2},
+            },
+            raw_response={},
+        )
+
+    client.generate = nonterminal  # type: ignore[method-assign]
+    summary = run_experiment(_search_config(), _search_plan(2), client, tmp_path)
+
+    assert summary.failed == 1
+    assert summary.not_run == 1
+    assert sum(client.calls.values()) == 1
