@@ -87,9 +87,9 @@ were:
 |---|---|---:|---:|---:|
 | Lori's Chocolate Midnight Cake | Gemini | 0.143 | 0.222 | 0.174 |
 | Lori's Chocolate Midnight Cake | DeepSeek | 0.364 | 0.444 | 0.400 |
-| Basic Almost-No-Stir Risotto | Gemini | 0.400 | 0.364 | 0.381 |
+| Basic Almost-No-Stir Risotto | Gemini | 0.500 | 0.455 | 0.476 |
 | Moroccan Orange-Walnut Salad | Gemini | 0.000 | 0.000 | 0.000 |
-| Goat Cheese Souffles with Vanilla-Poached Peaches | Gemini | 0.133 | 0.125 | 0.129 |
+| Goat Cheese Souffles with Vanilla-Poached Peaches | Gemini | 0.267 | 0.250 | 0.258 |
 | Oat and Honey Sourdough Hot Cross Buns | Gemini | 0.353 | 0.240 | 0.286 |
 | Fennel Seed and Olive Oil Tortas | Gemini | 0.444 | 0.333 | 0.381 |
 
