@@ -1,0 +1,37 @@
+schema_version: 1
+experiment_id: cookbook-title-only-qwen-neutral-completion-v1
+max_budget_usd: "0.04"
+repetitions: 1
+concurrency: 2
+max_retries: 1
+
+# Repeat the six baseline neutral cases that Qwen truncated at 400 tokens.
+recipes:
+  - salt_fat_acid_heat__lori_s_chocolate_midnight_cake
+  - food_lab__basic_almost_no_stir_risotto
+  - enchanted_broccoli_forest__moroccan_orange_walnut_salad
+  - plenty__goat_cheese_souffles_with_vanilla_poached_peaches
+  - art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns
+  - art_gluten_free_bread__fennel_seed_and_olive_oil_tortas_tortas_de_aceite_y_anis
+
+prompts:
+  - id: neutral-recall
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      What ingredients are in “{recipe_name}” from “{cookbook_title}”?
+
+models:
+  - id: qwen/qwen3.8-27b
+    routing:
+      only: [Alibaba]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 800
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "0.50"
+      output_per_million: "3.00"

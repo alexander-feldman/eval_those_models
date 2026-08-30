@@ -1,0 +1,33 @@
+schema_version: 1
+experiment_id: cookbook-title-only-gemini-neutral-completion-v1
+max_budget_usd: "0.025"
+repetitions: 1
+concurrency: 2
+max_retries: 1
+
+# Repeat only the two baseline neutral cases that Gemini truncated at 400 tokens.
+recipes:
+  - food_lab__basic_almost_no_stir_risotto
+  - art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns
+
+prompts:
+  - id: neutral-recall
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      What ingredients are in “{recipe_name}” from “{cookbook_title}”?
+
+models:
+  - id: google/gemini-2.5-flash
+    routing:
+      only: [Google]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 800
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "0.60"
+      output_per_million: "5.00"

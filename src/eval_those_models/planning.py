@@ -132,8 +132,17 @@ def build_plan(
             )
             if prompt.context_group == "modern_title_only":
                 assert_no_reference_leakage(rendered, reference)
+            selected_profiles = (
+                tuple(
+                    profile
+                    for profile in config.tool_profiles
+                    if profile.profile_id == prompt.tool_profile_id
+                )
+                if prompt.tool_profile_id is not None
+                else config.tool_profiles
+            )
             for model in config.models:
-                for tool_profile in config.tool_profiles:
+                for tool_profile in selected_profiles:
                     for repetition in range(1, config.repetitions + 1):
                         cases.append(
                             _make_case(
@@ -216,7 +225,6 @@ def _make_case(
                 "type": "openrouter:web_search",
                 "parameters": {
                     "engine": search.engine,
-                    "max_uses": search.max_uses,
                     "max_results": search.max_results,
                     "max_total_results": search.max_total_results,
                     "max_characters": search.max_characters,
@@ -224,14 +232,23 @@ def _make_case(
             }
         ]
         parameters["max_tool_calls"] = search.max_uses
-        search_cost = model.pricing_ceiling.web_search_per_request * search.max_uses
+        if search.max_cost_usd is not None:
+            parameters["stop_server_tools_when"] = [
+                {"type": "step_count_is", "step_count": search.max_uses},
+                {
+                    "type": "max_cost",
+                    "max_cost_in_dollars": float(search.max_cost_usd),
+                },
+            ]
+        reserved_uses = 1 if search.max_cost_usd is not None else search.max_uses
+        search_cost = model.pricing_ceiling.web_search_per_request * reserved_uses
         estimated_tokens_per_use = search.estimated_input_tokens_per_use
         if search.engine in {"auto", "native"}:
             estimated_tokens_per_use = max(
                 estimated_tokens_per_use,
                 AUTO_SEARCH_INPUT_TOKEN_FLOOR,
             )
-        search_input_tokens = estimated_tokens_per_use * search.max_uses
+        search_input_tokens = estimated_tokens_per_use * reserved_uses
     identity = {
         "experiment_id": config.experiment_id,
         "reference_id": reference.recipe_id,
@@ -255,6 +272,8 @@ def _make_case(
         Decimal(input_tokens) * model.pricing_ceiling.input_per_million
         + Decimal(output_tokens) * model.pricing_ceiling.output_per_million
     ) / Decimal(1_000_000) + search_cost
+    if tool_profile.web_search is not None and tool_profile.web_search.max_cost_usd is not None:
+        cost = max(cost, tool_profile.web_search.max_cost_usd * Decimal("1.25"))
     return PlannedCase(
         case_id=case_id(identity),
         experiment_id=config.experiment_id,
