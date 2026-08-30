@@ -57,3 +57,22 @@ for author popularity, book popularity, recipe popularity within the book,
 ingredient-count complexity, and recipe obscurity/unusualness. These fields are
 intended for stratified evaluation analysis and include evidence URLs and
 annotation notes.
+
+## Deterministic grading
+
+`eval_those_models.grading` exposes the offline phase-2 grader. Call
+`grade_response` with untouched model text, the exact reference text, and
+ordered `ReferenceIngredient` rows. The result keeps canonical strict ingredient
+F1 separate from lenient fuzzy diagnostics, quantities, tier recall, optional
+and subrecipe recall, order, text fidelity, response classification, and an
+evidence-bearing review queue.
+
+The canonical score accepts normalized-key and versioned-alias matches only.
+Conservative fuzzy matches affect the lenient diagnostic score and queue a
+strict-versus-lenient disagreement for review. Full-list grading raises
+`IncompleteReferenceError` for a reference marked incomplete; callers should
+instead construct an explicitly bounded excerpt case.
+
+The default tests use synthetic recipe rows. Private ground truth and raw run
+artifacts remain ignored and are used only for explicit local integration
+checks.

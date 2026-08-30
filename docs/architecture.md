@@ -12,3 +12,9 @@ The repository is a Python 3.11 application using a `src` package layout.
 The default test suite must not require private cookbook data, credentials, network
 access, or paid API calls. Private-data validation and live-provider checks are
 explicit operations.
+
+Deterministic grading lives under `src/eval_those_models/grading/`. Parsing,
+normalization, matching, metrics, and orchestration are separate modules so
+each rule can be unit-tested and versioned. The grader consumes typed reference
+rows rather than opening the private database itself; storage and run-artifact
+adapters can therefore evolve without changing the canonical scoring rules.
