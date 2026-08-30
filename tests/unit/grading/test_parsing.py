@@ -94,6 +94,68 @@ def test_curly_apostrophe_refusal_is_classified_from_real_provider_style() -> No
     assert response.ingredients == ()
 
 
+def test_abstention_navigation_list_is_not_scored_as_ingredients() -> None:
+    response = classify_and_parse_response(
+        "I don't have reliable, memorized knowledge of that specific ingredient list, "
+        "so I don't want to guess. To get the accurate list:\n"
+        "- Check the cookbook directly\n"
+        "- Search the publisher's website"
+    )
+
+    assert response.response_class == ResponseClass.ABSTENTION
+    assert response.scored_text == ""
+    assert response.ingredients == ()
+
+
+def test_access_based_abstention_with_hypothetical_list_is_not_scored() -> None:
+    response = classify_and_parse_response(
+        "I don't have access to the exact contents of that cookbook. Therefore, I cannot "
+        "confirm the specific ingredients. A typical version might contain:\n"
+        "- flour\n"
+        "- eggs"
+    )
+
+    assert response.response_class == ResponseClass.ABSTENTION
+    assert response.ingredients == ()
+
+
+def test_unmemorized_abstention_with_navigation_options_is_not_scored() -> None:
+    response = classify_and_parse_response(
+        "I don't have the exact ingredient list memorized precisely enough to reproduce it. "
+        "Try one of these options:\n"
+        "- Check the cookbook\n"
+        "- Search the author's website"
+    )
+
+    assert response.response_class == ResponseClass.ABSTENTION
+    assert response.ingredients == ()
+
+
+def test_inability_to_access_with_navigation_list_is_an_abstention() -> None:
+    response = classify_and_parse_response(
+        "I don't have the ability to access external content like specific cookbooks. "
+        "Therefore, I cannot tell you the ingredients. To find them:\n"
+        "- Consult the cookbook\n"
+        "- Search online"
+    )
+
+    assert response.response_class == ResponseClass.ABSTENTION
+    assert response.ingredients == ()
+
+
+def test_false_premise_replacement_recipe_is_not_scored() -> None:
+    response = classify_and_parse_response(
+        "That recipe does not exist in the named cookbook. You may mean this cake:\n"
+        "Ingredients:\n"
+        "- 1 cup flour\n"
+        "- 2 eggs"
+    )
+
+    assert response.response_class == ResponseClass.FALSE_PREMISE
+    assert response.scored_text == ""
+    assert response.ingredients == ()
+
+
 def test_empty_response_is_an_error() -> None:
     response = classify_and_parse_response("  \n")
 
