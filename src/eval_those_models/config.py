@@ -60,7 +60,7 @@ class ModelConfig:
     max_output_tokens: int
     temperature: float | None
     seed: int | None
-    reasoning_enabled: bool
+    reasoning_enabled: bool | None
     pricing_ceiling: PricingCeiling
 
 
@@ -301,8 +301,10 @@ def _parse_model(value: Any, index: int) -> ModelConfig:
         max_output_tokens=_positive_int(item["max_output_tokens"], f"{where}.max_output_tokens"),
         temperature=float(temperature_raw) if temperature_raw is not None else None,
         seed=seed_raw,
-        reasoning_enabled=_boolean(
-            item.get("reasoning_enabled", False), f"{where}.reasoning_enabled"
+        reasoning_enabled=(
+            _boolean(item["reasoning_enabled"], f"{where}.reasoning_enabled")
+            if "reasoning_enabled" in item
+            else None
         ),
         pricing_ceiling=pricing,
     )
