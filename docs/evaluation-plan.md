@@ -645,6 +645,10 @@ protected reference text.
 ### Phase 3: Calibration
 
 - Run the smoke test.
+- Implement and run
+  [Experiment 1: source-assisted recipe reconstruction](experiments/experiment-1-source-assisted-reconstruction-plan.md)
+  as the first staged post-smoke comparison of no-search, auto-search, and
+  fixed-evidence behavior.
 - Compare automatic scores with blinded human labels.
 - Fix prompt leakage, parser failures, and metric edge cases.
 - Evaluate structured, abstaining LLM adjudication only for ambiguous cases;
