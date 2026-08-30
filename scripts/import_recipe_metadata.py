@@ -252,8 +252,15 @@ def read_and_validate_source(path: Path) -> tuple[list[dict[str, str]], dict[str
                 "value_kind": value_kind,
             }
 
-        if not all(isinstance(source, str) and source for source in sources):
-            raise ValidationError(f"{recipe_id}: rating sources must be non-empty strings")
+        if not all(
+            isinstance(source, str)
+            and urlparse(source).scheme in {"http", "https"}
+            and urlparse(source).hostname
+            for source in sources
+        ):
+            raise ValidationError(f"{recipe_id}: rating sources must be valid HTTP(S) URLs")
+        if len(sources) != len(set(sources)):
+            raise ValidationError(f"{recipe_id}: rating sources must be unique within a recipe")
 
         parsed[recipe_id] = {
             "images": images,
@@ -334,9 +341,8 @@ def insert_all(
                 transcription_status, ingredient_list_complete, completeness_note,
                 ingredient_count, section_count, optional_ingredient_count,
                 has_subrecipe_references, reference_text_exact, reference_text_sha256,
-                quantity_annotation_status, tier_annotation_status, tier_rubric_version,
                 normalization_profile_id, human_review_status, review_notes
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 recipe_id,
@@ -355,13 +361,38 @@ def insert_all(
                 item["has_subrecipe_references"],
                 row["reference_text_exact"],
                 row["reference_text_sha256"],
-                row["quantity_annotation_status"],
-                row["tier_annotation_status"],
-                row["tier_rubric_version"],
                 row["normalization_profile_id"],
                 row["human_review_status"],
                 row["review_notes"] or None,
             ),
+        )
+        connection.executemany(
+            """
+            INSERT INTO recipe_annotation_provenance(
+                recipe_id, annotation_kind, status, rubric_version,
+                annotation_method, source_status_column, source_rubric_column
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)
+            """,
+            [
+                (
+                    recipe_id,
+                    "quantity",
+                    row["quantity_annotation_status"],
+                    None,
+                    "machine_parsed",
+                    "quantity_annotation_status",
+                    None,
+                ),
+                (
+                    recipe_id,
+                    "tier",
+                    row["tier_annotation_status"],
+                    row["tier_rubric_version"],
+                    "proposed_annotation",
+                    "tier_annotation_status",
+                    "tier_rubric_version",
+                ),
+            ],
         )
 
         for source_kind, values in (("image", item["images"]), ("page", item["pages"])):
@@ -530,6 +561,48 @@ def validate_database(connection: sqlite3.Connection, args: argparse.Namespace) 
     if table_count(connection, "rating_dimensions") != 5:
         raise ValidationError("expected exactly five rating dimensions")
 
+    annotation_rows = table_count(connection, "recipe_annotation_provenance")
+    annotation_range = connection.execute(
+        """
+        SELECT MIN(n), MAX(n)
+        FROM (
+            SELECT COUNT(*) AS n
+            FROM recipe_annotation_provenance
+            GROUP BY recipe_id
+        )
+        """
+    ).fetchone()
+    if annotation_rows != args.expected_recipes * 2 or annotation_range != (2, 2):
+        raise ValidationError(
+            "expected quantity and tier provenance for every recipe; "
+            f"got rows={annotation_rows}, range={annotation_range}"
+        )
+
+    bad_rating_provenance = connection.execute(
+        """
+        SELECT COUNT(*)
+        FROM recipe_ratings AS r
+        JOIN rating_dimensions AS d USING (dimension)
+        WHERE (d.value_kind = 'derived' AND r.annotator != 'derived')
+           OR (d.value_kind = 'human_annotation'
+               AND r.annotator != 'provisional_human_annotation')
+        """
+    ).fetchone()[0]
+    if bad_rating_provenance:
+        raise ValidationError(f"{bad_rating_provenance} ratings have inconsistent provenance")
+
+    bad_reference_hashes = []
+    for recipe_id, exact_text, stored_hash in connection.execute(
+        "SELECT recipe_id, reference_text_exact, reference_text_sha256 FROM recipes"
+    ):
+        actual_hash = hashlib.sha256(exact_text.encode("utf-8")).hexdigest()
+        if actual_hash != stored_hash:
+            bad_reference_hashes.append(recipe_id)
+    if bad_reference_hashes:
+        raise ValidationError(
+            f"stored exact-text hash check failed for {len(bad_reference_hashes)} recipes"
+        )
+
     source_link_range = connection.execute(
         """
         SELECT MIN(n), MAX(n)
@@ -550,7 +623,10 @@ def validate_database(connection: sqlite3.Connection, args: argparse.Namespace) 
     ).fetchone()[0]
     if complexity_source_links:
         raise ValidationError("derived ingredient-complexity ratings must not have source links")
-    return counts | {"partial_recipes": incomplete}
+    return counts | {
+        "partial_recipes": incomplete,
+        "annotation_provenance": annotation_rows,
+    }
 
 
 def build_database(args: argparse.Namespace) -> dict[str, int]:

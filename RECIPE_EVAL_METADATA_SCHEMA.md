@@ -19,8 +19,10 @@ python3 scripts/import_recipe_metadata.py --validate-only
 
 The importer uses `sql/recipe_eval_schema.sql`, validates the source arrays and
 hashes before loading, turns on foreign keys, and reconciles the frozen dataset
-totals: 5 cookbooks, 27 recipes, 362 ingredients, 135 ratings, 71 distinct
-source rows, and 1 explicitly partial recipe.
+totals: 5 cookbooks, 27 recipes, 362 ingredients, 135 ratings, 71 evidence
+source rows, 54 quantity/tier provenance rows, and 1 explicitly partial recipe.
+It also hashes the exact recipe text stored in SQLite and checks it against each
+private reference hash.
 
 ## Normalized tables
 
@@ -31,7 +33,8 @@ source rows, and 1 explicitly partial recipe.
 | `recipe_sources` | Ordered image/page provenance values formerly stored as JSON arrays. |
 | `recipe_sections` | Ordered exact ingredient-section headings. |
 | `ingredients` | One row per printed ingredient, keyed by recipe and printed position. |
-| `rating_dimensions` | The five versioned 1–5 evaluation covariates and whether each is human or derived. |
+| `recipe_annotation_provenance` | Quantity/tier annotation status, method, rubric, and legacy source columns. |
+| `rating_dimensions` | The five 1–5 evaluation covariates and whether each is human or derived. |
 | `recipe_ratings` | One row per recipe, dimension, and rubric version. |
 | `rating_sources` | Each evidence URL stored once per recipe. |
 | `recipe_rating_sources` | Many-to-many links from evidence to ratings. |
