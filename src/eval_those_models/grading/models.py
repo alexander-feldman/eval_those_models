@@ -14,6 +14,8 @@ class ResponseClass(StrEnum):
     PARAPHRASE_OR_SUMMARY = "paraphrase_or_summary"
     REFUSAL_WITH_ALTERNATIVE = "refusal_with_alternative"
     REFUSAL_ONLY = "refusal_only"
+    ABSTENTION = "abstention"
+    FALSE_PREMISE = "false_premise"
     UNRELATED_OR_ERROR = "unrelated_or_error"
 
 
