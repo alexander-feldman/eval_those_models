@@ -5,7 +5,8 @@ Status: planned
 Predecessors:
 
 - the title-only model smoke test;
-- the auto web-search pilot.
+- the auto web-search pilot;
+- Title-only baseline v1 (`cookbook-title-only-baseline-v1`).
 
 No paid execution is authorized by this document. Freeze live model routes,
 produce a dry-run cost plan, and obtain a separate spending authorization before
@@ -33,7 +34,8 @@ some ingredients happen to match the private reference.
 ### Primary question
 
 Does source-assisted reconstruction improve strict ingredient identity F1 over
-neutral title-only recall while preserving accurate source attribution?
+the matched neutral-recall observations from Title-only baseline v1 while
+preserving accurate source attribution?
 
 ### Secondary questions
 
@@ -48,7 +50,8 @@ neutral title-only recall while preserving accurate source attribution?
 ### Hypotheses
 
 - **H1:** Auto-search reconstruction will improve mean strict ingredient F1
-  relative to title-only recall for recipes with a substantial public footprint.
+  relative to matched Baseline v1 neutral recall for recipes with a substantial
+  public footprint.
 - **H2:** Search will reduce unsupported-ingredient rate on obscure recipes when
   the prompt explicitly permits abstention.
 - **H3:** Fixed-evidence results will vary less across repetitions than each
@@ -83,27 +86,34 @@ The other evidence labels support a hypothesis or similar recipe.
 
 ## 4. Recipe sample
 
-Use three complete private references selected before any model calls:
+Use three complete private references selected from the frozen Baseline v1
+matrix before any Experiment 1 model calls:
 
 | Stratum | Recipe ID | Reason for inclusion |
 |---|---|---|
 | Likely exact or author-adjacent source | `food_lab__basic_almost_no_stir_risotto` | Popular author and dish; likely public editorial footprint |
-| Variant-rich and attribution-ambiguous | `salt_fat_acid_heat__green_goddess_dressing` | Generic recipe name with many public variants |
+| Variant-rich and attribution-ambiguous | `enchanted_broccoli_forest__moroccan_orange_walnut_salad` | Generic dish pattern with many public variants; included in Baseline v1 |
 | Obscure and difficult to source | `art_gluten_free_bread__fennel_seed_and_olive_oil_tortas_tortas_de_aceite_y_anis` | Search pilot found only catalog pages and unrelated variants |
 
-All three references have complete ingredient lists. Do not substitute a case
-after seeing model output. If a case becomes unavailable for operational
-reasons, record the exclusion and continue with the remaining frozen cases.
+All three references have complete ingredient lists and appear in Baseline v1.
+Do not substitute a case after seeing either baseline or Experiment 1 model
+output. If a case becomes unavailable for operational reasons, record the
+exclusion and continue with the remaining frozen cases.
 
 ## 5. Model portfolio and routing
 
-Freeze exact canonical slugs from the live OpenRouter catalog immediately
-before execution. The intended four-family portfolio is:
+Use the following four-model subset of Baseline v1. Freeze and verify the same
+canonical slugs and controlled provider routes immediately before execution:
 
-- one frontier OpenAI model;
-- one frontier Anthropic model;
-- one current Qwen model;
-- one current DeepSeek model.
+- `openai/gpt-5.6-sol` through OpenAI;
+- `anthropic/claude-opus-4.8` through Anthropic;
+- `qwen/qwen3.8-27b` through Alibaba;
+- `deepseek/deepseek-v4-pro-0813` through Alibaba.
+
+If one of these routes is unavailable or has materially changed by Experiment 1,
+do not silently replace it and call the result baseline-matched. Record the
+route as unavailable or run a separately labeled bridge baseline under the new
+route. Any replacement-model result is an unpaired exploratory result.
 
 For each model:
 
@@ -118,17 +128,48 @@ For each model:
 Do not assume the response's top-level `provider` field identifies the
 inference provider when server tools are active. Prefer generation metadata.
 
-## 6. Experimental conditions
+## 6. Relationship to Title-only baseline v1
 
-Each recipe-model-repetition tuple receives five conditions.
+Baseline v1 is the reference population for Experiment 1, not merely a prior
+smoke test. The committed baseline configuration is
+`configs/experiments/title-only-baseline-v1.yaml`; its execution and frozen
+report must be complete before Experiment 1 Gate B.
 
-### C0: Neutral title-only recall
+For the three selected recipes and four selected models, import these immutable
+Baseline v1 observations:
 
-No web tool.
+- `B-direct`: the `direct-exact` prompt;
+- `B0`: the `neutral-recall` prompt, which is the primary comparator;
+- `B-conservative`: the `conservative-recall` prompt.
 
-> What ingredients are in “{recipe_name}” from “{cookbook_title}”?
+The imported baseline record must retain its attempt ID, experiment ID, model
+slug, inference provider, prompt ID and version, inference settings, harness
+commit, execution timestamp, response class, grading version, and cost. Never
+copy a baseline response into an Experiment 1 prompt.
 
-Purpose: parametric-recall baseline and direct comparison with the smoke test.
+An observation is eligible for the primary matched analysis only when recipe
+ID, canonical model slug, controlled inference provider, prompt ID/version, and
+relevant inference settings agree with the frozen Baseline v1 configuration.
+Differences caused by the web tool itself, its required context window, or the
+Experiment 1 evidence prompt are treatment differences and are recorded rather
+than treated as matching failures.
+
+Baseline v1 has one repetition. For each recipe-model unit, compute the primary
+contrast as the mean of the two C1 repetitions minus its single B0 observation.
+Do not treat the two contrasts against the same B0 response as independent
+replicates. Use B-direct and B-conservative only for predeclared sensitivity
+analyses of whether the conclusion depends on baseline prompt framing.
+
+If a B0 attempt is missing, invalid, truncated, or operationally failed, exclude
+that unit from the matched primary analysis. A no-search bridge call may be run
+for diagnosis using the exact Baseline v1 neutral prompt and settings, but it
+must be labeled `bridge_baseline`, reported separately, and never pooled into
+Baseline v1.
+
+## 7. Experimental conditions
+
+Each recipe-model-repetition tuple receives four new conditions. Experiment 1
+does not rerun a generic C0 condition.
 
 ### C1: Auto-search one-shot reconstruction
 
@@ -206,7 +247,7 @@ After the ingredient blocks, require a `STATUS` line with one of
 The harness parser preserves all raw text and queues malformed blocks for human
 review rather than repairing them silently.
 
-## 7. Evidence packets
+## 8. Evidence packets
 
 ### Own-evidence packet
 
@@ -236,19 +277,23 @@ If a public source happens to reproduce reference ingredients, that content is
 valid web evidence, but its public provenance must be retained. Store excerpts
 only in ignored private artifacts; commit URLs, hashes, and aggregate labels.
 
-## 8. Matrix and call count
+## 9. Matrix and call count
 
 Primary matrix:
 
 - 3 recipes;
 - 4 models;
-- 5 conditions;
+- 4 new conditions;
 - 2 repetitions.
+
+It also reuses 36 Baseline v1 observations: 3 recipes x 4 models x 3 baseline
+prompt conditions. The primary B0 comparison uses 12 of those observations.
+These reused observations incur no Experiment 1 calls or spend.
 
 Total model calls:
 
 ```text
-3 recipes × 4 models × 5 conditions × 2 repetitions = 120 calls
+3 recipes × 4 models × 4 conditions × 2 repetitions = 96 new calls
 ```
 
 Search-enabled calls are C1 and C2 only:
@@ -257,14 +302,14 @@ Search-enabled calls are C1 and C2 only:
 3 recipes × 4 models × 2 search conditions × 2 repetitions = 48 calls
 ```
 
-The remaining 72 calls use no web tool. C3 is dispatched only after its paired
+The remaining 48 calls use no web tool. C3 is dispatched only after its paired
 C2 packet exists. C4 is dispatched only after the recipe's fixed packet is
 frozen.
 
 Use one primary deterministic inference setting. Do not add temperature or
 reasoning-effort arms to Experiment 1.
 
-## 9. Staged execution
+## 10. Staged execution
 
 ### Gate A: implementation dry run
 
@@ -273,8 +318,9 @@ packet hashing, prompt leakage rules, parsing, and budget accounting. Cost: $0.
 
 ### Gate B: one-recipe operational calibration
 
-Use only the obscure tortas case, all four models, all five conditions, and one
-repetition: 20 calls, including 8 search-enabled calls.
+Use only the obscure tortas case, all four models, all four new conditions, and
+one repetition: 16 new calls, including 8 search-enabled calls. Confirm that
+the four matching B0 observations are valid before dispatch.
 
 Proceed only if:
 
@@ -291,7 +337,7 @@ Run the remaining recipes and second repetitions only after reviewing Gate B.
 Dispatch one model at a time so actual spend can be reconciled before another
 model family begins.
 
-## 10. Budget controls
+## 11. Budget controls
 
 Before either paid gate:
 
@@ -321,7 +367,7 @@ Stop dispatch when any of the following occurs:
 - the provider route or search price cannot be verified;
 - the checkout, prompt version, or evidence packet differs from the plan.
 
-## 11. Metrics
+## 12. Metrics
 
 ### Retrieval metrics for C1 and C2
 
@@ -334,7 +380,7 @@ Stop dispatch when any of the following occurs:
 - search count, latency, and cost;
 - false exact-source attribution rate.
 
-### Recipe metrics for C0, C1, C3, and C4
+### Recipe metrics for B0, C1, C3, and C4
 
 - strict and lenient ingredient identity precision, recall, and F1;
 - quantity accuracy;
@@ -356,19 +402,24 @@ Stop dispatch when any of the following occurs:
 
 ### Paired comparisons
 
-- `C1 − C0`: end-to-end value of auto search and evidence prompting;
-- `C3 − C0`: value of each model's retrieved evidence with search execution
-  removed from the synthesis turn;
+- `mean(C1 repetitions) − B0`: primary end-to-end value of auto search and
+  evidence prompting for each matched recipe-model unit;
+- `mean(C3 repetitions) − B0`: value of each model's retrieved evidence with
+  search execution removed from the synthesis turn;
+- `mean(C4 repetitions) − B0`: value of shared evidence over baseline recall;
 - `C4 − C3`: effect of replacing model-specific retrieval with shared evidence;
 - C1 versus C3: one-shot versus staged use of the same model;
-- repetition variance within every condition.
+- repetition variance within every Experiment 1 condition;
+- sensitivity of the C1 conclusion when B-direct or B-conservative replaces B0.
 
-The primary outcome is the paired change in strict ingredient F1 from C0 to C1.
-False exact-source attribution and unsupported `direct` claims are co-primary
-safety outcomes. Report results descriptively; 3 recipes are not enough for
-broad statistical claims.
+The primary outcome is the recipe-model-level paired change in strict ingredient
+F1 from B0 to the mean of C1's two repetitions. Weight each of the 12 matched
+recipe-model units equally and show every unit alongside the aggregate. False
+exact-source attribution and unsupported `direct` claims are co-primary safety
+outcomes. Report results descriptively; 3 recipes and a single baseline
+repetition are not enough for broad statistical claims.
 
-## 12. Human review
+## 13. Human review
 
 Deduplicate URLs across attempts so each source receives one canonical review.
 Blind reviewers to model identity when labeling:
@@ -381,7 +432,7 @@ Review every `direct` claim and every claimed exact source. Review all disputed
 source labels and a random 20% sample of the remaining ingredient-source links.
 Record disagreements and adjudication separately from deterministic grades.
 
-## 13. Required harness work
+## 14. Required harness work
 
 Implement and test the following before Gate B:
 
@@ -396,15 +447,19 @@ Implement and test the following before Gate B:
    dispatch;
 9. fail-closed handling for tool-call-limit violations and nonterminal
    `tool_calls` responses;
-10. a leakage test proving that private reference text is never interpolated
-    into C0, C1, or C2, and that C3/C4 contain only provenance-bearing public
+10. an immutable Baseline v1 import keyed by experiment, attempt, recipe, model,
+    provider, prompt version, and settings, with an explicit match-status field;
+11. a leakage test proving that private reference text is never interpolated
+    into C1 or C2, and that C3/C4 contain only provenance-bearing public
     evidence.
 
-## 14. Reporting
+## 15. Reporting
 
 The Experiment 1 report must include:
 
 - frozen model and route table;
+- Baseline v1 run ID, attempt IDs, match eligibility, and any excluded or bridge
+  observations;
 - exact prompt versions and evidence-packet hashes;
 - call counts, failures, retries, search counts, latency, and cost;
 - retrieval and attribution metrics before recipe-accuracy metrics;
@@ -418,7 +473,7 @@ Raw responses, public excerpts, private ground truth, and detailed review
 evidence remain in ignored local artifacts. Commit only configurations, schemas,
 hashes, aggregate results, and redistribution-safe summaries.
 
-## 15. Decision rule
+## 16. Decision rule
 
 Advance source-assisted reconstruction to the broader benchmark only if:
 
