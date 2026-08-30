@@ -1,9 +1,8 @@
 # Data boundaries
 
-`private/` contains the canonical local CSV and SQLite reference data.
+`private/` contains the canonical CSV and SQLite reference data.
 `transcriptions/` contains user-supplied source transcriptions. Both directories
-are ignored and must not be committed.
+are versioned with the repository to keep the evaluation corpus reproducible.
 
-Tracked tests use only synthetic fixtures under `tests/fixtures/`. A future
-`references.manifest.yaml` may contain non-protected metadata and content hashes,
-but not the reference text itself.
+Default tests use only synthetic fixtures under `tests/fixtures/`; dataset
+integration checks explicitly load the tracked reference corpus.

@@ -19,7 +19,7 @@ failure mode as an attempted but inaccurate reproduction.
 
 ## 2. Current dataset
 
-The private ground-truth dataset currently contains:
+The ground-truth dataset currently contains:
 
 - 5 cookbooks;
 - 27 photographed recipes;
@@ -27,18 +27,18 @@ The private ground-truth dataset currently contains:
 - 26 complete ingredient lists;
 - 1 partial ingredient list whose continuation page was not photographed.
 
-The source transcriptions are stored locally in `data/transcriptions/`. The
+The source transcriptions are stored in `data/transcriptions/`. The
 canonical normalized store is `data/private/cookbook_eval.sqlite`; the original
-wide `data/private/recipe_eval_metadata.csv` remains unchanged as its private
-import source and backup. Both directories are ignored by Git. The tracked DDL,
-reproducible importer, schema, and grading definitions live in
+wide `data/private/recipe_eval_metadata.csv` remains unchanged as its import
+source and backup. The corpus and database are tracked in Git. The reproducible
+importer, DDL, schema, and grading definitions live in
 `src/eval_those_models/dataset/schema.sql`,
 `src/eval_those_models/dataset/importer.py`, and
 [`metadata-schema.md`](metadata-schema.md).
 
-The current corpus is private evaluation material derived from user-supplied
-photographs. It must not be committed or published unless redistribution rights
-are established.
+The current corpus is evaluation material derived from user-supplied
+photographs and is versioned with the repository under the project's authorized
+data-use boundary.
 
 ## 3. Evaluation boundary
 
@@ -334,11 +334,10 @@ eval_those_models/
     prompts/
       cookbook-reproduction.yaml
   data/
-    references.manifest.yaml       # tracked metadata and hashes only
-    transcriptions/                # ignored source transcriptions
+    transcriptions/                # tracked source transcriptions
     private/
-      recipe_eval_metadata.csv     # ignored preserved wide import source
-      cookbook_eval.sqlite         # ignored canonical normalized ground truth
+      recipe_eval_metadata.csv     # tracked preserved wide import source
+      cookbook_eval.sqlite         # tracked canonical normalized ground truth
   src/eval_those_models/
     dataset/
       importer.py                  # reproducible importer/validator
@@ -542,7 +541,7 @@ metrics until their missing pages are added.
 
 ## 13. Runner behavior
 
-1. Load and validate manifests and private ground truth.
+1. Load and validate manifests and ground truth.
 2. Fetch and freeze the current model catalog.
 3. Expand the experiment into immutable cases.
 4. Reject title-only cases containing ground-truth leakage.
@@ -582,10 +581,9 @@ different targets.
 ## 15. Quality and safety controls
 
 - Unit-test normalization, parsing, matching, tier weighting, and order metrics.
-- Hash private references and rendered prompts to detect accidental changes.
+- Hash references and rendered prompts to detect accidental changes.
 - Redact API keys and authorization headers from logs and raw responses.
-- Keep copyrighted references and model outputs private unless redistribution
-  rights are clear.
+- Keep model outputs private unless their redistribution rights are clear.
 - Record dependency versions, environment, OS, and Git commit.
 - Validate that configured model parameters are actually supported.
 - Treat provider rerouting as experimental metadata, not an invisible detail.
@@ -604,14 +602,14 @@ python -m eval_those_models report artifacts/runs/cookbook-v1
 
 `plan` is read-only and prints the expanded matrix and cost estimate. `run`
 requires an explicit configured budget and writes append-only attempts. `grade`
-uses local private ground truth. `report` emits aggregate results without
+uses the tracked ground truth. `report` emits aggregate results without
 protected reference text.
 
 ## 17. Implementation phases
 
 ### Phase 0: Dataset and specification — complete
 
-- Transcribed five cookbooks into ignored local files.
+- Transcribed five cookbooks into tracked source files.
 - Created structured metadata for 27 recipes and 362 ingredients.
 - Added provisional 1–5 author, book, and recipe popularity; ingredient-count
   complexity; and recipe obscurity/unusualness annotations with evidence URLs.

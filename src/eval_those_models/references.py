@@ -1,4 +1,4 @@
-"""Read the minimum private reference data needed to plan safe cases."""
+"""Read the minimum reference data needed to plan safe cases."""
 
 from __future__ import annotations
 
@@ -25,9 +25,7 @@ class Reference:
 def load_references(database: Path, recipe_ids: tuple[str, ...]) -> dict[str, Reference]:
     """Load selected references without ever returning them in plan serialization."""
     if not database.is_file():
-        raise ReferenceError(
-            f"private reference database not found: {database}; run 'dataset build' first"
-        )
+        raise ReferenceError(f"reference database not found: {database}; run 'dataset build' first")
     try:
         connection = sqlite3.connect(f"file:{database}?mode=ro", uri=True)
         connection.row_factory = sqlite3.Row
@@ -52,9 +50,7 @@ def load_references(database: Path, recipe_ids: tuple[str, ...]) -> dict[str, Re
             recipe_ids,
         ).fetchall()
     except sqlite3.Error as exc:
-        raise ReferenceError(
-            f"could not read private reference database {database}: {exc}"
-        ) from exc
+        raise ReferenceError(f"could not read reference database {database}: {exc}") from exc
     finally:
         if "connection" in locals():
             connection.close()

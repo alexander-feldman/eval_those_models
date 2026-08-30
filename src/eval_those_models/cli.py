@@ -23,7 +23,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--version", action="version", version=__version__)
     commands = parser.add_subparsers(dest="command", required=True)
 
-    dataset = commands.add_parser("dataset", help="build or validate private reference data")
+    dataset = commands.add_parser("dataset", help="build or validate reference data")
     operation = dataset.add_subparsers(dest="dataset_command", required=True)
 
     dataset_options = importer.build_parser(include_operation=False)
@@ -71,7 +71,7 @@ def _add_experiment_arguments(parser: argparse.ArgumentParser) -> None:
         "--database",
         type=Path,
         default=Path("data/private/cookbook_eval.sqlite"),
-        help="private reference SQLite database",
+        help="reference SQLite database",
     )
 
 

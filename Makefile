@@ -11,8 +11,8 @@ help:
 	@echo "typecheck      Run static type checks"
 	@echo "check          Run every CI check"
 	@echo "format         Apply automatic formatting"
-	@echo "build-data      Rebuild and validate the private SQLite database"
-	@echo "validate-data   Validate the existing private SQLite database"
+	@echo "build-data      Rebuild and validate the reference SQLite database"
+	@echo "validate-data   Validate the existing reference SQLite database"
 
 setup:
 	uv sync --all-groups
