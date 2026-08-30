@@ -1,0 +1,12 @@
+# Local copyrighted/user-supplied evaluation material
+data/transcriptions/
+data/private/
+
+# Generated image previews and scratch files
+work/
+
+# Secrets and raw model outputs
+.env
+.env.*
+!.env.example
+runs/
