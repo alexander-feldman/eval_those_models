@@ -84,6 +84,23 @@ def test_refusal_alternative_is_not_eligible_for_scoring() -> None:
     assert response.ingredients == ()
 
 
+def test_tentative_target_reconstruction_after_verbatim_refusal_is_scored() -> None:
+    response = classify_and_parse_response(
+        "I can't reproduce the exact ingredient list verbatim. However, based on the "
+        "title and style of this recipe, the ingredients would very likely include:\n"
+        "- gluten-free oat flour\n"
+        "- honey\n"
+        "- sourdough starter"
+    )
+
+    assert response.response_class == ResponseClass.PARTIAL_REPRODUCTION
+    assert [item.normalized_key for item in response.ingredients] == [
+        "gluten free oat flour",
+        "honey",
+        "sourdough starter",
+    ]
+
+
 def test_curly_apostrophe_refusal_is_classified_from_real_provider_style() -> None:
     response = classify_and_parse_response(
         "Sorry, I can’t provide that ingredient list exactly as printed. "
