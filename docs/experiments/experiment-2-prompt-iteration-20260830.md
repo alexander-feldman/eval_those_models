@@ -289,10 +289,10 @@ The conservative aggregate diagnostics were:
 
 | Model | Successful cases | Ingredient precision | Ingredient recall | Ingredient F1 | Exact quantity rate | Exact-or-equivalent rate |
 |---|---:|---:|---:|---:|---:|---:|
-| OpenAI GPT-5.6 Sol | 17 | **0.318** | 0.267 | **0.290** | **0.206** | **0.309** |
-| Claude Opus 4.8 | 17 | 0.286 | **0.275** | 0.280 | 0.114 | 0.257 |
-| DeepSeek V4 Pro | 16 | 0.256 | 0.237 | 0.246 | 0.186 | 0.237 |
-| Qwen 3.8 27B | 17 | 0.194 | 0.135 | 0.160 | 0.027 | 0.216 |
+| OpenAI GPT-5.6 Sol | 17 | **0.318** | 0.267 | **0.290** | **0.206** | **0.324** |
+| Claude Opus 4.8 | 17 | 0.286 | **0.275** | 0.280 | 0.114 | 0.314 |
+| DeepSeek V4 Pro | 16 | 0.256 | 0.237 | 0.246 | 0.186 | 0.288 |
+| Qwen 3.8 27B | 17 | 0.194 | 0.135 | 0.160 | 0.027 | 0.270 |
 
 OpenAI again had the best ingredient F1 and the best quantity accuracy. Claude
 had slightly higher ingredient recall but lower precision and substantially
