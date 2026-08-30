@@ -10,3 +10,18 @@ work/
 .env.*
 !.env.example
 runs/
+
+# Python environments and tool caches
+.venv/
+.uv-cache/
+__pycache__/
+*.py[cod]
+.coverage
+htmlcov/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Generated benchmark artifacts
+artifacts/*
+!artifacts/README.md

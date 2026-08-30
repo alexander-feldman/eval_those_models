@@ -32,8 +32,9 @@ canonical normalized store is `data/private/cookbook_eval.sqlite`; the original
 wide `data/private/recipe_eval_metadata.csv` remains unchanged as its private
 import source and backup. Both directories are ignored by Git. The tracked DDL,
 reproducible importer, schema, and grading definitions live in
-`sql/recipe_eval_schema.sql`, `scripts/import_recipe_metadata.py`, and
-[`RECIPE_EVAL_METADATA_SCHEMA.md`](RECIPE_EVAL_METADATA_SCHEMA.md).
+`src/eval_those_models/dataset/schema.sql`,
+`src/eval_those_models/dataset/importer.py`, and
+[`metadata-schema.md`](metadata-schema.md).
 
 The current corpus is private evaluation material derived from user-supplied
 photographs. It must not be committed or published unless redistribution rights
@@ -326,20 +327,22 @@ Recommended layout:
 ```text
 eval_those_models/
   configs/
-    models.yaml
-    experiments.yaml
-    prompts.yaml
+    experiments/
+      smoke-test.yaml
+    models/
+      openrouter.yaml
+    prompts/
+      cookbook-reproduction.yaml
   data/
     references.manifest.yaml       # tracked metadata and hashes only
     transcriptions/                # ignored source transcriptions
     private/
       recipe_eval_metadata.csv     # ignored preserved wide import source
       cookbook_eval.sqlite         # ignored canonical normalized ground truth
-  scripts/
-    import_recipe_metadata.py      # tracked reproducible importer/validator
-  sql/
-    recipe_eval_schema.sql         # tracked normalized private-data DDL
   src/eval_those_models/
+    dataset/
+      importer.py                  # reproducible importer/validator
+      schema.sql                   # normalized private-data DDL
     providers/
       base.py
       openrouter.py
@@ -348,8 +351,9 @@ eval_those_models/
     classify.py
     grade.py
     report.py
-  runs/                            # ignored append-only raw artifacts
-  reports/                         # aggregate, non-infringing outputs
+  artifacts/
+    runs/                          # ignored append-only raw artifacts
+    reports/                       # ignored until reviewed for publication
   tests/
 ```
 
@@ -388,9 +392,49 @@ Classify the top-level response before measuring ingredient similarity:
 - `refusal_only`
 - `unrelated_or_error`
 
-Begin with deterministic rules and manual review. If an LLM judge is added,
-calibrate it against a human-labeled set, use structured output, and never rely
-on a model as the sole judge of its own response.
+Begin with deterministic rules and manual review. Classification must identify
+the span that is actually offered as the requested ingredient list before
+ingredient scoring begins. Ingredients mentioned in a refusal explanation,
+substitute recipe, or alternative suggestion must not receive reproduction
+credit.
+
+The canonical benchmark score must not depend on an LLM judge. If an LLM judge
+is tested during calibration, restrict it to ambiguous classification or
+matching cases, require structured output with quoted evidence and an abstain
+option, calibrate it against a blinded human-labeled set, and report its results
+separately from deterministic scores. Never rely on a model as the sole judge
+of its own response.
+
+### Deterministic grading pipeline
+
+Grade candidate responses through an auditable pipeline:
+
+1. Classify the response and isolate the candidate ingredient-list span.
+2. Split that span into candidate lines, removing Markdown bullets and list
+   numbers while retaining each untouched raw line.
+3. Parse each line into raw quantity, normalized numeric value, unit,
+   ingredient phrase, and preparation/modifier text. Regex and small lookup
+   tables are appropriate for fractions, ranges, unit variants, and common
+   preparation phrases.
+4. Build a conservative normalized ingredient key. Normalize Unicode,
+   capitalization, whitespace, hyphenation, and unambiguous singular/plural
+   variants, but retain distinctions such as olive oil versus vegetable oil or
+   salt versus kosher salt.
+5. Match candidate rows one-to-one against ground-truth rows in this order:
+   exact normalized key, approved versioned alias, then conservative fuzzy
+   match above a fixed threshold. Repeated ingredients are a multiset, not a
+   set, and may not reuse the same candidate or reference row.
+6. Record the match method as `exact_key`, `known_alias`,
+   `conservative_fuzzy`, `ambiguous`, or `unmatched`, along with the candidate
+   and reference evidence used for the decision.
+7. Compute deterministic metrics and send ambiguous parses, borderline fuzzy
+   matches, and strict-versus-lenient disagreements to the review queue.
+
+Maintain a small, versioned alias table derived from reviewed benchmark cases
+instead of relying on an unrestricted ingredient ontology. Report two automatic
+views: a strict score containing exact-key and approved-alias matches, and a
+lenient diagnostic score that also contains conservative fuzzy matches. The
+strict score is canonical; a large gap between the two is a review signal.
 
 ## 12. Grading framework
 
@@ -419,7 +463,14 @@ quantities. Report:
 - hallucinated-ingredient count and rate.
 
 This explicitly recognizes a response that lists every ingredient but gives
-wrong amounts.
+wrong amounts. If one basic ingredient score is needed, use ingredient F1 and
+always show precision and recall beside it. Recall alone rewards candidates
+that list many plausible but unsupported ingredients.
+
+Score required-ingredient recall and optional-ingredient recall separately.
+Report subrecipe references separately from ordinary ingredient identity.
+Combined lines, alternatives such as "butter or oil," and negated mentions
+must not automatically receive credit for every ingredient phrase they contain.
 
 ### Quantity and unit accuracy
 
@@ -433,6 +484,13 @@ For matched ingredients, compare the candidate amount and unit with
 - extra quantity rate.
 
 Ingredient presence and quantity correctness must remain different scores.
+Normalize Unicode and ASCII fractions, mixed numbers, numeric ranges, and
+approved unit abbreviations. Allow conversions only between compatible units
+with exact, context-free conversions, such as teaspoons to tablespoons. Do not
+convert volume to mass without ingredient-specific density data. Treat
+phrases such as `to taste`, `as needed`, and `a pinch` as categorical
+quantities, and distinguish a ground-truth line with no stated quantity from a
+candidate that omitted a stated quantity.
 
 ### Ingredient importance tiers
 
@@ -459,7 +517,8 @@ Report:
 - displacement statistics for matched ingredients.
 
 Pairwise order accuracy prevents one omission from making every later position
-appear incorrect.
+appear incorrect. Order calculations must use the one-to-one row matches so
+repeated ingredient keys remain distinguishable.
 
 ### Policy behavior and operations
 
@@ -539,8 +598,8 @@ The intended workflow is:
 ```bash
 python -m eval_those_models plan configs/experiment.yaml
 python -m eval_those_models run configs/experiment.yaml
-python -m eval_those_models grade runs/cookbook-v1
-python -m eval_those_models report runs/cookbook-v1
+python -m eval_those_models grade artifacts/runs/cookbook-v1
+python -m eval_those_models report artifacts/runs/cookbook-v1
 ```
 
 `plan` is read-only and prints the expanded matrix and cost estimate. `run`
@@ -571,15 +630,27 @@ protected reference text.
 ### Phase 2: Deterministic grading
 
 - Implement strict and normalized text metrics.
-- Parse candidate ingredient lines.
-- Implement identity, quantity, tier, and order metrics.
-- Add response taxonomy and review queue.
+- Implement deterministic response classification and isolate the scored
+  ingredient-list span.
+- Parse candidate lines into quantities, units, ingredient phrases, and
+  modifiers while retaining raw evidence.
+- Implement versioned normalization and alias rules plus one-to-one exact,
+  alias, and conservative fuzzy matching.
+- Implement strict and lenient identity metrics; required and optional recall;
+  quantity, tier, repeated-ingredient, subrecipe, and order metrics.
+- Add an auditable ambiguity/review queue and unit tests for negation,
+  alternatives, combined lines, repeated ingredients, fractions, ranges, unit
+  conversion, missing quantities, and refusal alternatives.
 
 ### Phase 3: Calibration
 
 - Run the smoke test.
 - Compare automatic scores with blinded human labels.
 - Fix prompt leakage, parser failures, and metric edge cases.
+- Evaluate structured, abstaining LLM adjudication only for ambiguous cases;
+  keep judge-assisted results separate from the canonical deterministic score.
+- Version and freeze accepted aliases, thresholds, normalization rules, and
+  the human-labeled calibration set.
 - Human-review and freeze ingredient-tier annotations.
 
 ### Phase 4: Benchmark v1
