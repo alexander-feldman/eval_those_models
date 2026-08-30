@@ -1,0 +1,63 @@
+schema_version: 1
+experiment_id: cookbook-experiment-1-gate-b-search-deepseek
+max_budget_usd: "0.18"
+repetitions: 1
+concurrency: 1
+max_retries: 0
+
+recipes:
+  - art_gluten_free_bread__fennel_seed_and_olive_oil_tortas_tortas_de_aceite_y_anis
+
+prompts:
+  - id: c1-auto-search-reconstruction
+    version: "1"
+    context_group: modern_title_only
+    tool_profile: web-auto
+    template: >-
+      Search for the exact named recipe and for clearly related public
+      adaptations or variants. Then give your best hypothesis for
+      “{recipe_name}” from “{cookbook_title}”. For every ingredient, write an
+      INGREDIENT block with EVIDENCE set to direct, multi_source,
+      contextual_inference, or uncertain; include supporting source URLs when
+      source-backed and explain inferences without inventing citations. Do not
+      describe a variant or inference as verified cookbook content. Finish with
+      STATUS: verified_source_found, reconstruction_only, or
+      insufficient_evidence.
+  - id: c2-auto-search-source-discovery
+    version: "1"
+    context_group: modern_title_only
+    tool_profile: web-auto
+    template: >-
+      Search for “{recipe_name}”, “{cookbook_title}”, the author, reasonable
+      alternate spellings, and the general dish. Do not supply an ingredient
+      list. For every result, write a SOURCE block containing URL, TITLE,
+      RELEVANCE set to exact_cookbook_recipe, attributed_adaptation,
+      same_dish_variant, or unrelated, and SUPPORT stating precisely what the
+      page establishes.
+
+tool_profiles:
+  - id: web-auto
+    web_search:
+      engine: auto
+      max_uses: 3
+      max_results: 3
+      max_total_results: 9
+      max_characters: 1500
+      estimated_input_tokens_per_use: 4000
+
+models:
+  - id: deepseek/deepseek-v4-pro-0813
+    routing:
+      only: [Alibaba]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 700
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "1.32"
+      output_per_million: "3.96"
+      web_search_per_request: "0.007"
+

@@ -44,6 +44,8 @@ class RunSummary:
     attempts: int
     reported_cost_usd: Decimal
     budget_exceeded: bool
+    not_run: int = 0
+    stop_reason: str | None = None
 
 
 @dataclass(frozen=True)
@@ -92,6 +94,86 @@ def run_experiment(
         }
     )
 
+    if any(profile.web_search is not None for profile in config.tool_profiles):
+        results, stop_reason = _run_budgeted_sequentially(
+            config, plan, run_id, client, events, sleep
+        )
+    else:
+        results = _run_concurrently(config, plan, run_id, client, events, sleep)
+        stop_reason = None
+
+    reported_cost = sum((result.reported_cost_usd for result in results), Decimal())
+    summary = RunSummary(
+        run_id=run_id,
+        run_directory=run_directory,
+        succeeded=sum(result.succeeded for result in results),
+        failed=sum(not result.succeeded for result in results),
+        attempts=sum(result.attempts for result in results),
+        reported_cost_usd=reported_cost,
+        budget_exceeded=reported_cost > config.max_budget_usd,
+        not_run=len(plan.cases) - len(results),
+        stop_reason=stop_reason,
+    )
+    events.append(
+        {
+            "event": "run_completed",
+            "recorded_at": _now(),
+            "run_id": run_id,
+            "succeeded": summary.succeeded,
+            "failed": summary.failed,
+            "attempts": summary.attempts,
+            "reported_cost_usd": str(summary.reported_cost_usd),
+            "budget_exceeded": summary.budget_exceeded,
+            "not_run": summary.not_run,
+            "stop_reason": summary.stop_reason,
+        }
+    )
+    return summary
+
+
+def _run_budgeted_sequentially(
+    config: ExperimentConfig,
+    plan: ExperimentPlan,
+    run_id: str,
+    client: RunnerClient,
+    events: EventLog,
+    sleep: Callable[[float], None],
+) -> tuple[list[_CaseResult], str | None]:
+    """Reserve each search case against actual prior spend before dispatch."""
+    results: list[_CaseResult] = []
+    reported_cost = Decimal()
+    for index, case in enumerate(plan.cases):
+        reservation = case.estimated_cost_usd * (config.max_retries + 1)
+        if reported_cost + reservation > config.max_budget_usd:
+            reason = (
+                f"reported cost ${reported_cost} plus next reservation ${reservation} "
+                f"would exceed budget ${config.max_budget_usd}"
+            )
+            _record_stop(events, run_id, case.case_id, reason)
+            return results, reason
+        result = _run_case(case, run_id, config.max_retries, client, events, sleep)
+        results.append(result)
+        reported_cost += result.reported_cost_usd
+        if index + 1 < len(
+            plan.cases
+        ) and result.reported_cost_usd > case.estimated_cost_usd * Decimal("1.25"):
+            reason = (
+                f"case {case.case_id} reported ${result.reported_cost_usd}, more than "
+                f"125% of its ${case.estimated_cost_usd} estimate"
+            )
+            _record_stop(events, run_id, None, reason)
+            return results, reason
+    return results, None
+
+
+def _run_concurrently(
+    config: ExperimentConfig,
+    plan: ExperimentPlan,
+    run_id: str,
+    client: RunnerClient,
+    events: EventLog,
+    sleep: Callable[[float], None],
+) -> list[_CaseResult]:
     results: list[_CaseResult] = []
     with ThreadPoolExecutor(max_workers=config.concurrency) as executor:
         futures = {
@@ -115,30 +197,19 @@ def run_experiment(
                     }
                 )
                 results.append(_CaseResult(False, 0, Decimal()))
+    return results
 
-    reported_cost = sum((result.reported_cost_usd for result in results), Decimal())
-    summary = RunSummary(
-        run_id=run_id,
-        run_directory=run_directory,
-        succeeded=sum(result.succeeded for result in results),
-        failed=sum(not result.succeeded for result in results),
-        attempts=sum(result.attempts for result in results),
-        reported_cost_usd=reported_cost,
-        budget_exceeded=reported_cost > config.max_budget_usd,
-    )
+
+def _record_stop(events: EventLog, run_id: str, next_case_id: str | None, reason: str) -> None:
     events.append(
         {
-            "event": "run_completed",
+            "event": "run_stopped",
             "recorded_at": _now(),
             "run_id": run_id,
-            "succeeded": summary.succeeded,
-            "failed": summary.failed,
-            "attempts": summary.attempts,
-            "reported_cost_usd": str(summary.reported_cost_usd),
-            "budget_exceeded": summary.budget_exceeded,
+            "next_case_id": next_case_id,
+            "reason": reason,
         }
     )
-    return summary
 
 
 def _run_case(
@@ -150,6 +221,7 @@ def _run_case(
     sleep: Callable[[float], None],
 ) -> _CaseResult:
     retry_of: str | None = None
+    cumulative_cost = Decimal()
     for attempt_number in range(1, max_retries + 2):
         attempt_id = f"attempt_{uuid.uuid4().hex}"
         started_at = _now()
@@ -170,6 +242,31 @@ def _run_case(
             result = client.generate(case)
             metadata, metadata_error = _metadata(client, result)
             reported_cost = _reported_cost(result, metadata)
+            cumulative_cost += reported_cost
+            terminal_error = _terminal_error(case, result)
+            if terminal_error is not None:
+                events.append(
+                    {
+                        "event": "attempt_failed",
+                        "recorded_at": _now(),
+                        "run_id": run_id,
+                        "attempt_id": attempt_id,
+                        "case_id": case.case_id,
+                        "started_at": started_at,
+                        "latency_ms": round((time.monotonic() - monotonic_started) * 1000, 3),
+                        "error_type": "NonterminalToolResponse",
+                        "error": terminal_error,
+                        "transient": False,
+                        "will_retry": False,
+                        "finish_reason": result.finish_reason,
+                        "usage": result.usage,
+                        "reported_cost_usd": str(reported_cost),
+                        "generation_metadata": metadata,
+                        "generation_metadata_error": metadata_error,
+                        "raw_response": result.raw_response,
+                    }
+                )
+                return _CaseResult(False, attempt_number, cumulative_cost)
             events.append(
                 {
                     "event": "attempt_succeeded",
@@ -195,8 +292,10 @@ def _run_case(
                     "raw_response": result.raw_response,
                 }
             )
-            return _CaseResult(True, attempt_number, reported_cost)
+            return _CaseResult(True, attempt_number, cumulative_cost)
         except OpenRouterError as exc:
+            reported_cost = _raw_response_cost(exc.raw_response)
+            cumulative_cost += reported_cost
             will_retry = exc.transient and attempt_number <= max_retries
             events.append(
                 {
@@ -213,10 +312,11 @@ def _run_case(
                     "transient": exc.transient,
                     "will_retry": will_retry,
                     "raw_response": exc.raw_response,
+                    "reported_cost_usd": str(reported_cost),
                 }
             )
             if not will_retry:
-                return _CaseResult(False, attempt_number, Decimal())
+                return _CaseResult(False, attempt_number, cumulative_cost)
             retry_of = attempt_id
             sleep(2 ** (attempt_number - 1))
     raise AssertionError("retry loop did not return")
@@ -245,6 +345,44 @@ def _reported_cost(result: GenerationResult, metadata: dict[str, Any] | None) ->
         except InvalidOperation:
             continue
     return Decimal()
+
+
+def _raw_response_cost(raw_response: dict[str, Any] | None) -> Decimal:
+    if not isinstance(raw_response, dict):
+        return Decimal()
+    usage = raw_response.get("usage")
+    if not isinstance(usage, dict):
+        return Decimal()
+    try:
+        return Decimal(str(usage.get("cost", 0)))
+    except InvalidOperation:
+        return Decimal()
+
+
+def _terminal_error(case: PlannedCase, result: GenerationResult) -> str | None:
+    if result.finish_reason == "tool_calls":
+        return "response ended with nonterminal tool_calls finish reason"
+    configured_limit = _configured_search_limit(case)
+    if configured_limit is None:
+        return None
+    details = result.usage.get("server_tool_use_details")
+    if not isinstance(details, dict):
+        return None
+    counts = [details.get("web_search_requests"), details.get("tool_calls_executed")]
+    observed = max((value for value in counts if isinstance(value, int)), default=0)
+    if observed > configured_limit:
+        return (
+            f"response reported {observed} search calls above configured limit {configured_limit}"
+        )
+    return None
+
+
+def _configured_search_limit(case: PlannedCase) -> int | None:
+    tools = case.parameters.get("tools")
+    if not isinstance(tools, list) or not tools:
+        return None
+    value = case.parameters.get("max_tool_calls")
+    return value if isinstance(value, int) else None
 
 
 def _validate_preflight(

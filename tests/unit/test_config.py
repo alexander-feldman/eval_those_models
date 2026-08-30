@@ -89,6 +89,30 @@ tool_profiles:
     assert config.models[0].pricing_ceiling.web_search_per_request == Decimal("0.01")
 
 
+def test_load_experiment_links_prompt_to_one_tool_profile(tmp_path: Path) -> None:
+    configured = VALID_CONFIG.replace(
+        "template: 'What is in {recipe_name} from {cookbook_title}?'",
+        "template: 'What is in {recipe_name} from {cookbook_title}?'\n    tool_profile: no-tools",
+    ).replace(
+        "repetitions: 2",
+        "repetitions: 2\ntool_profiles:\n  - id: no-tools\n    web_search: null",
+    )
+
+    config = load_experiment(_write(tmp_path, configured))
+
+    assert config.prompts[0].tool_profile_id == "no-tools"
+
+
+def test_load_experiment_rejects_unknown_prompt_tool_profile(tmp_path: Path) -> None:
+    configured = VALID_CONFIG.replace(
+        "template: 'What is in {recipe_name} from {cookbook_title}?'",
+        "template: 'What is in {recipe_name} from {cookbook_title}?'\n    tool_profile: missing",
+    )
+
+    with pytest.raises(ConfigError, match="unknown tool profile"):
+        load_experiment(_write(tmp_path, configured))
+
+
 def test_load_experiment_rejects_invalid_web_search_engine(tmp_path: Path) -> None:
     configured = VALID_CONFIG.replace(
         "repetitions: 2",

@@ -123,6 +123,10 @@ def _run_experiment(args: argparse.Namespace) -> int:
     print(f"Run: {summary.run_id}")
     print(f"Artifacts: {summary.run_directory}")
     print(f"Cases: {summary.succeeded} succeeded, {summary.failed} failed")
+    if summary.not_run:
+        print(f"Cases not run: {summary.not_run}")
+    if summary.stop_reason:
+        print(f"Stopped early: {summary.stop_reason}")
     print(f"Attempts: {summary.attempts}")
     print(f"Reported cost: ${summary.reported_cost_usd}")
     if summary.budget_exceeded:

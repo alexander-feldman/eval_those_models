@@ -16,4 +16,9 @@ record the engine, call and result caps, content limit, conservative input-token
 allowance, and per-model search-price ceiling so search participates in both
 case identity and budget authorization.
 
+Experiment 1 Gate B splits the four auto-search model routes into separate
+`experiment-1-gate-b-search-*.yaml` configurations. Their caps sum to $0.76 of
+the $1.00 Gate B authorization, leave $0.24 for the evidence-only stage, and
+permit the differing native/fallback query counts observed in the pilot.
+
 Do not put API keys or private reference text in these files.

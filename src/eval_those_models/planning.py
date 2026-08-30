@@ -132,8 +132,17 @@ def build_plan(
             )
             if prompt.context_group == "modern_title_only":
                 assert_no_reference_leakage(rendered, reference)
+            selected_profiles = (
+                tuple(
+                    profile
+                    for profile in config.tool_profiles
+                    if profile.profile_id == prompt.tool_profile_id
+                )
+                if prompt.tool_profile_id is not None
+                else config.tool_profiles
+            )
             for model in config.models:
-                for tool_profile in config.tool_profiles:
+                for tool_profile in selected_profiles:
                     for repetition in range(1, config.repetitions + 1):
                         cases.append(
                             _make_case(

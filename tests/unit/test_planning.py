@@ -172,3 +172,35 @@ def test_plan_requires_search_cost_ceiling_when_search_is_enabled() -> None:
 
     with pytest.raises(PlanningError, match="search cost ceiling"):
         build_plan(config, {"complete": _reference("complete")}, "abc123")
+
+
+def test_prompt_can_select_one_profile_instead_of_cartesian_product() -> None:
+    search = ToolProfileConfig(
+        "web-auto",
+        WebSearchConfig("auto", 1, 3, 3, 1500, 5000),
+    )
+    model = replace(
+        _model(),
+        pricing_ceiling=PricingCeiling(Decimal("1"), Decimal("2"), Decimal("0.01")),
+    )
+    config = replace(
+        _config(),
+        recipe_ids=("complete",),
+        repetitions=1,
+        models=(model,),
+        prompts=(
+            PromptConfig(
+                "recall",
+                "1",
+                "modern_title_only",
+                "What is in {recipe_name} from {cookbook_title}?",
+                "no-tools",
+            ),
+        ),
+        tool_profiles=(ToolProfileConfig("no-tools", None), search),
+    )
+
+    plan = build_plan(config, {"complete": _reference("complete")}, "abc123")
+
+    assert len(plan.cases) == 1
+    assert plan.cases[0].tool_profile_id == "no-tools"

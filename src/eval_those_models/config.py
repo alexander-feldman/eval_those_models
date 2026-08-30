@@ -20,6 +20,7 @@ class PromptConfig:
     version: str
     context_group: str
     template: str
+    tool_profile_id: str | None = None
 
 
 @dataclass(frozen=True)
@@ -130,6 +131,13 @@ def load_experiment(path: Path) -> ExperimentConfig:
         raise ConfigError("models contains duplicate model IDs")
     if len({profile.profile_id for profile in tool_profiles}) != len(tool_profiles):
         raise ConfigError("tool_profiles contains duplicate IDs")
+    profile_ids = {profile.profile_id for profile in tool_profiles}
+    for prompt in prompts:
+        if prompt.tool_profile_id is not None and prompt.tool_profile_id not in profile_ids:
+            raise ConfigError(
+                f"prompt {prompt.prompt_id!r} references unknown tool profile "
+                f"{prompt.tool_profile_id!r}"
+            )
 
     budget = _decimal(root["max_budget_usd"], "max_budget_usd")
     if budget <= 0:
@@ -152,7 +160,12 @@ def load_experiment(path: Path) -> ExperimentConfig:
 def _parse_prompt(value: Any, index: int) -> PromptConfig:
     where = f"prompts[{index}]"
     item = _mapping(value, where)
-    _keys(item, {"id", "version", "context_group", "template"}, set(), where)
+    _keys(
+        item,
+        {"id", "version", "context_group", "template"},
+        {"tool_profile"},
+        where,
+    )
     template = _nonempty_string(item["template"], f"{where}.template")
     allowed_fields = {"recipe_name", "cookbook_title"}
     fields = {
@@ -173,6 +186,11 @@ def _parse_prompt(value: Any, index: int) -> PromptConfig:
         version=_nonempty_string(item["version"], f"{where}.version"),
         context_group=_identifier(item["context_group"], f"{where}.context_group"),
         template=template,
+        tool_profile_id=(
+            _identifier(item["tool_profile"], f"{where}.tool_profile")
+            if "tool_profile" in item
+            else None
+        ),
     )
 
 
