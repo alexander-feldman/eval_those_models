@@ -8,7 +8,9 @@ version = "0.1.0"
 description = "A reproducible harness for evaluating model behavior and response quality."
 readme = "README.md"
 requires-python = ">=3.11,<3.12"
-dependencies = []
+dependencies = [
+    "pyyaml>=6.0,<7",
+]
 
 [project.scripts]
 eval-those-models = "eval_those_models.cli:main"
@@ -19,6 +21,7 @@ dev = [
   "pytest>=8.3",
   "pytest-cov>=5.0",
   "ruff>=0.8",
+  "types-pyyaml>=6.0,<7",
 ]
 
 [tool.hatch.build.targets.wheel]

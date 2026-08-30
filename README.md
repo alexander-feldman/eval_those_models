@@ -14,8 +14,9 @@ User-supplied ground truth is kept locally under `data/transcriptions/` and
 `data/private/`; both are excluded from Git to avoid redistributing source text.
 
 Current local dataset: 27 recipes, 362 structured ingredients, 26 complete
-ingredient lists, and 1 explicitly partial list. The next implementation phase
-is the 24-call OpenRouter smoke-test harness described in the plan.
+ingredient lists, and 1 explicitly partial list. The OpenRouter smoke-test
+harness and deterministic grader are implemented; calibration against the
+recorded pilot and blinded human labels is the next phase.
 
 ## Development setup
 
@@ -76,3 +77,31 @@ instead construct an explicitly bounded excerpt case.
 The default tests use synthetic recipe rows. Private ground truth and raw run
 artifacts remain ignored and are used only for explicit local integration
 checks.
+
+## Experiment harness
+
+Inspect a complete experiment matrix without contacting OpenRouter:
+
+```bash
+uv run python -m eval_those_models plan configs/experiments/smoke-test.yaml
+```
+
+The planner loads recipe titles from the private database, excludes incomplete
+references, checks title-only prompts for protected-text leakage, generates
+content-addressed case IDs, and prints conservative token and cost ceilings.
+
+Execution requires both a configured budget and an explicit paid-request
+acknowledgement:
+
+```bash
+export OPENROUTER_API_KEY=...
+uv run python -m eval_those_models run configs/experiments/smoke-test.yaml --execute
+```
+
+Before dispatch, the runner freezes the live model and endpoint catalogs and
+refuses unavailable routes, unsupported parameters, or provider-specific prices
+above the configured ceilings. The checkout must be clean, and the configured
+budget reserves the maximum number of retries at conservative token ceilings.
+Requests run with bounded concurrency. Every start, failure, retry, and untouched
+successful response is appended durably to private JSONL under `artifacts/runs/`;
+API credentials are never serialized.

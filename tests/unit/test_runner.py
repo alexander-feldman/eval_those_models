@@ -1,0 +1,183 @@
+from collections import defaultdict
+from dataclasses import replace
+from decimal import Decimal
+from pathlib import Path
+from typing import Any
+
+import pytest
+
+from eval_those_models.config import (
+    ExperimentConfig,
+    ModelConfig,
+    PricingCeiling,
+    RoutingConfig,
+)
+from eval_those_models.planning import ExperimentPlan, PlannedCase
+from eval_those_models.providers.openrouter import GenerationResult, OpenRouterError
+from eval_those_models.runner import RunError, run_experiment
+from eval_those_models.storage import read_events
+
+
+class FakeClient:
+    def __init__(self, failures: int = 0, live_output_price: str = "0.000001") -> None:
+        self.failures = failures
+        self.live_output_price = live_output_price
+        self.calls: dict[str, int] = defaultdict(int)
+        self.catalog_calls = 0
+
+    def list_models(self) -> dict[str, Any]:
+        self.catalog_calls += 1
+        return {
+            "data": [
+                {
+                    "id": "example/model",
+                    "pricing": {"prompt": "0.0000005", "completion": self.live_output_price},
+                }
+            ]
+        }
+
+    def list_model_endpoints(self, model_id: str) -> dict[str, Any]:
+        return {
+            "data": {
+                "endpoints": [
+                    {
+                        "provider_name": "Example",
+                        "status": 0,
+                        "pricing": {
+                            "prompt": "0.0000005",
+                            "completion": self.live_output_price,
+                        },
+                        "supported_parameters": [
+                            "max_tokens",
+                            "reasoning",
+                            "temperature",
+                            "seed",
+                        ],
+                    }
+                ]
+            }
+        }
+
+    def build_request(self, case: PlannedCase) -> dict[str, Any]:
+        return {"model": case.model_requested, "prompt": case.rendered_prompt}
+
+    def generate(self, case: PlannedCase) -> GenerationResult:
+        self.calls[case.case_id] += 1
+        if self.calls[case.case_id] <= self.failures:
+            raise OpenRouterError("rate limited", status_code=429, transient=True)
+        raw = {
+            "id": "generation-1",
+            "model": "example/model",
+            "provider": "Example",
+            "choices": [{"message": {"content": "answer"}, "finish_reason": "stop"}],
+            "usage": {"cost": 0.001},
+        }
+        return GenerationResult(
+            generation_id="generation-1",
+            model_returned="example/model",
+            provider_actual="Example",
+            output_text="answer",
+            finish_reason="stop",
+            usage={"cost": 0.001},
+            raw_response=raw,
+        )
+
+    def get_generation_metadata(self, generation_id: str) -> dict[str, Any] | None:
+        raise AssertionError("metadata lookup is unnecessary when the provider is returned")
+
+
+def _config() -> ExperimentConfig:
+    return ExperimentConfig(
+        schema_version=1,
+        experiment_id="smoke",
+        recipe_ids=("recipe",),
+        prompts=(),
+        models=(
+            ModelConfig(
+                model_id="example/model",
+                routing=RoutingConfig(("Example",), False, "deny", False),
+                max_output_tokens=10,
+                temperature=0,
+                seed=0,
+                reasoning_enabled=False,
+                pricing_ceiling=PricingCeiling(Decimal("1"), Decimal("2")),
+            ),
+        ),
+        repetitions=1,
+        max_budget_usd=Decimal("0.02"),
+        concurrency=1,
+        max_retries=2,
+    )
+
+
+def _plan() -> ExperimentPlan:
+    case = PlannedCase(
+        case_id="case_1",
+        experiment_id="smoke",
+        recipe_id="recipe",
+        rights_context="modern",
+        prompt_template_id="prompt",
+        prompt_template_version="1",
+        rendered_prompt="hello",
+        model_requested="example/model",
+        provider_policy={"only": ["Example"]},
+        parameters={"max_tokens": 10},
+        repetition=1,
+        harness_git_commit="abc",
+        estimated_input_tokens=2,
+        estimated_output_tokens=10,
+        estimated_cost_usd=Decimal("0.001"),
+    )
+    return ExperimentPlan("smoke", (case,), (), Decimal("0.02"), max_retries=2)
+
+
+def test_run_retries_transient_failure_and_preserves_both_attempts(tmp_path: Path) -> None:
+    sleeps: list[float] = []
+
+    summary = run_experiment(
+        _config(), _plan(), FakeClient(failures=1), tmp_path, sleep=sleeps.append
+    )
+
+    assert summary.succeeded == 1
+    assert summary.failed == 0
+    assert summary.attempts == 2
+    assert summary.reported_cost_usd == Decimal("0.001")
+    assert sleeps == [1]
+    events = read_events(summary.run_directory / "attempts.jsonl")
+    failed = next(event for event in events if event["event"] == "attempt_failed")
+    retried = [event for event in events if event["event"] == "attempt_started"][1]
+    assert failed["will_retry"] is True
+    assert retried["retry_of_attempt_id"] == failed["attempt_id"]
+    assert events[-1]["event"] == "run_completed"
+
+
+def test_run_does_not_retry_permanent_failure(tmp_path: Path) -> None:
+    client = FakeClient()
+
+    def fail(case: PlannedCase) -> GenerationResult:
+        raise OpenRouterError("bad request", status_code=400, transient=False)
+
+    client.generate = fail  # type: ignore[method-assign]
+    summary = run_experiment(_config(), _plan(), client, tmp_path, sleep=lambda _: None)
+
+    assert summary.failed == 1
+    assert summary.attempts == 1
+
+
+def test_run_refuses_live_price_above_configured_ceiling(tmp_path: Path) -> None:
+    expensive = FakeClient(live_output_price="0.000003")
+
+    with pytest.raises(RunError, match="exceeds configured ceiling"):
+        run_experiment(_config(), _plan(), expensive, tmp_path)
+
+    assert not list(tmp_path.iterdir())
+
+
+def test_run_refuses_plan_above_budget_before_catalog_request(tmp_path: Path) -> None:
+    client = FakeClient()
+    low_budget_config = replace(_config(), max_budget_usd=Decimal("0.0001"))
+
+    with pytest.raises(RunError, match="exceeds the experiment budget"):
+        run_experiment(low_budget_config, _plan(), client, tmp_path)
+
+    assert client.catalog_calls == 0

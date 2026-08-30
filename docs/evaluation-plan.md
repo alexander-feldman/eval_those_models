@@ -619,7 +619,7 @@ protected reference text.
 - Migrated the preserved one-row-per-recipe CSV into a normalized private
   SQLite store with reproducible import and integrity validation.
 
-### Phase 1: OpenRouter smoke-test harness
+### Phase 1: OpenRouter smoke-test harness — complete
 
 - Add configuration models and validation.
 - Implement deterministic case expansion and IDs.
@@ -627,7 +627,7 @@ protected reference text.
   raw JSONL logging, retries, and usage capture.
 - Add the 24-call smoke-test configuration.
 
-### Phase 2: Deterministic grading
+### Phase 2: Deterministic grading — complete
 
 - Implement strict and normalized text metrics.
 - Implement deterministic response classification and isolate the scored
