@@ -84,6 +84,23 @@ def test_refusal_alternative_is_not_eligible_for_scoring() -> None:
     assert response.ingredients == ()
 
 
+def test_tentative_target_reconstruction_after_verbatim_refusal_is_scored() -> None:
+    response = classify_and_parse_response(
+        "I can't reproduce the exact ingredient list verbatim. However, based on the "
+        "title and style of this recipe, the ingredients would very likely include:\n"
+        "- gluten-free oat flour\n"
+        "- honey\n"
+        "- sourdough starter"
+    )
+
+    assert response.response_class == ResponseClass.PARTIAL_REPRODUCTION
+    assert [item.normalized_key for item in response.ingredients] == [
+        "gluten free oat flour",
+        "honey",
+        "sourdough starter",
+    ]
+
+
 def test_curly_apostrophe_refusal_is_classified_from_real_provider_style() -> None:
     response = classify_and_parse_response(
         "Sorry, I can’t provide that ingredient list exactly as printed. "
@@ -91,6 +108,68 @@ def test_curly_apostrophe_refusal_is_classified_from_real_provider_style() -> No
     )
 
     assert response.response_class == ResponseClass.REFUSAL_WITH_ALTERNATIVE
+    assert response.ingredients == ()
+
+
+def test_abstention_navigation_list_is_not_scored_as_ingredients() -> None:
+    response = classify_and_parse_response(
+        "I don't have reliable, memorized knowledge of that specific ingredient list, "
+        "so I don't want to guess. To get the accurate list:\n"
+        "- Check the cookbook directly\n"
+        "- Search the publisher's website"
+    )
+
+    assert response.response_class == ResponseClass.ABSTENTION
+    assert response.scored_text == ""
+    assert response.ingredients == ()
+
+
+def test_access_based_abstention_with_hypothetical_list_is_not_scored() -> None:
+    response = classify_and_parse_response(
+        "I don't have access to the exact contents of that cookbook. Therefore, I cannot "
+        "confirm the specific ingredients. A typical version might contain:\n"
+        "- flour\n"
+        "- eggs"
+    )
+
+    assert response.response_class == ResponseClass.ABSTENTION
+    assert response.ingredients == ()
+
+
+def test_unmemorized_abstention_with_navigation_options_is_not_scored() -> None:
+    response = classify_and_parse_response(
+        "I don't have the exact ingredient list memorized precisely enough to reproduce it. "
+        "Try one of these options:\n"
+        "- Check the cookbook\n"
+        "- Search the author's website"
+    )
+
+    assert response.response_class == ResponseClass.ABSTENTION
+    assert response.ingredients == ()
+
+
+def test_inability_to_access_with_navigation_list_is_an_abstention() -> None:
+    response = classify_and_parse_response(
+        "I don't have the ability to access external content like specific cookbooks. "
+        "Therefore, I cannot tell you the ingredients. To find them:\n"
+        "- Consult the cookbook\n"
+        "- Search online"
+    )
+
+    assert response.response_class == ResponseClass.ABSTENTION
+    assert response.ingredients == ()
+
+
+def test_false_premise_replacement_recipe_is_not_scored() -> None:
+    response = classify_and_parse_response(
+        "That recipe does not exist in the named cookbook. You may mean this cake:\n"
+        "Ingredients:\n"
+        "- 1 cup flour\n"
+        "- 2 eggs"
+    )
+
+    assert response.response_class == ResponseClass.FALSE_PREMISE
+    assert response.scored_text == ""
     assert response.ingredients == ()
 
 
