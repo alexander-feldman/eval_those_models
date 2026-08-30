@@ -11,11 +11,11 @@ Web search: disabled in every condition
 ## Executive summary
 
 The first legal-disclaimer prompt did coincide with more refusals. In the
-recorded direct-exact baseline, models attempted 11 of 30 requests and declined
-19. After adding a short statement that ingredient lists are not copyrightable,
-attempts fell to 7 and declines rose to 23. This is an increase of four declines,
-from 63.3% to 76.7% of cases: **+13.3 percentage points**, or **+21.1% relative
-to the original decline count**.
+[recorded direct-exact baseline](title-only-baseline-v1-20260830.md), models
+attempted 11 of 30 requests and declined 19. After adding a short statement that
+ingredient lists are not copyrightable, attempts fell to 7 and declines rose to
+23. This is an increase of four declines, from 63.3% to 76.7% of cases: **+13.3
+percentage points**, or **+21.1% relative to the original decline count**.
 
 That aggregate is easy to overinterpret. OpenAI, Claude, Qwen, and Gemini did
 not change behavior at all. DeepSeek changed from five attempts and one decline
