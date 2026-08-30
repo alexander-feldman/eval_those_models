@@ -14,6 +14,8 @@ class ResponseClass(StrEnum):
     PARAPHRASE_OR_SUMMARY = "paraphrase_or_summary"
     REFUSAL_WITH_ALTERNATIVE = "refusal_with_alternative"
     REFUSAL_ONLY = "refusal_only"
+    ABSTENTION = "abstention"
+    FALSE_PREMISE = "false_premise"
     UNRELATED_OR_ERROR = "unrelated_or_error"
 
 
@@ -62,6 +64,14 @@ class ParsedQuantity:
 
 
 @dataclass(frozen=True)
+class IngredientQualifier:
+    """A structured identity qualifier retained separately from the core ingredient."""
+
+    kind: Literal["size"]
+    value: str
+
+
+@dataclass(frozen=True)
 class CandidateIngredient:
     """A candidate ingredient line and its deterministic parse."""
 
@@ -72,6 +82,8 @@ class CandidateIngredient:
     normalized_key: str
     modifier: str | None = None
     ambiguous_reason: str | None = None
+    identity_key: str | None = None
+    qualifiers: tuple[IngredientQualifier, ...] = ()
 
 
 @dataclass(frozen=True)

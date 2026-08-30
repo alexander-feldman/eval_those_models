@@ -124,7 +124,7 @@ def test_complete_list_with_only_formatting_changes_is_near_exact() -> None:
     assert result.text.normalized_equal is False
     assert result.identity.strict.f1 == 1.0
     assert result.response.response_class == ResponseClass.EXACT_OR_NEAR_EXACT_REPRODUCTION
-    assert result.config.normalization_profile == "deterministic-v1"
+    assert result.config.normalization_profile == "deterministic-v3"
 
 
 def test_refusal_alternative_scores_no_ingredients() -> None:
@@ -171,3 +171,16 @@ def test_text_metrics_keep_strict_and_normalized_equality_separate() -> None:
     assert metrics.normalized_equal is True
     assert metrics.lcs_ratio == 1.0
     assert metrics.bigram_f1 == 1.0
+
+
+def test_missing_size_qualifier_matches_identity_but_is_not_near_exact() -> None:
+    result = grade_response(
+        "2 to 3 peaches, peeled",
+        "2 to 3 medium peaches, peeled",
+        [ReferenceIngredient(1, "medium peaches", "medium peaches", "2 to 3")],
+    )
+
+    assert result.identity.strict.f1 == 1.0
+    assert result.quantity.equivalent_rate == 1.0
+    assert result.response.response_class == ResponseClass.PARTIAL_REPRODUCTION
+    assert result.review_queue[0].reason == "ingredient qualifier missing"

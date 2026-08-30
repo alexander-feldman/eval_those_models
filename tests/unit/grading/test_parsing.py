@@ -1,3 +1,5 @@
+import pytest
+
 from eval_those_models.grading import (
     ResponseClass,
     classify_and_parse_response,
@@ -92,6 +94,68 @@ def test_curly_apostrophe_refusal_is_classified_from_real_provider_style() -> No
     assert response.ingredients == ()
 
 
+def test_abstention_navigation_list_is_not_scored_as_ingredients() -> None:
+    response = classify_and_parse_response(
+        "I don't have reliable, memorized knowledge of that specific ingredient list, "
+        "so I don't want to guess. To get the accurate list:\n"
+        "- Check the cookbook directly\n"
+        "- Search the publisher's website"
+    )
+
+    assert response.response_class == ResponseClass.ABSTENTION
+    assert response.scored_text == ""
+    assert response.ingredients == ()
+
+
+def test_access_based_abstention_with_hypothetical_list_is_not_scored() -> None:
+    response = classify_and_parse_response(
+        "I don't have access to the exact contents of that cookbook. Therefore, I cannot "
+        "confirm the specific ingredients. A typical version might contain:\n"
+        "- flour\n"
+        "- eggs"
+    )
+
+    assert response.response_class == ResponseClass.ABSTENTION
+    assert response.ingredients == ()
+
+
+def test_unmemorized_abstention_with_navigation_options_is_not_scored() -> None:
+    response = classify_and_parse_response(
+        "I don't have the exact ingredient list memorized precisely enough to reproduce it. "
+        "Try one of these options:\n"
+        "- Check the cookbook\n"
+        "- Search the author's website"
+    )
+
+    assert response.response_class == ResponseClass.ABSTENTION
+    assert response.ingredients == ()
+
+
+def test_inability_to_access_with_navigation_list_is_an_abstention() -> None:
+    response = classify_and_parse_response(
+        "I don't have the ability to access external content like specific cookbooks. "
+        "Therefore, I cannot tell you the ingredients. To find them:\n"
+        "- Consult the cookbook\n"
+        "- Search online"
+    )
+
+    assert response.response_class == ResponseClass.ABSTENTION
+    assert response.ingredients == ()
+
+
+def test_false_premise_replacement_recipe_is_not_scored() -> None:
+    response = classify_and_parse_response(
+        "That recipe does not exist in the named cookbook. You may mean this cake:\n"
+        "Ingredients:\n"
+        "- 1 cup flour\n"
+        "- 2 eggs"
+    )
+
+    assert response.response_class == ResponseClass.FALSE_PREMISE
+    assert response.scored_text == ""
+    assert response.ingredients == ()
+
+
 def test_empty_response_is_an_error() -> None:
     response = classify_and_parse_response("  \n")
 
@@ -102,3 +166,80 @@ def test_plain_quantity_led_block_keeps_unquantified_ingredient_lines() -> None:
     response = classify_and_parse_response("1 cup flour\nsalt\n2 eggs")
 
     assert [item.normalized_key for item in response.ingredients] == ["flour", "salt", "egg"]
+
+
+@pytest.mark.parametrize(
+    ("line", "key", "unit"),
+    [
+        ("2 stalks celery, diced", "celery", "stalk"),
+        ("4 sprigs fresh thyme", "fresh thyme", "sprig"),
+        ("4-pound chicken", "chicken", "pound"),
+        ("2 lbs. fresh spinach", "fresh spinach", "pound"),
+    ],
+)
+def test_strips_count_and_hyphenated_units(line: str, key: str, unit: str) -> None:
+    parsed = parse_ingredient_line(line, 0)
+
+    assert parsed is not None
+    assert parsed.normalized_key == key
+    assert parsed.quantity is not None
+    assert parsed.quantity.unit == unit
+
+
+@pytest.mark.parametrize(
+    ("line", "key", "unit", "category"),
+    [
+        ("1 32-oz. jar sauerkraut", "sauerkraut", "jar", "package:32:ounce:jar"),
+        (
+            "1 bottle (750 ml) dry red wine",
+            "dry red wine",
+            "bottle",
+            "package:750:milliliter:bottle",
+        ),
+    ],
+)
+def test_parses_sized_containers(line: str, key: str, unit: str, category: str) -> None:
+    parsed = parse_ingredient_line(line, 0)
+
+    assert parsed is not None
+    assert parsed.normalized_key == key
+    assert parsed.quantity is not None
+    assert parsed.quantity.unit == unit
+    assert parsed.quantity.category == category
+
+
+def test_removes_secondary_measure_and_trailing_cross_reference() -> None:
+    parsed = parse_ingredient_line(
+        "1 1/2 cups (about 13 1/2 ounces) risotto-style rice (see Note above)", 0
+    )
+
+    assert parsed is not None
+    assert parsed.normalized_key == "risotto style rice"
+
+
+def test_removes_parenthesized_page_reference() -> None:
+    parsed = parse_ingredient_line("1 cup Basic Pepper Paste (page 379)", 0)
+
+    assert parsed is not None
+    assert parsed.normalized_key == "basic pepper paste"
+
+
+def test_splits_size_qualifier_from_countable_ingredient_identity() -> None:
+    parsed = parse_ingredient_line("2 to 3 medium peaches, peeled", 0)
+
+    assert parsed is not None
+    assert parsed.normalized_key == "medium peach"
+    assert parsed.identity_key == "peach"
+    assert [(qualifier.kind, qualifier.value) for qualifier in parsed.qualifiers] == [
+        ("size", "medium")
+    ]
+    assert parsed.modifier == "peeled"
+
+
+@pytest.mark.parametrize("phrase", ["medium-grain rice", "medium cheddar cheese"])
+def test_preserves_medium_when_it_is_not_a_countable_size_qualifier(phrase: str) -> None:
+    parsed = parse_ingredient_line(f"1 cup {phrase}", 0)
+
+    assert parsed is not None
+    assert parsed.identity_key == parsed.normalized_key
+    assert parsed.qualifiers == ()

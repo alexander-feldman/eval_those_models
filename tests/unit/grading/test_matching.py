@@ -104,3 +104,47 @@ def test_combined_line_does_not_receive_credit_for_two_reference_rows() -> None:
         if match.method in {MatchMethod.EXACT_KEY, MatchMethod.KNOWN_ALIAS}
     }
     assert accepted == set()
+
+
+def test_reference_surface_form_is_parsed_into_an_exact_variant() -> None:
+    references = [ReferenceIngredient(1, "fresh thyme", "4 sprigs fresh thyme")]
+
+    result = match_ingredients([_candidate("- fresh thyme", 0)], references)
+
+    assert result.matches[0].method == MatchMethod.EXACT_KEY
+
+
+def test_missing_size_qualifier_does_not_block_identity_match() -> None:
+    references = [ReferenceIngredient(1, "medium peaches", "medium peaches")]
+
+    result = match_ingredients([_candidate("- 3 peaches", 0)], references)
+
+    assert result.matches[0].method == MatchMethod.EXACT_KEY
+    assert result.review_queue[0].reason == "ingredient qualifier missing"
+
+
+def test_matching_size_qualifier_needs_no_review() -> None:
+    references = [ReferenceIngredient(1, "medium peaches", "medium peaches")]
+
+    result = match_ingredients([_candidate("- 3 medium peaches", 0)], references)
+
+    assert result.matches[0].method == MatchMethod.EXACT_KEY
+    assert result.review_queue == ()
+
+
+def test_conflicting_size_qualifiers_match_identity_and_queue_review() -> None:
+    references = [ReferenceIngredient(1, "medium peaches", "medium peaches")]
+
+    result = match_ingredients([_candidate("- 3 large peaches", 0)], references)
+
+    assert result.matches[0].method == MatchMethod.EXACT_KEY
+    assert result.review_queue[0].reason == "ingredient qualifiers conflict"
+
+
+def test_added_size_qualifier_matches_identity_and_queues_review() -> None:
+    references = [ReferenceIngredient(1, "peaches", "peaches")]
+
+    result = match_ingredients([_candidate("- 3 large peaches", 0)], references)
+
+    assert result.matches[0].method == MatchMethod.EXACT_KEY
+    assert result.review_queue[0].reason == "ingredient qualifier added"

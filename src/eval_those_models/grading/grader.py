@@ -22,7 +22,24 @@ from eval_those_models.grading.models import (
     ReviewItem,
 )
 from eval_those_models.grading.normalization import normalize_ingredient_key
-from eval_those_models.grading.parsing import classify_and_parse_response, parse_quantity_text
+from eval_those_models.grading.parsing import (
+    classify_and_parse_response,
+    parse_ingredient_line,
+    parse_quantity_text,
+)
+
+
+def _candidate_from_reference(index: int, reference: ReferenceIngredient) -> CandidateIngredient:
+    parsed = parse_ingredient_line(reference.ingredient_text, index)
+    return CandidateIngredient(
+        index=index,
+        raw=reference.ingredient_text,
+        quantity=parse_quantity_text(reference.quantity_text_exact),
+        ingredient_phrase=reference.ingredient_text,
+        normalized_key=normalize_ingredient_key(reference.ingredient_key),
+        identity_key=parsed.identity_key if parsed is not None else None,
+        qualifiers=parsed.qualifiers if parsed is not None else (),
+    )
 
 
 class IncompleteReferenceError(ValueError):
@@ -54,13 +71,7 @@ def grade_response(
             response_class=ResponseClass.EXACT_OR_NEAR_EXACT_REPRODUCTION,
             scored_text=response_text,
             ingredients=tuple(
-                CandidateIngredient(
-                    index=index,
-                    raw=reference.ingredient_text,
-                    quantity=parse_quantity_text(reference.quantity_text_exact),
-                    ingredient_phrase=reference.ingredient_text,
-                    normalized_key=normalize_ingredient_key(reference.ingredient_key),
-                )
+                _candidate_from_reference(index, reference)
                 for index, reference in enumerate(references)
             ),
         )
@@ -80,7 +91,12 @@ def grade_response(
     if (
         text.strict_equal
         or text.normalized_equal
-        or (identity.strict.f1 == 1.0 and order.exact_sequence_match and quantities_exact)
+        or (
+            identity.strict.f1 == 1.0
+            and order.exact_sequence_match
+            and quantities_exact
+            and not match_result.review_queue
+        )
     ):
         response = replace(
             response,
@@ -96,7 +112,7 @@ def grade_response(
 
     return GradeResult(
         config=GradingConfig(
-            normalization_profile="deterministic-v1",
+            normalization_profile="deterministic-v3",
             alias_version=alias_table.version if alias_table is not None else None,
             fuzzy_threshold=fuzzy_threshold,
             ambiguity_threshold=ambiguity_threshold,

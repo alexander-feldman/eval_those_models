@@ -1,5 +1,12 @@
 """Deterministic graders for recipe reproduction responses."""
 
+from eval_those_models.grading.audit import (
+    ReferenceAuditIssue,
+    ReferenceAuditIssueKind,
+    ReferenceAuditRecord,
+    ReferenceAuditReport,
+    audit_reference_records,
+)
 from eval_those_models.grading.grader import IncompleteReferenceError, grade_response
 from eval_those_models.grading.matching import AliasTable, ingredient_similarity, match_ingredients
 from eval_those_models.grading.metrics import (
@@ -15,6 +22,7 @@ from eval_those_models.grading.models import (
     GradingConfig,
     IdentityMetrics,
     IngredientMatch,
+    IngredientQualifier,
     MatchMethod,
     OrderMetrics,
     ParsedQuantity,
@@ -39,11 +47,16 @@ from eval_those_models.grading.parsing import (
 
 __all__ = [
     "AliasTable",
+    "ReferenceAuditIssue",
+    "ReferenceAuditIssueKind",
+    "ReferenceAuditRecord",
+    "ReferenceAuditReport",
     "CandidateIngredient",
     "CandidateResponse",
     "GradeResult",
     "GradingConfig",
     "IdentityMetrics",
+    "IngredientQualifier",
     "IncompleteReferenceError",
     "IngredientMatch",
     "MatchMethod",
@@ -58,6 +71,7 @@ __all__ = [
     "TextMetrics",
     "classify_and_parse_response",
     "grade_response",
+    "audit_reference_records",
     "identity_metrics",
     "ingredient_similarity",
     "match_ingredients",
