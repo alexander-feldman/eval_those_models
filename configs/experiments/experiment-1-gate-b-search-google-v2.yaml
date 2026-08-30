@@ -56,6 +56,6 @@ models:
     seed: 0
     reasoning_enabled: false
     pricing_ceiling:
-      input_per_million: "0.50"
-      output_per_million: "3.00"
+      input_per_million: "0.54"
+      output_per_million: "4.50"
       web_search_per_request: "0.014"
