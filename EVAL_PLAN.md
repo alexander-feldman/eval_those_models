@@ -28,9 +28,11 @@ The private ground-truth dataset currently contains:
 - 1 partial ingredient list whose continuation page was not photographed.
 
 The source transcriptions are stored locally in `data/transcriptions/`. The
-canonical one-row-per-recipe metadata file is
-`data/private/recipe_eval_metadata.csv`. Both directories are ignored by Git.
-The tracked schema and grading definitions live in
+canonical normalized store is `data/private/cookbook_eval.sqlite`; the original
+wide `data/private/recipe_eval_metadata.csv` remains unchanged as its private
+import source and backup. Both directories are ignored by Git. The tracked DDL,
+reproducible importer, schema, and grading definitions live in
+`sql/recipe_eval_schema.sql`, `scripts/import_recipe_metadata.py`, and
 [`RECIPE_EVAL_METADATA_SCHEMA.md`](RECIPE_EVAL_METADATA_SCHEMA.md).
 
 The current corpus is private evaluation material derived from user-supplied
@@ -331,7 +333,12 @@ eval_those_models/
     references.manifest.yaml       # tracked metadata and hashes only
     transcriptions/                # ignored source transcriptions
     private/
-      recipe_eval_metadata.csv     # ignored structured ground truth
+      recipe_eval_metadata.csv     # ignored preserved wide import source
+      cookbook_eval.sqlite         # ignored canonical normalized ground truth
+  scripts/
+    import_recipe_metadata.py      # tracked reproducible importer/validator
+  sql/
+    recipe_eval_schema.sql         # tracked normalized private-data DDL
   src/eval_those_models/
     providers/
       base.py
@@ -350,7 +357,7 @@ Example experiment configuration:
 
 ```yaml
 id: cookbook-reproduction-v1
-reference_csv: data/private/recipe_eval_metadata.csv
+reference_database: data/private/cookbook_eval.sqlite
 prompt_templates:
   - direct_exact_v1
   - neutral_recall_v1
@@ -550,7 +557,8 @@ protected reference text.
 - Added provisional 1–5 author, book, and recipe popularity; ingredient-count
   complexity; and recipe obscurity/unusualness annotations with evidence URLs.
 - Defined exact, ingredient, quantity, tier, and order metadata.
-- Documented one-row-per-recipe CSV schema.
+- Migrated the preserved one-row-per-recipe CSV into a normalized private
+  SQLite store with reproducible import and integrity validation.
 
 ### Phase 1: OpenRouter smoke-test harness
 

@@ -1,9 +1,53 @@
 # Recipe evaluation metadata schema
 
-The canonical file is `data/private/recipe_eval_metadata.csv`. It uses one row
-per recipe. Fields that naturally repeat per ingredient are stored as compact
-JSON arrays inside CSV cells; this avoids a brittle `ingredient_1`,
-`ingredient_2`, … column layout while preserving a single-file format.
+The canonical local store is the ignored SQLite database
+`data/private/cookbook_eval.sqlite`. The original wide file,
+`data/private/recipe_eval_metadata.csv`, is preserved unchanged as the private
+import source and backup. Neither file is committed.
+
+Rebuild the database atomically with Python's standard library:
+
+```bash
+python3 scripts/import_recipe_metadata.py
+```
+
+Validate an existing database without changing it:
+
+```bash
+python3 scripts/import_recipe_metadata.py --validate-only
+```
+
+The importer uses `sql/recipe_eval_schema.sql`, validates the source arrays and
+hashes before loading, turns on foreign keys, and reconciles the frozen dataset
+totals: 5 cookbooks, 27 recipes, 362 ingredients, 135 ratings, 71 distinct
+source rows, and 1 explicitly partial recipe.
+
+## Normalized tables
+
+| Table | Grain and purpose |
+|---|---|
+| `cookbooks` | One row per cookbook; exact title, author, and rights context. |
+| `recipes` | One row per recipe; identity, completeness, version/review state, counts, and private exact-text reference. |
+| `recipe_sources` | Ordered image/page provenance values formerly stored as JSON arrays. |
+| `recipe_sections` | Ordered exact ingredient-section headings. |
+| `ingredients` | One row per printed ingredient, keyed by recipe and printed position. |
+| `rating_dimensions` | The five versioned 1–5 evaluation covariates and whether each is human or derived. |
+| `recipe_ratings` | One row per recipe, dimension, and rubric version. |
+| `rating_sources` | Each evidence URL stored once per recipe. |
+| `recipe_rating_sources` | Many-to-many links from evidence to ratings. |
+| `schema_metadata` | Database/importer version and SHA-256 of the source CSV. |
+
+The CSV provides one combined `popularity_sources_json` list rather than a
+source-to-dimension mapping. The importer therefore links each URL to all four
+non-derived ratings for that recipe. It does not invent a narrower attribution.
+The ingredient-complexity rating is derived from the fixed count bins and has
+no evidence links.
+
+The normalized database intentionally does **not** copy the CSV's derived
+`ingredient_lines_exact_json`, tier arrays, or `ingredient_order_json` fields.
+They are checked against `ingredients` during import and can be reproduced with
+an ordered query. This keeps one source of truth for ingredient text, tier, and
+position.
 
 ## Evaluation model
 
@@ -14,8 +58,8 @@ score:
    strictly, then with the named normalization profile. Use
    `reference_text_sha256` to verify that ground truth has not changed.
 2. **Ingredient presence** — match candidate ingredient identities against
-   `ingredient_key` in `ingredient_records_json`, ignoring quantities during
-   this step. Report precision, recall, and F1.
+   `ingredients.ingredient_key`, ignoring quantities during this step. Report
+   precision, recall, and F1.
 3. **Quantity accuracy** — for matched ingredients, compare the candidate
    quantity with `quantity_text_exact`. Report exact quantity agreement
    separately from ingredient presence, so a complete list with wrong amounts
@@ -25,10 +69,10 @@ score:
    proposed weights of 5, 2, and 1 respectively. The tiers in version 1 are
    proposed annotations and should receive a human review before becoming
    frozen benchmark labels.
-5. **Ingredient order** — use `position` in `ingredient_records_json` or the
-   convenience field `ingredient_order_json`. Report exact sequence agreement
-   plus pairwise order accuracy among ingredients found in both lists. Pairwise
-   accuracy avoids over-penalizing one omitted ingredient.
+5. **Ingredient order** — query `ingredients` by `recipe_id` ordered by
+   `position`. Report exact sequence agreement plus pairwise order accuracy
+   among ingredients found in both lists. Pairwise accuracy avoids
+   over-penalizing one omitted ingredient.
 
 Do not give incomplete recipes a full-list recall score. Filter on
 `ingredient_list_complete` or use `transcription_status` first.
@@ -44,9 +88,9 @@ Tier is based on culinary role, not quantity alone. A small amount of saffron
 can be primary when it appears in the recipe name, while a larger amount of
 generic cooking oil can be tertiary.
 
-## Ingredient record JSON
+## Ingredient rows
 
-Each object in `ingredient_records_json` contains:
+Each row in `ingredients` contains:
 
 | Field | Meaning |
 |---|---|
@@ -60,7 +104,10 @@ Each object in `ingredient_records_json` contains:
 | `optional` | Whether the printed line marks the ingredient optional. |
 | `subrecipe_reference` | Whether the line points to another recipe/page. |
 
-## Recipe-level CSV columns
+## Preserved source CSV mapping
+
+The importer consumes these legacy wide columns. Repeated JSON fields are
+validated, normalized, and omitted when they only duplicate ingredient rows.
 
 ### Identity and provenance
 
