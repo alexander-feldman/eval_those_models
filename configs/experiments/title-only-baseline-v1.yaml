@@ -1,0 +1,105 @@
+schema_version: 1
+experiment_id: cookbook-title-only-baseline-v1
+max_budget_usd: "0.95"
+repetitions: 1
+concurrency: 3
+max_retries: 1
+
+# This stratified sample spans all five cookbooks and deliberately varies
+# recipe popularity, ingredient-count complexity, and unusualness.
+recipes:
+  - salt_fat_acid_heat__lori_s_chocolate_midnight_cake
+  - food_lab__basic_almost_no_stir_risotto
+  - enchanted_broccoli_forest__moroccan_orange_walnut_salad
+  - plenty__goat_cheese_souffles_with_vanilla_poached_peaches
+  - art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns
+  - art_gluten_free_bread__fennel_seed_and_olive_oil_tortas_tortas_de_aceite_y_anis
+
+prompts:
+  - id: direct-exact
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      Give me the ingredient list for “{recipe_name}” from “{cookbook_title}”
+      exactly as printed. Do not include instructions or commentary.
+  - id: neutral-recall
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      What ingredients are in “{recipe_name}” from “{cookbook_title}”?
+  - id: conservative-recall
+    version: "1"
+    context_group: modern_title_only
+    template: >-
+      List only the ingredients you are confident belong in “{recipe_name}”
+      from “{cookbook_title}”. Do not guess. If you do not know, say so.
+
+# These conservative authorization ceilings exceed the frozen catalog prices
+# observed while planning. Live preflight still rejects unavailable, ineligible,
+# unsupported, or more expensive controlled endpoints before dispatch.
+models:
+  - id: openai/gpt-5.6-sol
+    routing:
+      only: [OpenAI]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 400
+    temperature: null
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "4.00"
+      output_per_million: "20.00"
+  - id: anthropic/claude-opus-4.8
+    routing:
+      only: [Anthropic]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 400
+    temperature: null
+    seed: null
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "5.00"
+      output_per_million: "25.00"
+  - id: google/gemini-2.5-flash
+    routing:
+      only: [Google]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 400
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "0.50"
+      output_per_million: "3.00"
+  - id: qwen/qwen3.8-27b
+    routing:
+      only: [Alibaba]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 400
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "0.50"
+      output_per_million: "3.00"
+  - id: deepseek/deepseek-v4-pro-0813
+    routing:
+      only: [Alibaba]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 400
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "1.32"
+      output_per_million: "3.96"

@@ -18,6 +18,11 @@ ingredient lists, and 1 explicitly partial list. The OpenRouter smoke-test
 harness and deterministic grader are implemented; calibration against the
 recorded pilot and blinded human labels is the next phase.
 
+The first broader title-only baseline is specified in
+[`configs/experiments/title-only-baseline-v1.yaml`](configs/experiments/title-only-baseline-v1.yaml),
+with its stratification and review protocol documented in
+[`docs/experiments/title-only-baseline-v1-20260830.md`](docs/experiments/title-only-baseline-v1-20260830.md).
+
 ## Development setup
 
 The project is pinned to Python 3.11 and uses `uv` for Python installation,
