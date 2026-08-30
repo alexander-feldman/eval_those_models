@@ -1,9 +1,8 @@
 # Recipe evaluation metadata schema
 
-The canonical local store is the ignored SQLite database
-`data/private/cookbook_eval.sqlite`. The original wide file,
-`data/private/recipe_eval_metadata.csv`, is preserved unchanged as the private
-import source and backup. Neither file is committed.
+The canonical store is `data/private/cookbook_eval.sqlite`. The original wide
+file, `data/private/recipe_eval_metadata.csv`, is preserved unchanged as the
+import source and backup. Both files are versioned with the repository.
 
 Rebuild the database atomically with Python's standard library:
 
@@ -23,14 +22,14 @@ the frozen dataset totals: 5 cookbooks, 27 recipes, 362 ingredients, 135
 ratings, 71 evidence source rows, 54 quantity/tier provenance rows, and 1
 explicitly partial recipe.
 It also hashes the exact recipe text stored in SQLite and checks it against each
-private reference hash.
+reference hash.
 
 ## Normalized tables
 
 | Table | Grain and purpose |
 |---|---|
 | `cookbooks` | One row per cookbook; exact title, author, and rights context. |
-| `recipes` | One row per recipe; identity, completeness, version/review state, counts, and private exact-text reference. |
+| `recipes` | One row per recipe; identity, completeness, version/review state, counts, and exact-text reference. |
 | `recipe_sources` | Ordered image/page provenance values formerly stored as JSON arrays. |
 | `recipe_sections` | Ordered exact ingredient-section headings. |
 | `ingredients` | One row per printed ingredient, keyed by recipe and printed position. |

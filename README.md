@@ -6,12 +6,13 @@ controlled prompt, reference, model, and inference-setting variations.
 See [the evaluation plan](docs/evaluation-plan.md) for the proposed experiment
 design, grading framework, OpenRouter execution architecture, data model, and
 implementation phases. See [the metadata schema](docs/metadata-schema.md) for
-the normalized private SQLite schema, reproducible CSV import, and metric
+the normalized SQLite schema, reproducible CSV import, and metric
 definitions. [The architecture guide](docs/architecture.md) explains the
 repository boundaries.
 
-User-supplied ground truth is kept locally under `data/transcriptions/` and
-`data/private/`; both are excluded from Git to avoid redistributing source text.
+The versioned ground-truth corpus lives under `data/transcriptions/` and
+`data/private/`. It is committed with the project so benchmark inputs, grading,
+and dataset revisions remain reproducible.
 
 Current local dataset: 27 recipes, 362 structured ingredients, 26 complete
 ingredient lists, and 1 explicitly partial list. The OpenRouter smoke-test
@@ -30,12 +31,11 @@ make check
 
 This creates `.venv` with Python 3.11 without changing macOS's system Python.
 Common commands are listed by `make help`. The default test suite uses only
-synthetic fixtures and does not require private data, network access, or an API
-key.
+synthetic fixtures and does not require network access or an API key.
 
-## Private dataset
+## Ground-truth dataset
 
-The canonical local store is `data/private/cookbook_eval.sqlite`. Rebuild and
+The canonical store is `data/private/cookbook_eval.sqlite`. Rebuild and
 validate it from the preserved wide CSV source with:
 
 ```bash
@@ -50,10 +50,10 @@ uv run python -m eval_those_models dataset build
 uv run python -m eval_those_models dataset validate
 ```
 
-Both database and source CSV stay ignored and private. The tracked importer and
-DDL make the normalization reproducible without publishing cookbook text.
+The source CSV, generated database, importer, and DDL are all versioned so the
+normalized dataset can be reproduced and reviewed at any commit.
 
-The private recipe metadata also contains provisional, versioned 1–5 ratings
+The recipe metadata also contains provisional, versioned 1–5 ratings
 for author popularity, book popularity, recipe popularity within the book,
 ingredient-count complexity, and recipe obscurity/unusualness. These fields are
 intended for stratified evaluation analysis and include evidence URLs and
@@ -74,9 +74,8 @@ strict-versus-lenient disagreement for review. Full-list grading raises
 `IncompleteReferenceError` for a reference marked incomplete; callers should
 instead construct an explicitly bounded excerpt case.
 
-The default tests use synthetic recipe rows. Private ground truth and raw run
-artifacts remain ignored and are used only for explicit local integration
-checks.
+The default tests use synthetic recipe rows. The tracked ground truth is used
+only for explicit integration checks; raw run artifacts remain ignored.
 
 ## Experiment harness
 
@@ -86,7 +85,7 @@ Inspect a complete experiment matrix without contacting OpenRouter:
 uv run python -m eval_those_models plan configs/experiments/smoke-test.yaml
 ```
 
-The planner loads recipe titles from the private database, excludes incomplete
+The planner loads recipe titles from the reference database, excludes incomplete
 references, checks title-only prompts for protected-text leakage, generates
 content-addressed case IDs, and prints conservative token and cost ceilings.
 

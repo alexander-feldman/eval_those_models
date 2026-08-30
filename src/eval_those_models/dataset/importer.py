@@ -105,7 +105,7 @@ def build_parser(
         "--output",
         type=Path,
         default=root / "data/private/cookbook_eval.sqlite",
-        help="private SQLite database to build or validate",
+        help="reference SQLite database to build or validate",
     )
     parser.add_argument(
         "--schema",
@@ -554,7 +554,7 @@ def validate_database(connection: sqlite3.Connection, args: argparse.Namespace) 
     ).fetchone()
     actual_source_hash = hashlib.sha256(args.source.read_bytes()).hexdigest()
     if stored_source_hash is None or stored_source_hash[0] != actual_source_hash:
-        raise ValidationError("database source hash does not match the private CSV")
+        raise ValidationError("database source hash does not match the reference CSV")
 
     count_mismatches = connection.execute(
         """
