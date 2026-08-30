@@ -113,3 +113,5 @@ See the [auto web-search pilot](docs/experiments/web-search-auto-pilot-20260830.
 for the first cross-model findings and the resulting budget-safety changes.
 The next planned study is
 [Experiment 1: source-assisted recipe reconstruction](docs/experiments/experiment-1-source-assisted-reconstruction-plan.md).
+Its first [Gate B calibration report](docs/experiments/experiment-1-gate-b-20260830.md)
+compares source-assisted behavior with Title-only baseline v1.
