@@ -77,6 +77,16 @@ instead construct an explicitly bounded excerpt case.
 The default tests use synthetic recipe rows. The tracked ground truth is used
 only for explicit integration checks; raw run artifacts remain ignored.
 
+Before calibrating or running the grader, audit that every exact private
+reference line parses back to its structured identity and quantity fields:
+
+```bash
+uv run python -m eval_those_models dataset audit-grading
+```
+
+The command reports only recipe IDs, ingredient positions, and issue kinds; it
+does not print protected reference text.
+
 ## Experiment harness
 
 Inspect a complete experiment matrix without contacting OpenRouter:
