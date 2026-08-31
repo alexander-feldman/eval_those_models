@@ -1,0 +1,52 @@
+schema_version: 1
+experiment_id: cookbook-experiment-3-search-prompt-pilot-round-3b
+max_budget_usd: "0.03"
+repetitions: 1
+concurrency: 1
+max_retries: 0
+
+recipes:
+  - art_gluten_free_bread__fennel_seed_and_olive_oil_tortas_tortas_de_aceite_y_anis
+
+prompts:
+  - id: evidence-gated-fallback
+    version: "1"
+    context_group: modern_title_only
+    tool_profile: web-auto-bounded
+    template: >-
+      Search the public web for the exact named recipe or a clearly attributed
+      adaptation of “{recipe_name}” from “{cookbook_title}”. Use ingredient
+      evidence only when a result is the exact recipe or an attributed adaptation;
+      do not transfer ingredients from cookbook metadata or generic same-dish
+      variants. If no qualifying source is found, disregard those search results
+      and give your ordinary best-effort ingredient-identity hypothesis. Output
+      exactly five to twelve normalized ingredient names in alphabetical order;
+      no preamble, caveat, quantities, prose, directions, citations, or source
+      ordering. Do not abstain.
+
+tool_profiles:
+  - id: web-auto-bounded
+    web_search:
+      engine: auto
+      max_uses: 1
+      max_results: 3
+      max_total_results: 3
+      max_characters: 1200
+      estimated_input_tokens_per_use: 4000
+      max_cost_usd: "0.012"
+
+models:
+  - id: deepseek/deepseek-v4-pro-0813
+    routing:
+      only: [Alibaba]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 160
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "1.32"
+      output_per_million: "3.96"
+      web_search_per_request: "0.007"
