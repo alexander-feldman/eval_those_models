@@ -1,0 +1,1982 @@
+{
+  "analysis_version": 1,
+  "analytic_cells": 40,
+  "by_model_and_prompt": {
+    "anthropic/claude-opus-4.8 | required-search-silent-evidence-gate": {
+      "cases": 4,
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.0,
+        "false_negatives": 60,
+        "false_positives": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "true_positives": 0
+      },
+      "identity_only_strict": {
+        "f1": 0.34,
+        "false_negatives": 43,
+        "false_positives": 23,
+        "precision": 0.425,
+        "recall": 0.2833333333333333,
+        "true_positives": 17
+      },
+      "output_contract_compliant": 0,
+      "reported_cost_usd": 0.352735,
+      "searched": 4
+    },
+    "anthropic/claude-opus-4.8 | winning-prompt-search-available": {
+      "cases": 4,
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.23529411764705882,
+        "false_negatives": 48,
+        "false_positives": 30,
+        "precision": 0.2857142857142857,
+        "recall": 0.2,
+        "true_positives": 12
+      },
+      "identity_only_strict": {
+        "f1": 0.23529411764705882,
+        "false_negatives": 48,
+        "false_positives": 30,
+        "precision": 0.2857142857142857,
+        "recall": 0.2,
+        "true_positives": 12
+      },
+      "output_contract_compliant": 4,
+      "reported_cost_usd": 0.06312,
+      "searched": 0
+    },
+    "deepseek/deepseek-v4-pro-0813 | required-search-silent-evidence-gate": {
+      "cases": 6,
+      "citation_annotations": 18,
+      "delimiter_adapted_strict": {
+        "f1": 0.4217687074829932,
+        "false_negatives": 52,
+        "false_positives": 33,
+        "precision": 0.484375,
+        "recall": 0.37349397590361444,
+        "true_positives": 31
+      },
+      "identity_only_strict": {
+        "f1": 0.4217687074829932,
+        "false_negatives": 52,
+        "false_positives": 33,
+        "precision": 0.484375,
+        "recall": 0.37349397590361444,
+        "true_positives": 31
+      },
+      "output_contract_compliant": 5,
+      "reported_cost_usd": 0.0616971588,
+      "searched": 6
+    },
+    "deepseek/deepseek-v4-pro-0813 | winning-prompt-search-available": {
+      "cases": 6,
+      "citation_annotations": 9,
+      "delimiter_adapted_strict": {
+        "f1": 0.21052631578947364,
+        "false_negatives": 71,
+        "false_positives": 19,
+        "precision": 0.3870967741935484,
+        "recall": 0.14457831325301204,
+        "true_positives": 12
+      },
+      "identity_only_strict": {
+        "f1": 0.21052631578947364,
+        "false_negatives": 71,
+        "false_positives": 19,
+        "precision": 0.3870967741935484,
+        "recall": 0.14457831325301204,
+        "true_positives": 12
+      },
+      "output_contract_compliant": 3,
+      "reported_cost_usd": 0.033664014000000006,
+      "searched": 3
+    },
+    "openai/gpt-5.6-sol | required-search-silent-evidence-gate": {
+      "cases": 4,
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.3883495145631068,
+        "false_negatives": 40,
+        "false_positives": 23,
+        "precision": 0.46511627906976744,
+        "recall": 0.3333333333333333,
+        "true_positives": 20
+      },
+      "identity_only_strict": {
+        "f1": 0.3883495145631068,
+        "false_negatives": 40,
+        "false_positives": 23,
+        "precision": 0.46511627906976744,
+        "recall": 0.3333333333333333,
+        "true_positives": 20
+      },
+      "output_contract_compliant": 4,
+      "reported_cost_usd": 0.11565790000000001,
+      "searched": 4
+    },
+    "openai/gpt-5.6-sol | winning-prompt-search-available": {
+      "cases": 4,
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.3762376237623763,
+        "false_negatives": 41,
+        "false_positives": 22,
+        "precision": 0.4634146341463415,
+        "recall": 0.31666666666666665,
+        "true_positives": 19
+      },
+      "identity_only_strict": {
+        "f1": 0.3762376237623763,
+        "false_negatives": 41,
+        "false_positives": 22,
+        "precision": 0.4634146341463415,
+        "recall": 0.31666666666666665,
+        "true_positives": 19
+      },
+      "output_contract_compliant": 4,
+      "reported_cost_usd": 0.116191,
+      "searched": 4
+    },
+    "qwen/qwen3.8-27b | required-search-silent-evidence-gate": {
+      "cases": 6,
+      "citation_annotations": 18,
+      "delimiter_adapted_strict": {
+        "f1": 0.3382352941176471,
+        "false_negatives": 60,
+        "false_positives": 30,
+        "precision": 0.4339622641509434,
+        "recall": 0.27710843373493976,
+        "true_positives": 23
+      },
+      "identity_only_strict": {
+        "f1": 0.3382352941176471,
+        "false_negatives": 60,
+        "false_positives": 30,
+        "precision": 0.4339622641509434,
+        "recall": 0.27710843373493976,
+        "true_positives": 23
+      },
+      "output_contract_compliant": 6,
+      "reported_cost_usd": 0.050470249999999994,
+      "searched": 6
+    },
+    "qwen/qwen3.8-27b | winning-prompt-search-available": {
+      "cases": 6,
+      "citation_annotations": 12,
+      "delimiter_adapted_strict": {
+        "f1": 0.31506849315068497,
+        "false_negatives": 60,
+        "false_positives": 40,
+        "precision": 0.36507936507936506,
+        "recall": 0.27710843373493976,
+        "true_positives": 23
+      },
+      "identity_only_strict": {
+        "f1": 0.31506849315068497,
+        "false_negatives": 60,
+        "false_positives": 40,
+        "precision": 0.36507936507936506,
+        "recall": 0.27710843373493976,
+        "true_positives": 23
+      },
+      "output_contract_compliant": 4,
+      "reported_cost_usd": 0.034128075,
+      "searched": 4
+    }
+  },
+  "by_recipe_and_prompt": {
+    "art_gluten_free_bread__fennel_seed_and_olive_oil_tortas_tortas_de_aceite_y_anis | required-search-silent-evidence-gate": {
+      "cases": 2,
+      "citation_annotations": 6,
+      "delimiter_adapted_strict": {
+        "f1": 0.25641025641025644,
+        "false_negatives": 19,
+        "false_positives": 10,
+        "precision": 0.3333333333333333,
+        "recall": 0.20833333333333334,
+        "true_positives": 5
+      },
+      "identity_only_strict": {
+        "f1": 0.25641025641025644,
+        "false_negatives": 19,
+        "false_positives": 10,
+        "precision": 0.3333333333333333,
+        "recall": 0.20833333333333334,
+        "true_positives": 5
+      },
+      "output_contract_compliant": 2,
+      "reported_cost_usd": 0.0190188658,
+      "searched": 2
+    },
+    "art_gluten_free_bread__fennel_seed_and_olive_oil_tortas_tortas_de_aceite_y_anis | winning-prompt-search-available": {
+      "cases": 2,
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.2051282051282051,
+        "false_negatives": 20,
+        "false_positives": 11,
+        "precision": 0.26666666666666666,
+        "recall": 0.16666666666666666,
+        "true_positives": 4
+      },
+      "identity_only_strict": {
+        "f1": 0.2051282051282051,
+        "false_negatives": 20,
+        "false_positives": 11,
+        "precision": 0.26666666666666666,
+        "recall": 0.16666666666666666,
+        "true_positives": 4
+      },
+      "output_contract_compliant": 2,
+      "reported_cost_usd": 0.0013334290000000001,
+      "searched": 0
+    },
+    "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns | required-search-silent-evidence-gate": {
+      "cases": 4,
+      "citation_annotations": 6,
+      "delimiter_adapted_strict": {
+        "f1": 0.23076923076923075,
+        "false_negatives": 85,
+        "false_positives": 15,
+        "precision": 0.5,
+        "recall": 0.15,
+        "true_positives": 15
+      },
+      "identity_only_strict": {
+        "f1": 0.2553191489361702,
+        "false_negatives": 82,
+        "false_positives": 23,
+        "precision": 0.43902439024390244,
+        "recall": 0.18,
+        "true_positives": 18
+      },
+      "output_contract_compliant": 3,
+      "reported_cost_usd": 0.139929103,
+      "searched": 4
+    },
+    "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns | winning-prompt-search-available": {
+      "cases": 4,
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.14925373134328357,
+        "false_negatives": 90,
+        "false_positives": 24,
+        "precision": 0.29411764705882354,
+        "recall": 0.1,
+        "true_positives": 10
+      },
+      "identity_only_strict": {
+        "f1": 0.14925373134328357,
+        "false_negatives": 90,
+        "false_positives": 24,
+        "precision": 0.29411764705882354,
+        "recall": 0.1,
+        "true_positives": 10
+      },
+      "output_contract_compliant": 2,
+      "reported_cost_usd": 0.057241753000000006,
+      "searched": 2
+    },
+    "enchanted_broccoli_forest__moroccan_orange_walnut_salad | required-search-silent-evidence-gate": {
+      "cases": 4,
+      "citation_annotations": 6,
+      "delimiter_adapted_strict": {
+        "f1": 0.37142857142857144,
+        "false_negatives": 27,
+        "false_positives": 17,
+        "precision": 0.43333333333333335,
+        "recall": 0.325,
+        "true_positives": 13
+      },
+      "identity_only_strict": {
+        "f1": 0.43037974683544306,
+        "false_negatives": 23,
+        "false_positives": 22,
+        "precision": 0.4358974358974359,
+        "recall": 0.425,
+        "true_positives": 17
+      },
+      "output_contract_compliant": 3,
+      "reported_cost_usd": 0.130850851,
+      "searched": 4
+    },
+    "enchanted_broccoli_forest__moroccan_orange_walnut_salad | winning-prompt-search-available": {
+      "cases": 4,
+      "citation_annotations": 6,
+      "delimiter_adapted_strict": {
+        "f1": 0.3098591549295775,
+        "false_negatives": 29,
+        "false_positives": 20,
+        "precision": 0.3548387096774194,
+        "recall": 0.275,
+        "true_positives": 11
+      },
+      "identity_only_strict": {
+        "f1": 0.3098591549295775,
+        "false_negatives": 29,
+        "false_positives": 20,
+        "precision": 0.3548387096774194,
+        "recall": 0.275,
+        "true_positives": 11
+      },
+      "output_contract_compliant": 3,
+      "reported_cost_usd": 0.06271981,
+      "searched": 3
+    },
+    "food_lab__basic_almost_no_stir_risotto | required-search-silent-evidence-gate": {
+      "cases": 2,
+      "citation_annotations": 6,
+      "delimiter_adapted_strict": {
+        "f1": 0.24390243902439024,
+        "false_negatives": 17,
+        "false_positives": 14,
+        "precision": 0.2631578947368421,
+        "recall": 0.22727272727272727,
+        "true_positives": 5
+      },
+      "identity_only_strict": {
+        "f1": 0.24390243902439024,
+        "false_negatives": 17,
+        "false_positives": 14,
+        "precision": 0.2631578947368421,
+        "recall": 0.22727272727272727,
+        "true_positives": 5
+      },
+      "output_contract_compliant": 2,
+      "reported_cost_usd": 0.018175200000000002,
+      "searched": 2
+    },
+    "food_lab__basic_almost_no_stir_risotto | winning-prompt-search-available": {
+      "cases": 2,
+      "citation_annotations": 6,
+      "delimiter_adapted_strict": {
+        "f1": 0.3181818181818182,
+        "false_negatives": 15,
+        "false_positives": 15,
+        "precision": 0.3181818181818182,
+        "recall": 0.3181818181818182,
+        "true_positives": 7
+      },
+      "identity_only_strict": {
+        "f1": 0.3181818181818182,
+        "false_negatives": 15,
+        "false_positives": 15,
+        "precision": 0.3181818181818182,
+        "recall": 0.3181818181818182,
+        "true_positives": 7
+      },
+      "output_contract_compliant": 2,
+      "reported_cost_usd": 0.017965607,
+      "searched": 2
+    },
+    "plenty__goat_cheese_souffles_with_vanilla_poached_peaches | required-search-silent-evidence-gate": {
+      "cases": 4,
+      "citation_annotations": 6,
+      "delimiter_adapted_strict": {
+        "f1": 0.4271844660194175,
+        "false_negatives": 42,
+        "false_positives": 17,
+        "precision": 0.5641025641025641,
+        "recall": 0.34375,
+        "true_positives": 22
+      },
+      "identity_only_strict": {
+        "f1": 0.5043478260869565,
+        "false_negatives": 35,
+        "false_positives": 22,
+        "precision": 0.5686274509803921,
+        "recall": 0.453125,
+        "true_positives": 29
+      },
+      "output_contract_compliant": 2,
+      "reported_cost_usd": 0.135608008,
+      "searched": 4
+    },
+    "plenty__goat_cheese_souffles_with_vanilla_poached_peaches | winning-prompt-search-available": {
+      "cases": 4,
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.3853211009174312,
+        "false_negatives": 43,
+        "false_positives": 24,
+        "precision": 0.4666666666666667,
+        "recall": 0.328125,
+        "true_positives": 21
+      },
+      "identity_only_strict": {
+        "f1": 0.3853211009174312,
+        "false_negatives": 43,
+        "false_positives": 24,
+        "precision": 0.4666666666666667,
+        "recall": 0.328125,
+        "true_positives": 21
+      },
+      "output_contract_compliant": 3,
+      "reported_cost_usd": 0.043900937,
+      "searched": 2
+    },
+    "salt_fat_acid_heat__lori_s_chocolate_midnight_cake | required-search-silent-evidence-gate": {
+      "cases": 4,
+      "citation_annotations": 6,
+      "delimiter_adapted_strict": {
+        "f1": 0.4444444444444444,
+        "false_negatives": 22,
+        "false_positives": 13,
+        "precision": 0.5185185185185185,
+        "recall": 0.3888888888888889,
+        "true_positives": 14
+      },
+      "identity_only_strict": {
+        "f1": 0.47887323943661975,
+        "false_negatives": 19,
+        "false_positives": 18,
+        "precision": 0.4857142857142857,
+        "recall": 0.4722222222222222,
+        "true_positives": 17
+      },
+      "output_contract_compliant": 3,
+      "reported_cost_usd": 0.13697828099999998,
+      "searched": 4
+    },
+    "salt_fat_acid_heat__lori_s_chocolate_midnight_cake | winning-prompt-search-available": {
+      "cases": 4,
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.39393939393939387,
+        "false_negatives": 23,
+        "false_positives": 17,
+        "precision": 0.43333333333333335,
+        "recall": 0.3611111111111111,
+        "true_positives": 13
+      },
+      "identity_only_strict": {
+        "f1": 0.39393939393939387,
+        "false_negatives": 23,
+        "false_positives": 17,
+        "precision": 0.43333333333333335,
+        "recall": 0.3611111111111111,
+        "true_positives": 13
+      },
+      "output_contract_compliant": 3,
+      "reported_cost_usd": 0.063941553,
+      "searched": 2
+    }
+  },
+  "cells": [
+    {
+      "attempt_id": "attempt_98e9077487b543078bdf973e355e64e1",
+      "case_id": "case_33ae3745a814c981d723572a7d1e0d996076131ef76bb147734d1b6f6fe2f85d",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.0,
+        "false_negatives": 25,
+        "false_positives": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "true_positives": 0
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.16666666666666666,
+        "false_negatives": 22,
+        "false_positives": 8,
+        "precision": 0.2727272727272727,
+        "recall": 0.12,
+        "true_positives": 3
+      },
+      "model": "anthropic/claude-opus-4.8",
+      "output_contract_compliant": false,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns",
+      "reported_cost_usd": 0.090905,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-claude/run_604da973966340df8338955a6b886935/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_5558ccf7525842988b533585eb5203f5",
+      "case_id": "case_ec8e2b349419e76ba55fb78e1962a1356e1546ab55f97162a34769465b388528",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.0,
+        "false_negatives": 10,
+        "false_positives": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "true_positives": 0
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.4210526315789474,
+        "false_negatives": 6,
+        "false_positives": 5,
+        "precision": 0.4444444444444444,
+        "recall": 0.4,
+        "true_positives": 4
+      },
+      "model": "anthropic/claude-opus-4.8",
+      "output_contract_compliant": false,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "enchanted_broccoli_forest__moroccan_orange_walnut_salad",
+      "reported_cost_usd": 0.084365,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-claude/run_604da973966340df8338955a6b886935/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_db235c93baea43bbb50155d7d36af59f",
+      "case_id": "case_80e8d6e25de274eee6394e5cb635fb387385f91378e1b38306bdbeef2382ada9",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.0,
+        "false_negatives": 16,
+        "false_positives": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "true_positives": 0
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.5,
+        "false_negatives": 9,
+        "false_positives": 5,
+        "precision": 0.5833333333333334,
+        "recall": 0.4375,
+        "true_positives": 7
+      },
+      "model": "anthropic/claude-opus-4.8",
+      "output_contract_compliant": false,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "plenty__goat_cheese_souffles_with_vanilla_poached_peaches",
+      "reported_cost_usd": 0.087915,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-claude/run_604da973966340df8338955a6b886935/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_d4bc1a912bab4696aba6a309bf36afc8",
+      "case_id": "case_76fe82088a36bda0d696b056459889d11e7679914fd190410205855a8205e8cc",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.0,
+        "false_negatives": 9,
+        "false_positives": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "true_positives": 0
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.35294117647058826,
+        "false_negatives": 6,
+        "false_positives": 5,
+        "precision": 0.375,
+        "recall": 0.3333333333333333,
+        "true_positives": 3
+      },
+      "model": "anthropic/claude-opus-4.8",
+      "output_contract_compliant": false,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "salt_fat_acid_heat__lori_s_chocolate_midnight_cake",
+      "reported_cost_usd": 0.08955,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-claude/run_604da973966340df8338955a6b886935/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_d136cfef190941fb9764a747bc106d63",
+      "case_id": "case_071da56db4ba745d9db3d65d74ab97027ad08415507bcd91159645319386f60d",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.16216216216216217,
+        "false_negatives": 22,
+        "false_positives": 9,
+        "precision": 0.25,
+        "recall": 0.12,
+        "true_positives": 3
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.16216216216216217,
+        "false_negatives": 22,
+        "false_positives": 9,
+        "precision": 0.25,
+        "recall": 0.12,
+        "true_positives": 3
+      },
+      "model": "anthropic/claude-opus-4.8",
+      "output_contract_compliant": true,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns",
+      "reported_cost_usd": 0.01607,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-claude/run_604da973966340df8338955a6b886935/attempts.jsonl",
+      "searched": false,
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_d08192d150534b339d6740d537cadbf3",
+      "case_id": "case_a8a1746ed57e4da73d4dd5a68363e978d417316983f4009e53cfe7f324c55a42",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.3,
+        "false_negatives": 7,
+        "false_positives": 7,
+        "precision": 0.3,
+        "recall": 0.3,
+        "true_positives": 3
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.3,
+        "false_negatives": 7,
+        "false_positives": 7,
+        "precision": 0.3,
+        "recall": 0.3,
+        "true_positives": 3
+      },
+      "model": "anthropic/claude-opus-4.8",
+      "output_contract_compliant": true,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "enchanted_broccoli_forest__moroccan_orange_walnut_salad",
+      "reported_cost_usd": 0.0157,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-claude/run_604da973966340df8338955a6b886935/attempts.jsonl",
+      "searched": false,
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_3ea147d30e1e45dcb7c78efb75cfcf00",
+      "case_id": "case_9feda7a15062c8f9ac396f637ce90ffc7980c7d2a345c0d0d97349b824b235f1",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.24000000000000005,
+        "false_negatives": 13,
+        "false_positives": 6,
+        "precision": 0.3333333333333333,
+        "recall": 0.1875,
+        "true_positives": 3
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.24000000000000005,
+        "false_negatives": 13,
+        "false_positives": 6,
+        "precision": 0.3333333333333333,
+        "recall": 0.1875,
+        "true_positives": 3
+      },
+      "model": "anthropic/claude-opus-4.8",
+      "output_contract_compliant": true,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "plenty__goat_cheese_souffles_with_vanilla_poached_peaches",
+      "reported_cost_usd": 0.015445,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-claude/run_604da973966340df8338955a6b886935/attempts.jsonl",
+      "searched": false,
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_3b5e052399af480fac0bbb57c0128e44",
+      "case_id": "case_37607d01fa7a9ad04b023310488ae6889e34918a7ac4d6dc6cf8e06cceda8aff",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.3,
+        "false_negatives": 6,
+        "false_positives": 8,
+        "precision": 0.2727272727272727,
+        "recall": 0.3333333333333333,
+        "true_positives": 3
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.3,
+        "false_negatives": 6,
+        "false_positives": 8,
+        "precision": 0.2727272727272727,
+        "recall": 0.3333333333333333,
+        "true_positives": 3
+      },
+      "model": "anthropic/claude-opus-4.8",
+      "output_contract_compliant": true,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "salt_fat_acid_heat__lori_s_chocolate_midnight_cake",
+      "reported_cost_usd": 0.015905,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-claude/run_604da973966340df8338955a6b886935/attempts.jsonl",
+      "searched": false,
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_b9ab5e40f8064951a9cf681d59862e48",
+      "case_id": "case_a2e721092a9dc0a4ad79e6255ec318e17dd81f6f2f2ec0e7c40efdf180c6e893",
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.28571428571428575,
+        "false_negatives": 9,
+        "false_positives": 6,
+        "precision": 0.3333333333333333,
+        "recall": 0.25,
+        "true_positives": 3
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.28571428571428575,
+        "false_negatives": 9,
+        "false_positives": 6,
+        "precision": 0.3333333333333333,
+        "recall": 0.25,
+        "true_positives": 3
+      },
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "output_contract_compliant": true,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "art_gluten_free_bread__fennel_seed_and_olive_oil_tortas_tortas_de_aceite_y_anis",
+      "reported_cost_usd": 0.0101543908,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-deepseek/run_8f71f16687cc409d8cd4bacc02024cef/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 2
+    },
+    {
+      "attempt_id": "attempt_bed3cf950e4d49db9636d4d9398b6ee3",
+      "case_id": "case_a352c47134d06a17453cc5bad6f6f4d44bdffd29a8ecf9e74c28db527e4920a9",
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.2702702702702703,
+        "false_negatives": 20,
+        "false_positives": 7,
+        "precision": 0.4166666666666667,
+        "recall": 0.2,
+        "true_positives": 5
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.2702702702702703,
+        "false_negatives": 20,
+        "false_positives": 7,
+        "precision": 0.4166666666666667,
+        "recall": 0.2,
+        "true_positives": 5
+      },
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "output_contract_compliant": true,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns",
+      "reported_cost_usd": 0.011486877999999999,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-deepseek/run_8f71f16687cc409d8cd4bacc02024cef/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 2
+    },
+    {
+      "attempt_id": "attempt_7dcdd1027d324949a1cbf9ae09412fd5",
+      "case_id": "case_cf680bd9129e122c7230f3130de8b07aa1dd9c833640f0f480076afa730f0adf",
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.4000000000000001,
+        "false_negatives": 6,
+        "false_positives": 6,
+        "precision": 0.4,
+        "recall": 0.4,
+        "true_positives": 4
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.4000000000000001,
+        "false_negatives": 6,
+        "false_positives": 6,
+        "precision": 0.4,
+        "recall": 0.4,
+        "true_positives": 4
+      },
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "output_contract_compliant": true,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "enchanted_broccoli_forest__moroccan_orange_walnut_salad",
+      "reported_cost_usd": 0.009898126,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-deepseek/run_8f71f16687cc409d8cd4bacc02024cef/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_3050a697b6d54c38a0aa6736b4d64f77",
+      "case_id": "case_b40bb008a7c0a50e71ccc8a3ac0d5fd505680b96c7de0fc02c80d96b25905767",
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.39999999999999997,
+        "false_negatives": 7,
+        "false_positives": 5,
+        "precision": 0.4444444444444444,
+        "recall": 0.36363636363636365,
+        "true_positives": 4
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.39999999999999997,
+        "false_negatives": 7,
+        "false_positives": 5,
+        "precision": 0.4444444444444444,
+        "recall": 0.36363636363636365,
+        "true_positives": 4
+      },
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "output_contract_compliant": true,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "food_lab__basic_almost_no_stir_risotto",
+      "reported_cost_usd": 0.01000135,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-deepseek/run_8f71f16687cc409d8cd4bacc02024cef/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_f233eec88acb461f86e6cf8bcf783e7e",
+      "case_id": "case_e26ebab2179af8ded9e3e912de569631e79d42531ce8dbc5386c70a9a28f2936",
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.6451612903225806,
+        "false_negatives": 6,
+        "false_positives": 5,
+        "precision": 0.6666666666666666,
+        "recall": 0.625,
+        "true_positives": 10
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.6451612903225806,
+        "false_negatives": 6,
+        "false_positives": 5,
+        "precision": 0.6666666666666666,
+        "recall": 0.625,
+        "true_positives": 10
+      },
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "output_contract_compliant": false,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "plenty__goat_cheese_souffles_with_vanilla_poached_peaches",
+      "reported_cost_usd": 0.010213408,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-deepseek/run_8f71f16687cc409d8cd4bacc02024cef/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_7de8d384ab314e6a9b667fee11402a86",
+      "case_id": "case_286d61e143d8bebeade5dfd5fea73254465d54a95a478bc6dd36d8e4774dccb2",
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.5555555555555556,
+        "false_negatives": 4,
+        "false_positives": 4,
+        "precision": 0.5555555555555556,
+        "recall": 0.5555555555555556,
+        "true_positives": 5
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.5555555555555556,
+        "false_negatives": 4,
+        "false_positives": 4,
+        "precision": 0.5555555555555556,
+        "recall": 0.5555555555555556,
+        "true_positives": 5
+      },
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "output_contract_compliant": true,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "salt_fat_acid_heat__lori_s_chocolate_midnight_cake",
+      "reported_cost_usd": 0.009943006,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-deepseek/run_8f71f16687cc409d8cd4bacc02024cef/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_019a01468b6c4950a2846734b58df339",
+      "case_id": "case_10f5e6702850c073f2417dff0cc8962a79e69fc4c36b95880099eb8fe60ca22f",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.28571428571428575,
+        "false_negatives": 9,
+        "false_positives": 6,
+        "precision": 0.3333333333333333,
+        "recall": 0.25,
+        "true_positives": 3
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.28571428571428575,
+        "false_negatives": 9,
+        "false_positives": 6,
+        "precision": 0.3333333333333333,
+        "recall": 0.25,
+        "true_positives": 3
+      },
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "output_contract_compliant": true,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "art_gluten_free_bread__fennel_seed_and_olive_oil_tortas_tortas_de_aceite_y_anis",
+      "reported_cost_usd": 0.000961554,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-deepseek/run_8f71f16687cc409d8cd4bacc02024cef/attempts.jsonl",
+      "searched": false,
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_08040e945098482f8a657ddf64964b13",
+      "case_id": "case_3c1ccdf26baacf02d32b54e0ae0ec4ae6e66e79699e5123a3b7c06525e100a0c",
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.0,
+        "false_negatives": 25,
+        "false_positives": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "true_positives": 0
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.0,
+        "false_negatives": 25,
+        "false_positives": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "true_positives": 0
+      },
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "output_contract_compliant": false,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns",
+      "reported_cost_usd": 0.011262478,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-deepseek/run_8f71f16687cc409d8cd4bacc02024cef/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 2
+    },
+    {
+      "attempt_id": "attempt_d1f36478ba11493ba2f87ac508eefc21",
+      "case_id": "case_c5ac21b1c10c926887ea6fa575a7004a43fc1cb9b5f948252200c9d58728f83f",
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.0,
+        "false_negatives": 10,
+        "false_positives": 1,
+        "precision": 0.0,
+        "recall": 0.0,
+        "true_positives": 0
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.0,
+        "false_negatives": 10,
+        "false_positives": 1,
+        "precision": 0.0,
+        "recall": 0.0,
+        "true_positives": 0
+      },
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "output_contract_compliant": false,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "enchanted_broccoli_forest__moroccan_orange_walnut_salad",
+      "reported_cost_usd": 0.00969841,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-deepseek/run_8f71f16687cc409d8cd4bacc02024cef/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_f6cf96d2b60a439081c0f040837dd0b8",
+      "case_id": "case_fab04e591fc04ebe38e5b8a526125c1b3931af30df8d2c2ac1312262798ea2e8",
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.45454545454545453,
+        "false_negatives": 6,
+        "false_positives": 6,
+        "precision": 0.45454545454545453,
+        "recall": 0.45454545454545453,
+        "true_positives": 5
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.45454545454545453,
+        "false_negatives": 6,
+        "false_positives": 6,
+        "precision": 0.45454545454545453,
+        "recall": 0.45454545454545453,
+        "true_positives": 5
+      },
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "output_contract_compliant": true,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "food_lab__basic_almost_no_stir_risotto",
+      "reported_cost_usd": 0.009867832,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-deepseek/run_8f71f16687cc409d8cd4bacc02024cef/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_f94bc6954f3a44d2b218c01109c8c0b4",
+      "case_id": "case_ca11a0edaebcdfb6054a95bed431640accd5ac5cb887134aa0563b77ecb2d94c",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.24000000000000005,
+        "false_negatives": 13,
+        "false_positives": 6,
+        "precision": 0.3333333333333333,
+        "recall": 0.1875,
+        "true_positives": 3
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.24000000000000005,
+        "false_negatives": 13,
+        "false_positives": 6,
+        "precision": 0.3333333333333333,
+        "recall": 0.1875,
+        "true_positives": 3
+      },
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "output_contract_compliant": true,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "plenty__goat_cheese_souffles_with_vanilla_poached_peaches",
+      "reported_cost_usd": 0.000921162,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-deepseek/run_8f71f16687cc409d8cd4bacc02024cef/attempts.jsonl",
+      "searched": false,
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_c57872bd58e64e7ab9973f3d2daf1006",
+      "case_id": "case_e7e4ba28ea45a62082648203273367dbbec2f3faf6202a83218fda89dcd2383f",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.19999999999999998,
+        "false_negatives": 8,
+        "false_positives": 0,
+        "precision": 1.0,
+        "recall": 0.1111111111111111,
+        "true_positives": 1
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.19999999999999998,
+        "false_negatives": 8,
+        "false_positives": 0,
+        "precision": 1.0,
+        "recall": 0.1111111111111111,
+        "true_positives": 1
+      },
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "output_contract_compliant": false,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "salt_fat_acid_heat__lori_s_chocolate_midnight_cake",
+      "reported_cost_usd": 0.000952578,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-deepseek/run_8f71f16687cc409d8cd4bacc02024cef/attempts.jsonl",
+      "searched": false,
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_b3ba10227c81443080c97585e5798b7a",
+      "case_id": "case_d2d09dd86bb58274addc15ca39b0f341477a4da48f456189513ea68052e95906",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.2777777777777778,
+        "false_negatives": 20,
+        "false_positives": 6,
+        "precision": 0.45454545454545453,
+        "recall": 0.2,
+        "true_positives": 5
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.2777777777777778,
+        "false_negatives": 20,
+        "false_positives": 6,
+        "precision": 0.45454545454545453,
+        "recall": 0.2,
+        "true_positives": 5
+      },
+      "model": "openai/gpt-5.6-sol",
+      "output_contract_compliant": true,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns",
+      "reported_cost_usd": 0.0286974,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-openai-retry/run_dea3793b806f42e596222621482362d7/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_50fa95497cd84e43a737791a76dc863e",
+      "case_id": "case_3500efa99741842b32aa97ec3844d496fc453cfa70679fa7388d5acc96b12b7d",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.5,
+        "false_negatives": 5,
+        "false_positives": 5,
+        "precision": 0.5,
+        "recall": 0.5,
+        "true_positives": 5
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.5,
+        "false_negatives": 5,
+        "false_positives": 5,
+        "precision": 0.5,
+        "recall": 0.5,
+        "true_positives": 5
+      },
+      "model": "openai/gpt-5.6-sol",
+      "output_contract_compliant": true,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "enchanted_broccoli_forest__moroccan_orange_walnut_salad",
+      "reported_cost_usd": 0.028416,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-openai/run_60d461f8b213412eb67185d7f25bd069/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_10993d410e6c4955a937a4583acdc3f4",
+      "case_id": "case_093a51bfa8050aeea1bc93ba43cc1b03f0e171114b3c133093ad29973246989c",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.35714285714285715,
+        "false_negatives": 11,
+        "false_positives": 7,
+        "precision": 0.4166666666666667,
+        "recall": 0.3125,
+        "true_positives": 5
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.35714285714285715,
+        "false_negatives": 11,
+        "false_positives": 7,
+        "precision": 0.4166666666666667,
+        "recall": 0.3125,
+        "true_positives": 5
+      },
+      "model": "openai/gpt-5.6-sol",
+      "output_contract_compliant": true,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "plenty__goat_cheese_souffles_with_vanilla_poached_peaches",
+      "reported_cost_usd": 0.029225,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-openai/run_60d461f8b213412eb67185d7f25bd069/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_95c303f2d2d3443bb1c095d0d0ae53e3",
+      "case_id": "case_b5139c254b3595ff88490cfe6b2488eaa2b2f54e76a92f011cea797ce029e5c4",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.5263157894736842,
+        "false_negatives": 4,
+        "false_positives": 5,
+        "precision": 0.5,
+        "recall": 0.5555555555555556,
+        "true_positives": 5
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.5263157894736842,
+        "false_negatives": 4,
+        "false_positives": 5,
+        "precision": 0.5,
+        "recall": 0.5555555555555556,
+        "true_positives": 5
+      },
+      "model": "openai/gpt-5.6-sol",
+      "output_contract_compliant": true,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "salt_fat_acid_heat__lori_s_chocolate_midnight_cake",
+      "reported_cost_usd": 0.0293195,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-openai/run_60d461f8b213412eb67185d7f25bd069/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_2b278a772e1c4cd5be49831806204737",
+      "case_id": "case_9704e7497107d91d5a18896a0b6ab5e19c68f8bcc0bf976697cea697fca8d772",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.22857142857142856,
+        "false_negatives": 21,
+        "false_positives": 6,
+        "precision": 0.4,
+        "recall": 0.16,
+        "true_positives": 4
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.22857142857142856,
+        "false_negatives": 21,
+        "false_positives": 6,
+        "precision": 0.4,
+        "recall": 0.16,
+        "true_positives": 4
+      },
+      "model": "openai/gpt-5.6-sol",
+      "output_contract_compliant": true,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns",
+      "reported_cost_usd": 0.029194,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-openai/run_60d461f8b213412eb67185d7f25bd069/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_fdf6c471e7f44a1e83b13520fd6d0367",
+      "case_id": "case_3aa74b3588e7d358c0ea5c0ab33cd3af42ef6fd85a8c6882ac713972a85704f7",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.4000000000000001,
+        "false_negatives": 6,
+        "false_positives": 6,
+        "precision": 0.4,
+        "recall": 0.4,
+        "true_positives": 4
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.4000000000000001,
+        "false_negatives": 6,
+        "false_positives": 6,
+        "precision": 0.4,
+        "recall": 0.4,
+        "true_positives": 4
+      },
+      "model": "openai/gpt-5.6-sol",
+      "output_contract_compliant": true,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "enchanted_broccoli_forest__moroccan_orange_walnut_salad",
+      "reported_cost_usd": 0.0292385,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-openai/run_60d461f8b213412eb67185d7f25bd069/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_cbb814988e274845969fb06cb88b15ca",
+      "case_id": "case_38c6f5ce8e61e61aa8b4782f17dce055c6b903c05206a169612cf2621d3e5dad",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.42857142857142855,
+        "false_negatives": 10,
+        "false_positives": 6,
+        "precision": 0.5,
+        "recall": 0.375,
+        "true_positives": 6
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.42857142857142855,
+        "false_negatives": 10,
+        "false_positives": 6,
+        "precision": 0.5,
+        "recall": 0.375,
+        "true_positives": 6
+      },
+      "model": "openai/gpt-5.6-sol",
+      "output_contract_compliant": true,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "plenty__goat_cheese_souffles_with_vanilla_poached_peaches",
+      "reported_cost_usd": 0.0193095,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-openai/run_60d461f8b213412eb67185d7f25bd069/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_52781f7a89944e13a706a2939a2ce077",
+      "case_id": "case_11ffb9c67670bd58ccf6dc6c8606c203912a1e48ecbfa2021e01024b1d1604c8",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.5555555555555556,
+        "false_negatives": 4,
+        "false_positives": 4,
+        "precision": 0.5555555555555556,
+        "recall": 0.5555555555555556,
+        "true_positives": 5
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.5555555555555556,
+        "false_negatives": 4,
+        "false_positives": 4,
+        "precision": 0.5555555555555556,
+        "recall": 0.5555555555555556,
+        "true_positives": 5
+      },
+      "model": "openai/gpt-5.6-sol",
+      "output_contract_compliant": true,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "salt_fat_acid_heat__lori_s_chocolate_midnight_cake",
+      "reported_cost_usd": 0.038449,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-openai/run_60d461f8b213412eb67185d7f25bd069/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_2eadf945315942e5999cd04f139eced6",
+      "case_id": "case_6a7810a6111da0175691580a98d610b526406e386b0526fcaa9ebbffd57b5787",
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.2222222222222222,
+        "false_negatives": 10,
+        "false_positives": 4,
+        "precision": 0.3333333333333333,
+        "recall": 0.16666666666666666,
+        "true_positives": 2
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.2222222222222222,
+        "false_negatives": 10,
+        "false_positives": 4,
+        "precision": 0.3333333333333333,
+        "recall": 0.16666666666666666,
+        "true_positives": 2
+      },
+      "model": "qwen/qwen3.8-27b",
+      "output_contract_compliant": true,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "art_gluten_free_bread__fennel_seed_and_olive_oil_tortas_tortas_de_aceite_y_anis",
+      "reported_cost_usd": 0.008864475,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-qwen/run_e7a01f9d2afd44cabd54ae9297177098/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 2
+    },
+    {
+      "attempt_id": "attempt_190c90f435e74cf7acdedc26c2edf1aa",
+      "case_id": "case_b2eecb37e766c750a320304d71bf248f4d51ef2dfaeaa3a54c2018e7175abc1b",
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.3125,
+        "false_negatives": 20,
+        "false_positives": 2,
+        "precision": 0.7142857142857143,
+        "recall": 0.2,
+        "true_positives": 5
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.3125,
+        "false_negatives": 20,
+        "false_positives": 2,
+        "precision": 0.7142857142857143,
+        "recall": 0.2,
+        "true_positives": 5
+      },
+      "model": "qwen/qwen3.8-27b",
+      "output_contract_compliant": true,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns",
+      "reported_cost_usd": 0.008839824999999999,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-qwen/run_e7a01f9d2afd44cabd54ae9297177098/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 2
+    },
+    {
+      "attempt_id": "attempt_a667295dc94f4b90b34a5a95127d03be",
+      "case_id": "case_82810062a129343cb845bf835a9697f5802acf2fd11044b919f7ff6878b197ea",
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.4000000000000001,
+        "false_negatives": 6,
+        "false_positives": 6,
+        "precision": 0.4,
+        "recall": 0.4,
+        "true_positives": 4
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.4000000000000001,
+        "false_negatives": 6,
+        "false_positives": 6,
+        "precision": 0.4,
+        "recall": 0.4,
+        "true_positives": 4
+      },
+      "model": "qwen/qwen3.8-27b",
+      "output_contract_compliant": true,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "enchanted_broccoli_forest__moroccan_orange_walnut_salad",
+      "reported_cost_usd": 0.008171725,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-qwen/run_e7a01f9d2afd44cabd54ae9297177098/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_ecb57667b5584b1293e2060e5612f407",
+      "case_id": "case_d965e5eb0366e73b4efa7934a7b4218b613dcd1f423c009c8bc1054944f027fa",
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.09523809523809525,
+        "false_negatives": 10,
+        "false_positives": 9,
+        "precision": 0.1,
+        "recall": 0.09090909090909091,
+        "true_positives": 1
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.09523809523809525,
+        "false_negatives": 10,
+        "false_positives": 9,
+        "precision": 0.1,
+        "recall": 0.09090909090909091,
+        "true_positives": 1
+      },
+      "model": "qwen/qwen3.8-27b",
+      "output_contract_compliant": true,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "food_lab__basic_almost_no_stir_risotto",
+      "reported_cost_usd": 0.00817385,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-qwen/run_e7a01f9d2afd44cabd54ae9297177098/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_80b24db4b36945229aa69f63346670f4",
+      "case_id": "case_026a0efdc48a22c2bf010167161587d16026b63bc18a84d6ab8dc2163fa02959",
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.5,
+        "false_negatives": 9,
+        "false_positives": 5,
+        "precision": 0.5833333333333334,
+        "recall": 0.4375,
+        "true_positives": 7
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.5,
+        "false_negatives": 9,
+        "false_positives": 5,
+        "precision": 0.5833333333333334,
+        "recall": 0.4375,
+        "true_positives": 7
+      },
+      "model": "qwen/qwen3.8-27b",
+      "output_contract_compliant": true,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "plenty__goat_cheese_souffles_with_vanilla_poached_peaches",
+      "reported_cost_usd": 0.008254599999999999,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-qwen/run_e7a01f9d2afd44cabd54ae9297177098/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_4a71b73e8b3a42b28a65589411f3406b",
+      "case_id": "case_9dd221247b157fdc44b4002a129e208a44ebe5d6e7f54f1b47fb6e96f0a4ca64",
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.47058823529411764,
+        "false_negatives": 5,
+        "false_positives": 4,
+        "precision": 0.5,
+        "recall": 0.4444444444444444,
+        "true_positives": 4
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.47058823529411764,
+        "false_negatives": 5,
+        "false_positives": 4,
+        "precision": 0.5,
+        "recall": 0.4444444444444444,
+        "true_positives": 4
+      },
+      "model": "qwen/qwen3.8-27b",
+      "output_contract_compliant": true,
+      "prompt": "required-search-silent-evidence-gate",
+      "recipe_id": "salt_fat_acid_heat__lori_s_chocolate_midnight_cake",
+      "reported_cost_usd": 0.008165775,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-qwen/run_e7a01f9d2afd44cabd54ae9297177098/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_fc7c09225e2e47a383e8cb844cc7b293",
+      "case_id": "case_9ddbfc93819e0f37673ba875a7fbf3fe4b4a6eaabf1745a77eb48cda24fa6227",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.1111111111111111,
+        "false_negatives": 11,
+        "false_positives": 5,
+        "precision": 0.16666666666666666,
+        "recall": 0.08333333333333333,
+        "true_positives": 1
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.1111111111111111,
+        "false_negatives": 11,
+        "false_positives": 5,
+        "precision": 0.16666666666666666,
+        "recall": 0.08333333333333333,
+        "true_positives": 1
+      },
+      "model": "qwen/qwen3.8-27b",
+      "output_contract_compliant": true,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "art_gluten_free_bread__fennel_seed_and_olive_oil_tortas_tortas_de_aceite_y_anis",
+      "reported_cost_usd": 0.000371875,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-qwen/run_e7a01f9d2afd44cabd54ae9297177098/attempts.jsonl",
+      "searched": false,
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_8285b16c6eb146b18001045dbb4021e1",
+      "case_id": "case_8721e2f91d1da3f06b76dd19082951f8047c5e1392717b4fa6e3d33eb2cf959d",
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.16216216216216217,
+        "false_negatives": 22,
+        "false_positives": 9,
+        "precision": 0.25,
+        "recall": 0.12,
+        "true_positives": 3
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.16216216216216217,
+        "false_negatives": 22,
+        "false_positives": 9,
+        "precision": 0.25,
+        "recall": 0.12,
+        "true_positives": 3
+      },
+      "model": "qwen/qwen3.8-27b",
+      "output_contract_compliant": false,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns",
+      "reported_cost_usd": 0.000715275,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-qwen/run_e7a01f9d2afd44cabd54ae9297177098/attempts.jsonl",
+      "searched": false,
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_67e2cfb4de4e4b97b4138c3e5d6a4652",
+      "case_id": "case_a21c3a39126ad0ccc07d463732aba4bb7ce78bf8694738a6ff6b6e60ad1d9717",
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.4000000000000001,
+        "false_negatives": 6,
+        "false_positives": 6,
+        "precision": 0.4,
+        "recall": 0.4,
+        "true_positives": 4
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.4000000000000001,
+        "false_negatives": 6,
+        "false_positives": 6,
+        "precision": 0.4,
+        "recall": 0.4,
+        "true_positives": 4
+      },
+      "model": "qwen/qwen3.8-27b",
+      "output_contract_compliant": true,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "enchanted_broccoli_forest__moroccan_orange_walnut_salad",
+      "reported_cost_usd": 0.0080829,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-qwen/run_e7a01f9d2afd44cabd54ae9297177098/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_c02519f9baac499ba9561616a2fe8a79",
+      "case_id": "case_125419522eabd763958f264c067305980fc7df35b1b6a31349755f218c58637b",
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.18181818181818182,
+        "false_negatives": 9,
+        "false_positives": 9,
+        "precision": 0.18181818181818182,
+        "recall": 0.18181818181818182,
+        "true_positives": 2
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.18181818181818182,
+        "false_negatives": 9,
+        "false_positives": 9,
+        "precision": 0.18181818181818182,
+        "recall": 0.18181818181818182,
+        "true_positives": 2
+      },
+      "model": "qwen/qwen3.8-27b",
+      "output_contract_compliant": true,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "food_lab__basic_almost_no_stir_risotto",
+      "reported_cost_usd": 0.008097775,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-qwen/run_e7a01f9d2afd44cabd54ae9297177098/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_72b59bc3ecc048448964082023d0172e",
+      "case_id": "case_8ada8f943cc71d311152369c0cda61229352ff61033977f673c6e4b2a3781ed8",
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.5806451612903225,
+        "false_negatives": 7,
+        "false_positives": 6,
+        "precision": 0.6,
+        "recall": 0.5625,
+        "true_positives": 9
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.5806451612903225,
+        "false_negatives": 7,
+        "false_positives": 6,
+        "precision": 0.6,
+        "recall": 0.5625,
+        "true_positives": 9
+      },
+      "model": "qwen/qwen3.8-27b",
+      "output_contract_compliant": false,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "plenty__goat_cheese_souffles_with_vanilla_poached_peaches",
+      "reported_cost_usd": 0.008225275,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-qwen/run_e7a01f9d2afd44cabd54ae9297177098/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_86a0f4e44e644301bc92e7871f4e5053",
+      "case_id": "case_68fdf07304968962e9f1dcbc07f08b95bf400968f52159e5b11221c48d2130be",
+      "citation_annotations": 3,
+      "delimiter_adapted_strict": {
+        "f1": 0.4444444444444444,
+        "false_negatives": 5,
+        "false_positives": 5,
+        "precision": 0.4444444444444444,
+        "recall": 0.4444444444444444,
+        "true_positives": 4
+      },
+      "finish_reason": "stop",
+      "identity_only_strict": {
+        "f1": 0.4444444444444444,
+        "false_negatives": 5,
+        "false_positives": 5,
+        "precision": 0.4444444444444444,
+        "recall": 0.4444444444444444,
+        "true_positives": 4
+      },
+      "model": "qwen/qwen3.8-27b",
+      "output_contract_compliant": true,
+      "prompt": "winning-prompt-search-available",
+      "recipe_id": "salt_fat_acid_heat__lori_s_chocolate_midnight_cake",
+      "reported_cost_usd": 0.008634975,
+      "run": "artifacts/runs/cookbook-experiment-3-moderate-scale-qwen/run_e7a01f9d2afd44cabd54ae9297177098/attempts.jsonl",
+      "searched": true,
+      "web_search_requests": 2
+    }
+  ],
+  "common_heldout_by_model_and_prompt": {
+    "anthropic/claude-opus-4.8 | required-search-silent-evidence-gate": {
+      "cases": 4,
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.0,
+        "false_negatives": 60,
+        "false_positives": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "true_positives": 0
+      },
+      "identity_only_strict": {
+        "f1": 0.34,
+        "false_negatives": 43,
+        "false_positives": 23,
+        "precision": 0.425,
+        "recall": 0.2833333333333333,
+        "true_positives": 17
+      },
+      "output_contract_compliant": 0,
+      "reported_cost_usd": 0.352735,
+      "searched": 4
+    },
+    "anthropic/claude-opus-4.8 | winning-prompt-search-available": {
+      "cases": 4,
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.23529411764705882,
+        "false_negatives": 48,
+        "false_positives": 30,
+        "precision": 0.2857142857142857,
+        "recall": 0.2,
+        "true_positives": 12
+      },
+      "identity_only_strict": {
+        "f1": 0.23529411764705882,
+        "false_negatives": 48,
+        "false_positives": 30,
+        "precision": 0.2857142857142857,
+        "recall": 0.2,
+        "true_positives": 12
+      },
+      "output_contract_compliant": 4,
+      "reported_cost_usd": 0.06312,
+      "searched": 0
+    },
+    "deepseek/deepseek-v4-pro-0813 | required-search-silent-evidence-gate": {
+      "cases": 4,
+      "citation_annotations": 12,
+      "delimiter_adapted_strict": {
+        "f1": 0.4528301886792453,
+        "false_negatives": 36,
+        "false_positives": 22,
+        "precision": 0.5217391304347826,
+        "recall": 0.4,
+        "true_positives": 24
+      },
+      "identity_only_strict": {
+        "f1": 0.4528301886792453,
+        "false_negatives": 36,
+        "false_positives": 22,
+        "precision": 0.5217391304347826,
+        "recall": 0.4,
+        "true_positives": 24
+      },
+      "output_contract_compliant": 3,
+      "reported_cost_usd": 0.041541418,
+      "searched": 4
+    },
+    "deepseek/deepseek-v4-pro-0813 | winning-prompt-search-available": {
+      "cases": 4,
+      "citation_annotations": 6,
+      "delimiter_adapted_strict": {
+        "f1": 0.11267605633802817,
+        "false_negatives": 56,
+        "false_positives": 7,
+        "precision": 0.36363636363636365,
+        "recall": 0.06666666666666667,
+        "true_positives": 4
+      },
+      "identity_only_strict": {
+        "f1": 0.11267605633802817,
+        "false_negatives": 56,
+        "false_positives": 7,
+        "precision": 0.36363636363636365,
+        "recall": 0.06666666666666667,
+        "true_positives": 4
+      },
+      "output_contract_compliant": 1,
+      "reported_cost_usd": 0.022834627999999996,
+      "searched": 2
+    },
+    "openai/gpt-5.6-sol | required-search-silent-evidence-gate": {
+      "cases": 4,
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.3883495145631068,
+        "false_negatives": 40,
+        "false_positives": 23,
+        "precision": 0.46511627906976744,
+        "recall": 0.3333333333333333,
+        "true_positives": 20
+      },
+      "identity_only_strict": {
+        "f1": 0.3883495145631068,
+        "false_negatives": 40,
+        "false_positives": 23,
+        "precision": 0.46511627906976744,
+        "recall": 0.3333333333333333,
+        "true_positives": 20
+      },
+      "output_contract_compliant": 4,
+      "reported_cost_usd": 0.11565790000000001,
+      "searched": 4
+    },
+    "openai/gpt-5.6-sol | winning-prompt-search-available": {
+      "cases": 4,
+      "citation_annotations": 0,
+      "delimiter_adapted_strict": {
+        "f1": 0.3762376237623763,
+        "false_negatives": 41,
+        "false_positives": 22,
+        "precision": 0.4634146341463415,
+        "recall": 0.31666666666666665,
+        "true_positives": 19
+      },
+      "identity_only_strict": {
+        "f1": 0.3762376237623763,
+        "false_negatives": 41,
+        "false_positives": 22,
+        "precision": 0.4634146341463415,
+        "recall": 0.31666666666666665,
+        "true_positives": 19
+      },
+      "output_contract_compliant": 4,
+      "reported_cost_usd": 0.116191,
+      "searched": 4
+    },
+    "qwen/qwen3.8-27b | required-search-silent-evidence-gate": {
+      "cases": 4,
+      "citation_annotations": 12,
+      "delimiter_adapted_strict": {
+        "f1": 0.41237113402061853,
+        "false_negatives": 40,
+        "false_positives": 17,
+        "precision": 0.5405405405405406,
+        "recall": 0.3333333333333333,
+        "true_positives": 20
+      },
+      "identity_only_strict": {
+        "f1": 0.41237113402061853,
+        "false_negatives": 40,
+        "false_positives": 17,
+        "precision": 0.5405405405405406,
+        "recall": 0.3333333333333333,
+        "true_positives": 20
+      },
+      "output_contract_compliant": 4,
+      "reported_cost_usd": 0.033431925,
+      "searched": 4
+    },
+    "qwen/qwen3.8-27b | winning-prompt-search-available": {
+      "cases": 4,
+      "citation_annotations": 9,
+      "delimiter_adapted_strict": {
+        "f1": 0.3773584905660377,
+        "false_negatives": 40,
+        "false_positives": 26,
+        "precision": 0.43478260869565216,
+        "recall": 0.3333333333333333,
+        "true_positives": 20
+      },
+      "identity_only_strict": {
+        "f1": 0.3773584905660377,
+        "false_negatives": 40,
+        "false_positives": 26,
+        "precision": 0.43478260869565216,
+        "recall": 0.3333333333333333,
+        "true_positives": 20
+      },
+      "output_contract_compliant": 2,
+      "reported_cost_usd": 0.025658425000000002,
+      "searched": 3
+    }
+  },
+  "common_heldout_by_prompt": {
+    "required-search-silent-evidence-gate": {
+      "cases": 16,
+      "citation_annotations": 24,
+      "delimiter_adapted_strict": {
+        "f1": 0.34972677595628415,
+        "false_negatives": 176,
+        "false_positives": 62,
+        "precision": 0.5079365079365079,
+        "recall": 0.26666666666666666,
+        "true_positives": 64
+      },
+      "identity_only_strict": {
+        "f1": 0.39901477832512317,
+        "false_negatives": 159,
+        "false_positives": 85,
+        "precision": 0.4879518072289157,
+        "recall": 0.3375,
+        "true_positives": 81
+      },
+      "output_contract_compliant": 11,
+      "reported_cost_usd": 0.543366243,
+      "searched": 16
+    },
+    "winning-prompt-search-available": {
+      "cases": 16,
+      "citation_annotations": 15,
+      "delimiter_adapted_strict": {
+        "f1": 0.2894736842105263,
+        "false_negatives": 185,
+        "false_positives": 85,
+        "precision": 0.39285714285714285,
+        "recall": 0.22916666666666666,
+        "true_positives": 55
+      },
+      "identity_only_strict": {
+        "f1": 0.2894736842105263,
+        "false_negatives": 185,
+        "false_positives": 85,
+        "precision": 0.39285714285714285,
+        "recall": 0.22916666666666666,
+        "true_positives": 55
+      },
+      "output_contract_compliant": 11,
+      "reported_cost_usd": 0.227804053,
+      "searched": 9
+    }
+  },
+  "common_heldout_recipe_ids": [
+    "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns",
+    "enchanted_broccoli_forest__moroccan_orange_walnut_salad",
+    "plenty__goat_cheese_souffles_with_vanilla_poached_peaches",
+    "salt_fat_acid_heat__lori_s_chocolate_midnight_cake"
+  ],
+  "description": "Deterministic-v3 strict identity metrics. delimiter_adapted_strict adds only list delimiters; identity_only_strict additionally removes Claude's fixed search-narration prefix without changing ingredient words.",
+  "input_runs": [
+    "artifacts/runs/cookbook-experiment-3-moderate-scale-qwen/run_e7a01f9d2afd44cabd54ae9297177098/attempts.jsonl",
+    "artifacts/runs/cookbook-experiment-3-moderate-scale-deepseek/run_8f71f16687cc409d8cd4bacc02024cef/attempts.jsonl",
+    "artifacts/runs/cookbook-experiment-3-moderate-scale-openai/run_60d461f8b213412eb67185d7f25bd069/attempts.jsonl",
+    "artifacts/runs/cookbook-experiment-3-moderate-scale-openai-retry/run_dea3793b806f42e596222621482362d7/attempts.jsonl",
+    "artifacts/runs/cookbook-experiment-3-moderate-scale-claude/run_604da973966340df8338955a6b886935/attempts.jsonl"
+  ],
+  "operational": {
+    "attempts": 41,
+    "failed": 1,
+    "failures": [
+      {
+        "attempt_id": "attempt_214823f74e854f438385c13048363bb3",
+        "error": "OpenRouter response did not contain text content",
+        "model": "openai/gpt-5.6-sol",
+        "prompt": "required-search-silent-evidence-gate",
+        "recipe_id": "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns",
+        "reported_cost_usd": 0.0123675
+      }
+    ],
+    "reported_cost_usd": 0.8400308978000001,
+    "succeeded": 40
+  },
+  "overall_by_prompt": {
+    "required-search-silent-evidence-gate": {
+      "cases": 20,
+      "citation_annotations": 36,
+      "delimiter_adapted_strict": {
+        "f1": 0.33183856502242154,
+        "false_negatives": 212,
+        "false_positives": 86,
+        "precision": 0.4625,
+        "recall": 0.25874125874125875,
+        "true_positives": 74
+      },
+      "identity_only_strict": {
+        "f1": 0.37448559670781895,
+        "false_negatives": 195,
+        "false_positives": 109,
+        "precision": 0.455,
+        "recall": 0.3181818181818182,
+        "true_positives": 91
+      },
+      "output_contract_compliant": 15,
+      "reported_cost_usd": 0.5805603088,
+      "searched": 20
+    },
+    "winning-prompt-search-available": {
+      "cases": 20,
+      "citation_annotations": 21,
+      "delimiter_adapted_strict": {
+        "f1": 0.2850971922246221,
+        "false_negatives": 220,
+        "false_positives": 111,
+        "precision": 0.3728813559322034,
+        "recall": 0.23076923076923078,
+        "true_positives": 66
+      },
+      "identity_only_strict": {
+        "f1": 0.2850971922246221,
+        "false_negatives": 220,
+        "false_positives": 111,
+        "precision": 0.3728813559322034,
+        "recall": 0.23076923076923078,
+        "true_positives": 66
+      },
+      "output_contract_compliant": 15,
+      "reported_cost_usd": 0.247103089,
+      "searched": 11
+    }
+  }
+}
