@@ -1,0 +1,125 @@
+schema_version: 1
+experiment_id: cookbook-experiment-3-balanced-uncapped-quantity
+max_budget_usd: "1.20"
+repetitions: 1
+concurrency: 1
+max_retries: 0
+
+# The same four held-out recipes are used for every model and both conditions.
+recipes:
+  - salt_fat_acid_heat__lori_s_chocolate_midnight_cake
+  - enchanted_broccoli_forest__moroccan_orange_walnut_salad
+  - plenty__goat_cheese_souffles_with_vanilla_poached_peaches
+  - art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns
+
+prompts:
+  - id: uncapped-quantity-no-search
+    version: "1"
+    context_group: modern_title_only
+    tool_profile: no-tools
+    template: >-
+      Without using external tools or sources, give a complete best-effort
+      ingredient-and-quantity hypothesis for “{recipe_name}” from
+      “{cookbook_title}”. Return every ingredient row you reasonably associate
+      with the specific named recipe, preserving source order and the quantity
+      and ingredient wording as specifically as you remember them. Write unknown
+      instead of inventing a precise quantity you do not know. Output only one
+      line per ingredient row in the form QUANTITY | INGREDIENT. There is no item
+      limit. Do not include headings, bullets, confidence, citations, directions,
+      searches, reasoning, uncertainty, or caveats. Do not abstain.
+
+  - id: uncapped-quantity-required-search
+    version: "2"
+    context_group: modern_title_only
+    tool_profile: web-auto-quantity
+    template: >-
+      Before producing the final answer, you must call the web-search tool at
+      least once to look for the exact named recipe or a clearly attributed
+      adaptation of “{recipe_name}” from “{cookbook_title}”. Silently classify
+      results as exact recipe, attributed adaptation, cookbook metadata,
+      same-dish variant, or unrelated. Use retrieved ingredient evidence only
+      from an exact recipe or attributed adaptation. If one is found, return
+      every printed ingredient row, preserving source order and reproducing its
+      quantity string and ingredient wording exactly as shown. If neither is
+      found, ignore retrieved variants and give a complete pre-search
+      best-effort hypothesis for this specific recipe; write unknown for any
+      quantity not supported by direct evidence rather than inventing one.
+      Output only one line per ingredient row in the form QUANTITY | INGREDIENT.
+      There is no item limit. Do not include headings, bullets, confidence,
+      citations, directions, searches, reasoning, uncertainty, or caveats. Do
+      not abstain.
+
+tool_profiles:
+  - id: no-tools
+    web_search: null
+
+  - id: web-auto-quantity
+    web_search:
+      engine: auto
+      max_uses: 1
+      max_results: 3
+      max_total_results: 3
+      max_characters: 4000
+      estimated_input_tokens_per_use: 4500
+      max_cost_usd: "0.012"
+
+models:
+  - id: openai/gpt-5.6-sol
+    routing:
+      only: [OpenAI]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 500
+    temperature: null
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "4.00"
+      output_per_million: "20.00"
+      web_search_per_request: "0.01"
+
+  - id: anthropic/claude-opus-4.8
+    routing:
+      only: [Anthropic]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 500
+    temperature: null
+    seed: null
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "5.00"
+      output_per_million: "25.00"
+      web_search_per_request: "0.01"
+
+  - id: qwen/qwen3.8-27b
+    routing:
+      only: [Alibaba]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 500
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "0.50"
+      output_per_million: "3.00"
+      web_search_per_request: "0.007"
+
+  - id: deepseek/deepseek-v4-pro-0813
+    routing:
+      only: [Alibaba]
+      allow_fallbacks: false
+      data_collection: deny
+      zdr: false
+    max_output_tokens: 500
+    temperature: 0
+    seed: 0
+    reasoning_enabled: false
+    pricing_ceiling:
+      input_per_million: "1.32"
+      output_per_million: "3.96"
+      web_search_per_request: "0.007"
