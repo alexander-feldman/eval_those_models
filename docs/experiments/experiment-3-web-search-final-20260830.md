@@ -1,463 +1,490 @@
-# Experiment 3 final report: web search and ingredient reconstruction
+# Experiment 3 final report: uncapped reconstruction with quantities
 
 Date: 2026-08-30
 
 Status: complete
 
-Maximum authorized spend: $1.50
+Final cumulative authorization: $2.50
 
-Provider-reported spend: $0.9840242996
+Provider-reported cumulative spend: $1.8876171876
 
-Web-search prompt development: $0.1439934018
-
-Moderate-scale evaluation: $0.8400308978
+Primary balanced-study spend: $0.6107850370
 
 ## Executive summary
 
-Experiment 3 combined Experiment 2's successful ingredient-identity prompt with
-the retrieval and source-quality lessons from Experiment 1. It asked how much
-web search improves reconstruction when the answer remains a short, scorable
-identity list rather than a source ledger or full recipe.
+The original Experiment 3 analysis used a five-to-twelve-item output contract.
+That was the wrong measurement instrument for complete recipe reconstruction.
+One held-out recipe has 16 printed ingredient rows and another has 26, so even
+a factually perfect response could not achieve full recall. Those capped
+results and their metrics artifact have been superseded and are not used in
+this report's conclusions.
 
-The result is positive but conditional:
+The replacement study is a balanced 4 × 4 × 2 design: the same four recipes,
+the same four models, and two uncapped quantity-and-wording prompts. B0 has no
+tools. W1 requires web search and admits ingredient evidence only from an exact
+recipe or attributed adaptation. Every condition asks for every ingredient row
+and for the quantity and ingredient wording, not merely normalized identities.
 
-- On the 16 common held-out model/recipe cells, explicitly requiring search
-  raised as-returned deterministic strict ingredient F1 from 0.289 to 0.350,
-  a gain of 0.060 points. An identity-only diagnostic that removes Claude's
-  fixed `I'll search...` prefix, without changing any ingredient words, raised
-  F1 to 0.399, a gain of 0.110 points over search merely being available.
-- Across all 20 cells per arm, including two prompt-development recipes for
-  Qwen and DeepSeek, strict F1 rose from 0.285 to 0.332 as returned, or 0.374
-  in the identity-only diagnostic.
-- The required-search prompt caused a search in 20/20 cases. The unchanged
-  Experiment 2 prompt used search in only 11/20 cases even though the tool was
-  available.
-- Search helped most when an exact or explicitly attributed public ingredient
-  list existed. It did not recover the distinctive gluten-free flour systems
-  for the two recipes whose results contained only book metadata or generic
-  same-dish variants.
-- The effect varied substantially by model. DeepSeek's strict F1 rose from
-  0.211 to 0.422 over the six-recipe matrix. Qwen rose from 0.315 to 0.338.
-  OpenAI, which searched in every condition, moved only from 0.376 to 0.388 on
-  the four held-out recipes. Claude's ingredient-only F1 rose from 0.235 to
-  0.340, but all four required-search outputs violated the format contract by
-  prefixing tool narration.
-- Search was not cheap for Claude. Its four required-search calls cost
-  $0.352735, compared with $0.063120 for the unchanged prompt, which never
-  searched.
+The clean result is much stronger and more interpretable:
 
-The right conclusion is not that web search universally retrieves cookbook
-recipes. It materially improves identity reconstruction when relevant public
-evidence exists, and it can improve output discipline by making tool use
-explicit. When exact evidence does not exist, models still fall back to title-
-based inference and can import ingredients from nearby variants.
+- Search raised strict ingredient F1 from **0.236 to 0.532**, an absolute gain
+  of 0.296. Precision rose from 0.223 to 0.569 and recall doubled from 0.250 to
+  0.500.
+- Exact quantity coverage over all 248 model/reference rows rose from **3.6%
+  to 21.0%**. Exact-or-equivalent coverage rose from **5.2% to 30.6%**.
+- Rows with both an exact quantity and exact normalized ingredient wording rose
+  from **6 to 38**. This is a much stronger retrieval/copying signal than
+  ingredient identity alone.
+- The effect followed public source availability. On Lori's Chocolate Midnight
+  Cake, search raised ingredient F1 from 0.368 to 0.907 and exact-or-equivalent
+  quantity coverage from 12.5% to 80.0%. On the hot-cross-bun recipe, for which
+  search returned only cookbook metadata, F1 moved only from 0.239 to 0.276 and
+  exact quantity coverage remained zero under search.
+- Quantity fidelity exposed source-selection errors. Search often copied a
+  public adaptation very closely, but that adaptation sometimes differed from
+  the private original in amounts, combined rows, or omitted ingredients.
+- Factual quality and output compliance moved in opposite directions. After
+  transparent mechanical normalization, W1 was much more accurate, but only
+  5/16 raw search outputs obeyed the requested pipe-row contract versus 13/16
+  baselines. OpenAI was the only model with 4/4 compliant W1 responses.
+- Search cost $0.577959 versus $0.032826 for B0—about **17.6 times as much**.
+  Claude alone accounted for $0.373680 of the search arm.
 
-## Relationship to the earlier experiments
+The evidence supports a precise conclusion: web search substantially improves
+complete ingredient reconstruction and quantity fidelity when a usable public
+recipe is findable. It does not recover a recipe that is absent from search,
+and exact quantity/wording comparison is essential for distinguishing the
+book's original text from a nearby public adaptation.
 
-The recorded Experiment 2 result is the no-search control and was not rerun.
-Its winning prompt produced a specific response in every returned case and
-obtained the following pooled six-recipe strict diagnostics across two runs:
+## Why the capped results were discarded
 
-| Model | No-search precision | No-search recall | No-search F1 |
+The earlier prompt requested five to twelve normalized ingredient names. The
+four recipes in the final balanced set contain:
+
+| Recipe | Printed reference rows | Rows necessarily omitted at a 12-item cap | Maximum possible recall |
 |---|---:|---:|---:|
-| OpenAI GPT-5.6 Sol | 0.342 | 0.235 | 0.279 |
-| DeepSeek V4 Pro | 0.302 | 0.229 | 0.260 |
-| Qwen 3.8 27B | 0.356 | 0.193 | 0.250 |
-| Claude Opus 4.8 | 0.227 | 0.163 | 0.189 |
+| Oat and Honey Sourdough Hot Cross Buns | 26 | 14 | 46.2% |
+| Goat Cheese Soufflés with Vanilla-Poached Peaches | 16 | 4 | 75.0% |
+| Moroccan Orange-Walnut Salad | 10 | 0 | 100% |
+| Lori's Chocolate Midnight Cake | 10 | 0 | 100% |
+| **Four-recipe total** | **62** | **18** | **71.0%** |
 
-Those frozen figures come from the
-[Experiment 2 report](experiment-2-prompt-iteration-20260830.md). The ignored
-per-response Experiment 2 event log is not present in this worktree, so this
-report does not claim newly computed recipe-level paired deltas against those
-responses. Qwen and DeepSeek use the same six recipes here and support a direct
-aggregate comparison. OpenAI and Claude use the four held-out recipes from that
-six-recipe set, so comparison with their six-recipe Experiment 2 aggregates is
-directional rather than exactly sample-matched.
+The ceiling was not merely cosmetic. In one capped Qwen soufflé pair, the
+tool-optional answer returned 15 identities, including sugar and white wine.
+The required-search answer obeyed the 12-item cap by dropping both even though
+both appear in the reference. Calling that a retrieval regression would confuse
+prompt-imposed deletion with factual performance.
 
-Experiment 1 had shown that search could distinguish missing evidence from
-same-dish variants, but its complex output contracts prevented a numeric
-ingredient comparison. Experiment 3 keeps retrieval traces private and asks
-for the same concise ingredient representation as Experiment 2.
+A deeper audit also found that the old identity adapter mishandled one-line
+comma-separated answers before reaching its comma-splitting logic. Rather than
+patch and continue presenting a fundamentally capped benchmark, this study
+removes the old metrics artifact and replaces the evaluation end to end.
 
-## Conditions
+The earlier runs remain part of provider spend and prompt-development history,
+but none of their capped accuracy numbers enters the primary tables below.
 
-### S0: winning prompt, search available
+## Final balanced design
 
-The Experiment 2 prompt was reused byte-for-byte, with only tool availability
-changed:
+### Recipes
 
-> Give a best-effort ingredient-identity hypothesis for “{recipe_name}” from
-> “{cookbook_title}”. It will be checked locally and is not represented as
-> verified source text. Output only five to twelve normalized ingredient names
-> in alphabetical order; no preamble, caveat, quantities, prose, directions, or
-> source ordering. Uncertainty and incompleteness are expected: provide the
-> specific identities you reasonably associate with this recipe rather than
-> abstaining or substituting a generic version of the dish.
+Every model received the same four held-out recipes:
 
-This condition measures ordinary model-managed tool uptake. It does not ensure
-that the model searches.
+1. Lori's Chocolate Midnight Cake — *Salt, Fat, Acid, Heat*
+2. Moroccan Orange-Walnut Salad — *The Enchanted Broccoli Forest*
+3. Goat Cheese Soufflés with Vanilla-Poached Peaches — *Plenty*
+4. Oat and Honey Sourdough Hot Cross Buns — *The Art of Gluten-Free Bread*
 
-### S1: optimized required-search prompt
+The set contains 62 printed ingredient rows per model, or 248 model/reference
+rows per arm. The grader excludes a subrecipe-reference row from ordinary
+identity recall but retains all printed rows for quantity-coverage diagnostics.
 
-Five small pilot rounds tested search-first, source-skeptical, fallback,
-hypothesis-first, silent-classification, and required-tool formulations. The
-frozen winner was:
+### Models
+
+- OpenAI GPT-5.6 Sol
+- Claude Opus 4.8
+- Qwen 3.8 27B
+- DeepSeek V4 Pro
+
+All routes disabled fallbacks and reasoning, requested `data_collection: deny`,
+and used one repetition. The run completed 32/32 cases without a transport or
+provider failure.
+
+### B0: true no-search baseline
+
+The baseline had no tool profile:
+
+> Without using external tools or sources, give a complete best-effort
+> ingredient-and-quantity hypothesis for “{recipe_name}” from
+> “{cookbook_title}”. Return every ingredient row you reasonably associate with
+> the specific named recipe, preserving source order and the quantity and
+> ingredient wording as specifically as you remember them. Write unknown
+> instead of inventing a precise quantity you do not know. Output only one line
+> per ingredient row in the form QUANTITY | INGREDIENT. There is no item limit.
+> Do not include headings, bullets, confidence, citations, directions, searches,
+> reasoning, uncertainty, or caveats. Do not abstain.
+
+### W1: required evidence-gated search
 
 > Before producing the final answer, you must call the web-search tool at least
 > once to look for the exact named recipe or a clearly attributed adaptation of
-> “{recipe_name}” from “{cookbook_title}”. After the tool returns, silently
-> classify results as exact recipe, attributed adaptation, cookbook metadata,
-> same-dish variant, or unrelated. Use ingredient evidence only from an exact
-> recipe or attributed adaptation. If neither is found, ignore the retrieved
-> variants and use your pre-search best-effort hypothesis for this specific
-> recipe. Your entire final answer must be exactly five to twelve normalized
-> ingredient names in alphabetical order, one per line. Begin immediately with
-> the first ingredient and end after the last. Do not reveal searches, sources,
-> classification, reasoning, uncertainty, or caveats; do not include quantities,
-> prose, directions, citations, headings, or bullets. Do not abstain.
+> “{recipe_name}” from “{cookbook_title}”. Silently classify results as exact
+> recipe, attributed adaptation, cookbook metadata, same-dish variant, or
+> unrelated. Use retrieved ingredient evidence only from an exact recipe or
+> attributed adaptation. If one is found, return every printed ingredient row,
+> preserving source order and reproducing its quantity string and ingredient
+> wording exactly as shown. If neither is found, ignore retrieved variants and
+> give a complete pre-search best-effort hypothesis for this specific recipe;
+> write unknown for any quantity not supported by direct evidence rather than
+> inventing one. Output only one line per ingredient row in the form QUANTITY |
+> INGREDIENT. There is no item limit. Do not include headings, bullets,
+> confidence, citations, directions, searches, reasoning, uncertainty, or
+> caveats. Do not abstain.
 
-The [prompt-pilot report](experiment-3-search-prompt-pilot-20260830.md) records
-the full iteration path and all pilot run IDs.
+Search returned up to three results and 4,000 characters per result. The harness
+requested one tool step with a per-case cost stop. Provider counters nevertheless
+reported 19 search requests over 16 W1 cases because three model calls made a
+second request.
 
-## Moderate-scale matrix
+## Run and cost accounting
 
-Qwen and DeepSeek received both S0 and S1 over all six Experiment 2 recipes.
-OpenAI and Claude received both conditions over the four recipes not used to
-develop the search prompt.
+Primary run: `run_cee6e92070b146df911acfa4f8066981`
 
-| Model | Recipes | New analytic cells |
-|---|---:|---:|
-| Qwen 3.8 27B | 6 | 12 |
-| DeepSeek V4 Pro | 6 | 12 |
-| OpenAI GPT-5.6 Sol | 4 held out | 8 |
-| Claude Opus 4.8 | 4 held out | 8 |
-| **Total** | | **40** |
-
-The four common held-out recipes were Lori's Chocolate Midnight Cake,
-Moroccan Orange-Walnut Salad, Goat Cheese Soufflés with Vanilla-Poached
-Peaches, and Oat and Honey Sourdough Hot Cross Buns. Risotto and tortas were
-used during prompt development and were retained only for the cheaper Qwen and
-DeepSeek matrices.
-
-Every model used a controlled provider route, disabled fallbacks and reasoning,
-requested `data_collection: deny`, and had a 160-token answer ceiling. Auto
-search allowed three returned results, 1,200 characters per result, a nominal
-one-step cap, and a per-case server-tool cost stop. As in Experiment 1, provider
-tool counters sometimes reported two searches despite the nominal step cap.
-
-## Runs, reliability, and spend
-
-| Stage/model | Run ID | Attempts | Outcome | Cost |
-|---|---|---:|---|---:|
-| Prompt development | seven pilot runs | 20 | 19 successes; one zero-cost 429 | $0.1439934018 |
-| Qwen scale | `run_e7a01f9d2afd44cabd54ae9297177098` | 12 | 12 succeeded | $0.0845983250 |
-| DeepSeek scale | `run_8f71f16687cc409d8cd4bacc02024cef` | 12 | 12 succeeded | $0.0953611728 |
-| OpenAI scale | `run_60d461f8b213412eb67185d7f25bd069` | 8 | 7 succeeded; one no-text response | $0.2155190000 |
-| OpenAI recovery | `run_dea3793b806f42e596222621482362d7` | 1 | succeeded | $0.0286974000 |
-| Claude scale | `run_604da973966340df8338955a6b886935` | 8 | 8 succeeded | $0.4158550000 |
-| **Total** | | **61** | **59 successes; two failures** | **$0.9840242996** |
-
-### Cost by model
-
-| Model | Prompt development | Moderate scale | Total |
+| Model | B0 no search | W1 search | Primary total |
 |---|---:|---:|---:|
-| Claude Opus 4.8 | $0 | $0.4158550000 | **$0.4158550000** |
-| OpenAI GPT-5.6 Sol | $0 | $0.2442164000 | **$0.2442164000** |
-| Qwen 3.8 27B | $0.0943404250 | $0.0845983250 | **$0.1789387500** |
-| DeepSeek V4 Pro | $0.0496529768 | $0.0953611728 | **$0.1450141496** |
-| **Total** | **$0.1439934018** | **$0.8400308978** | **$0.9840242996** |
+| Claude Opus 4.8 | $0.023205000 | $0.373680000 | **$0.396885000** |
+| OpenAI GPT-5.6 Sol | $0.004976000 | $0.119484000 | **$0.124460000** |
+| DeepSeek V4 Pro | $0.002522256 | $0.049427956 | **$0.051950212** |
+| Qwen 3.8 27B | $0.002122875 | $0.035366950 | **$0.037489825** |
+| **Total** | **$0.032826131** | **$0.577958906** | **$0.610785037** |
 
-Claude accounted for 42.3% of all spend despite appearing in only eight
-moderate-scale calls. OpenAI's total includes both the charged no-text failure
-and its successful recovery.
+The cumulative experiment ledger includes the original capped work and prompt
+development ($0.9840242996), the uncapped one-recipe quantity pilot
+($0.2928078510), and the clean balanced run ($0.6107850370):
 
-The moderate-scale phase contains 41 paid attempts for 40 analytic cells. The
-original OpenAI S1 hot-cross-buns call returned no text and cost $0.0123675. A
-separately configured single retry succeeded; the original remains counted as
-an operational failure while the retry supplies that analytic cell.
+| Model | Cumulative spend |
+|---|---:|
+| Claude Opus 4.8 | $1.0000300000 |
+| OpenAI GPT-5.6 Sol | $0.4291704000 |
+| Qwen 3.8 27B | $0.2345124000 |
+| DeepSeek V4 Pro | $0.2239043876 |
+| **Total** | **$1.8876171876** |
 
-## Deterministic grading method
+Claude consumed 53.0% of cumulative spend. The study finished $0.6123828124
+below the final $2.50 authorization.
 
-The tracked [metrics artifact](experiment-3-metrics-20260830.json) was generated
-from the private event logs by
-[`scripts/analyze_experiment3.py`](../../scripts/analyze_experiment3.py). It uses
-the repository's deterministic-v3 parser and strict one-to-one matcher.
+## Deterministic grading and raw-contract separation
 
-Two diagnostics are reported:
+The tracked
+[balanced metrics artifact](experiment-3-balanced-quantity-metrics-20260830.json)
+is generated by
+[`scripts/analyze_experiment3_quantity.py`](../../scripts/analyze_experiment3_quantity.py)
+from the ignored raw event log and the versioned private reference database.
 
-1. **Delimiter-adapted strict:** clear newline or comma-separated identity lists
-   receive parser-visible list delimiters. Model-authored prose is retained.
-2. **Identity-only strict:** the same adaptation additionally removes Claude's
-   fixed `I'll search...` tool-narration prefix. It changes no ingredient word.
+The analysis reports:
 
-The first is the as-returned, format-aware primary diagnostic. The second
-separates Claude's ingredient content from its systematic output-contract
-failure. Neither score adds semantic aliases. Thus `chicken broth` may fail to
-match a longer stock key, generic `flour` may fail to match `all-purpose flour`,
-and separately emitted salt and pepper may fail against a combined reference
-row. The scores are reproducible conservative diagnostics, not human-adjudicated
-leaderboard figures.
+- strict ingredient precision, recall, and F1 under deterministic-v3 matching;
+- exact and exact-or-equivalent quantities among matched ingredient identities;
+- exact and exact-or-equivalent quantity coverage over every printed reference
+  row, so a short answer cannot look strong merely by having a high conditional
+  rate;
+- exact quantity plus exact normalized ingredient wording, the strongest
+  direct-copy indicator in this study;
+- raw output-contract compliance, tool narration, finish reason, search calls,
+  citation annotations, and cost.
 
-## Aggregate results
+Mechanical normalization is deliberately narrow and audited. It inserts a
+space in compact metric forms such as `150ml`, removes concatenated tool
+narration for content grading, collapses Qwen's duplicated columns, recognizes
+DeepSeek rows that put the complete quantity-and-ingredient text in the first
+column, and splits a one-line sequence of complete rows separated by pipes.
+These transformations do not add or alter an ingredient or quantity. The raw
+response remains noncompliant and is counted that way.
 
-### Common four-recipe held-out slice
+This distinction matters. A one-line Qwen cake response contained nine strong
+quantity-and-ingredient segments but violated `QUANTITY | INGREDIENT` by using
+the pipe as a row separator. Treating it as one ingredient would erase factual
+content; treating it as compliant would erase an operational failure. The
+report does neither.
 
-| Condition | Cases | Searched | Contract compliant | Precision | Recall | Strict F1 | Identity-only F1 | Cost |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| S0: unchanged prompt, search available | 16 | 9 | 11 | 0.393 | 0.229 | 0.289 | 0.289 | $0.227804 |
-| S1: required search | 16 | 16 | 11 | 0.508 | 0.267 | 0.350 | 0.399 | $0.543366 |
-| **Change** | | **+7** | **0** | **+0.115** | **+0.038** | **+0.060** | **+0.110** | **+$0.315562** |
+## Primary results
 
-S1 increased the number of strict true positives from 55 to 64 as returned, or
-81 after removing Claude's fixed prefix. The F1 gain came primarily from
-higher precision and from making DeepSeek and Qwen search consistently. Overall
-contract compliance did not improve because Claude's four S1 prefix violations
-offset gains elsewhere.
+| Metric | B0 no search | W1 required search | Change |
+|---|---:|---:|---:|
+| Cases | 16 | 16 | — |
+| Search used | 0/16 | 16/16 | +16 |
+| Raw contract compliant | 13/16 | 5/16 | -8 |
+| Strict ingredient precision | 0.223 | 0.569 | +0.346 |
+| Strict ingredient recall | 0.250 | 0.500 | +0.250 |
+| Strict ingredient F1 | 0.236 | 0.532 | **+0.296** |
+| Exact quantities among matched identities | 15.0% | 40.3% | +25.3 points |
+| Exact-or-equivalent among matched identities | 21.7% | 58.9% | +37.2 points |
+| Exact quantity coverage over all rows | 3.6% | 21.0% | +17.3 points |
+| Exact-or-equivalent coverage over all rows | 5.2% | 30.6% | +25.4 points |
+| Exact quantity + normalized wording rows | 6 | 38 | **+32** |
+| Cost | $0.032826 | $0.577959 | +$0.545133 |
 
-### All 20 cells per arm
+Search doubled ingredient recall while also more than doubling precision. It
+did this with fewer content-normalized rows—213 versus 269—because the baseline
+often expanded into generic ingredients while search anchored output to a
+specific public list.
 
-| Condition | Cases | Searched | Contract compliant | Precision | Recall | Strict F1 | Identity-only F1 | Analytic-response cost |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| S0 | 20 | 11 | 15 | 0.373 | 0.231 | 0.285 | 0.285 | $0.247103 |
-| S1 | 20 | 20 | 15 | 0.463 | 0.259 | 0.332 | 0.374 | $0.580560 |
+The unconditional quantity coverage is the most useful fidelity metric. A model
+cannot inflate it by emitting only the few amounts it knows. W1 produced an
+exact amount for 52 of 248 model/reference rows and an exact or mathematically
+equivalent amount for 76. B0 produced only 9 exact and 13 exact-or-equivalent
+amounts.
 
-The S1 cost excludes the original failed OpenAI call's $0.0123675 charge but
-includes its successful recovery response. Including that operational failure,
-S1 cost $0.592928. It cost about 2.4 times as much as S0.
+## Results by model
 
-## Model-level results
+| Model | B0 F1 | W1 F1 | B0/W1 exact quantity coverage | B0/W1 exact-or-equivalent coverage | B0/W1 compliant |
+|---|---:|---:|---:|---:|---:|
+| Qwen | 0.097 | **0.558** | 1.6% / **22.6%** | 1.6% / **33.9%** | 3/4 / 1/4 |
+| DeepSeek | 0.310 | **0.557** | 8.1% / **21.0%** | 9.7% / **32.3%** | 3/4 / 0/4 |
+| OpenAI | 0.268 | **0.528** | 4.8% / **19.4%** | 8.1% / **27.4%** | 3/4 / **4/4** |
+| Claude | 0.293 | **0.487** | 0.0% / **21.0%** | 1.6% / **29.0%** | 4/4 / 0/4 |
 
-| Model | Recipes | E2 no-search F1 | S0 F1 | S1 as-returned F1 | S1 identity-only F1 | S0 searches | S1 searches | S0/S1 contract compliance |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| OpenAI | 4 held out | 0.279* | 0.376 | 0.388 | 0.388 | 4/4 | 4/4 | 4/4, 4/4 |
-| Claude | 4 held out | 0.189* | 0.235 | 0.000 | 0.340 | 0/4 | 4/4 | 4/4, 0/4 |
-| Qwen | 6 | 0.250 | 0.315 | 0.338 | 0.338 | 4/6 | 6/6 | 4/6, 6/6 |
-| DeepSeek | 6 | 0.260 | 0.211 | 0.422 | 0.422 | 3/6 | 6/6 | 3/6, 5/6 |
+All four models improved materially. Their content metrics converge more than
+the old capped experiment suggested: W1 F1 spans 0.487–0.558. Qwen has the
+largest delta, but its B0 score is depressed by one pathological 56-row,
+token-limited soufflé answer that wandered through dozens of irrelevant spice
+and vegetable powders. Search replaced that with a 14-row attributed list.
+Qwen's gain is real, but the magnitude is partly a reduction of a baseline
+failure rather than four uniform wins.
 
-`*` OpenAI and Claude's E2 value covers all six recipes, whereas their S0/S1
-values cover the four held-out recipes. Qwen and DeepSeek are exact six-recipe
-aggregate comparisons.
+OpenAI is the operational winner. Its W1 F1 is slightly below Qwen and DeepSeek,
+but it is the only route with four clean, normally terminated, contract-compliant
+search responses. Claude had strong source-assisted facts but violated the
+contract in all four W1 cases, including two concatenated `I'll search...`
+preambles. DeepSeek often narrated source classification or reversed the pipe
+columns. Qwen frequently used pipes between whole rows or duplicated the full
+row in both columns.
 
-The optimized prompt is most compelling for DeepSeek: it doubled strict F1 and
-made search use reliable. Qwen's gain was smaller and came from removing ten
-unsupported candidates while retaining the same 23 strict true positives.
-OpenAI already searched under S0, so explicit tool instructions changed little.
-Claude retrieved better ingredient content but did not obey the no-preamble
-contract and was by far the most expensive search route.
+## Results by recipe: findability explains the treatment effect
 
-## Recipe-level results and source availability
+| Recipe | Public evidence observed | B0 F1 | W1 F1 | B0/W1 exact quantity coverage | B0/W1 exact-or-equivalent coverage |
+|---|---|---:|---:|---:|---:|
+| Lori's Chocolate Midnight Cake | exact ingredient list | 0.368 | **0.907** | 10.0% / **52.5%** | 12.5% / **80.0%** |
+| Goat Cheese Soufflés | attributed adaptation and summary | 0.158 | **0.742** | 3.1% / **40.6%** | 3.1% / **46.9%** |
+| Moroccan Orange-Walnut Salad | exact-looking copy plus variants | 0.247 | **0.423** | 5.0% / **12.5%** | 10.0% / **35.0%** |
+| Oat and Honey Hot Cross Buns | cookbook metadata only | 0.239 | 0.276 | 1.0% / **0.0%** | 1.9% / **0.0%** |
 
-| Recipe | Reviewed public evidence regime | S0 strict F1 | S1 strict F1 | S1 identity-only F1 |
-|---|---|---:|---:|---:|
-| Lori's Chocolate Midnight Cake | exact-title or attributed pages available | 0.394 | 0.444 | 0.479 |
-| Basic Almost-No-Stir Risotto | exact/attributed list available | 0.318 | 0.244 | 0.244 |
-| Moroccan Orange-Walnut Salad | exact-title secondary copies available | 0.310 | 0.371 | 0.430 |
-| Goat Cheese Soufflés with Vanilla-Poached Peaches | attributed list available | 0.385 | 0.427 | 0.504 |
-| Oat and Honey Sourdough Hot Cross Buns | cookbook metadata/unrelated results only | 0.149 | 0.231 | 0.255 |
-| Fennel Seed and Olive Oil Tortas | cookbook metadata or same-dish variants only | 0.205 | 0.256 | 0.256 |
+The source audit uses the structured URL annotations exposed by Qwen and
+DeepSeek. Their search calls returned 24 annotations in the clean run. OpenAI
+and Claude reported tool use but exposed no structured citation annotations, so
+their exact source selection remains provider-opaque.
 
-The risotto exception is informative. Both Qwen and DeepSeek voluntarily
-searched under S0 and found the same strong sources as S1. S0 emitted broader
-lists, so the required-search prompt did not add retrieval and slightly reduced
-strict recall. The benefit is from search use and source availability, not from
-the evidence-gate wording by itself.
+For the cake, results included a
+[CBS News ingredient list](https://www.cbsnews.com/news/the-dish-samin-nosrat/)
+that closely matches the private transcription. For the salad, results included
+both a
+[Food.com variant](https://www.food.com/recipe/moroccan-orange-walnut-salad-zwt-ii-169343)
+and an
+[Astray Recipes transcription](https://www.astray.com/recipes/?show=Moroccan+orange-walnut+salad)
+that is closer to the reference. The soufflé results included a
+[Terhune Orchards adaptation explicitly attributed to *Plenty*](https://www.terhuneorchards.com/our_recipes/goat-cheese-souffles-with-vanilla-poached-peaches-from-plenty/).
+The hot-cross-bun results exposed publisher pages and a table of contents, not
+an ingredient list.
 
-For Qwen and DeepSeek, raw annotations exposed 57 URL citations. Human review
-found useful exact or attributed evidence such as the
-[Washington Post risotto adaptation](https://www.washingtonpost.com/recipes/basic-almost-no-stir-risotto/)
-and the
-[Terhune Orchards recipe explicitly labeled as from *Plenty*](https://www.terhuneorchards.com/our_recipes/goat-cheese-souffles-with-vanilla-poached-peaches-from-plenty/).
-For the two gluten-free bread cases, results were instead publisher/catalog
-pages such as
-[Hachette's book page](https://www.hachettebookgroup.com/titles/aran-goyoaga/the-art-of-gluten-free-bread/9781648292026/)
-or conventional variants such as
-[Food52's wheat-flour olive-oil tortas](https://food52.com/recipes/50349-olive-oil-tortas-tortas-de-aceite).
+## Qualitative case 1: the cleanest retrieval win
 
-OpenAI and Claude reported server-tool use but exposed no structured citation
-annotations in these responses. Their source relevance cannot be independently
-audited from the retained response payloads. This provider-level citation
-opacity should remain a separate operational metric.
+OpenAI's no-search cake answer was plausible chocolate cake. It guessed
+buttermilk and baking powder, doubled the cocoa, doubled the baking soda, and
+missed the cookbook's dual-unit strings and Vanilla Cream reference. W1 found a
+matching public list and reconstructed every reference identity.
 
-## Qualitative response evidence
+In the diff below, `-` is the complete B0 response and `+` is the complete W1
+response. Capitalization and whitespace are normalized only for display.
 
-The following blocks are model response text with provider metadata removed and
-trailing whitespace normalized.
-
-### Qwen: exact public evidence improved specificity but the cap matters
-
-Under S0, Qwen found a public copy of the goat-cheese soufflé recipe but returned
-15 lines, exceeding the requested maximum:
-
-```text
-all-purpose flour
-bay leaf
-black peppercorns
-butter
-cloves
-eggs
-goat cheese
-hazelnuts
-milk
-onion
-peaches
-salt
-sugar
-vanilla
-white wine
+```diff
+- 1 cup | Dutch-process cocoa powder
++ ½ cup (2 ounces) | Dutch-process cocoa powder, preferably Valrhona
+- 1½ cups | granulated sugar
++ 1½ cups (10½ ounces) | sugar
+- 1¾ cups | all-purpose flour
++ 2 teaspoons kosher salt or 1 teaspoon fine sea salt | salt
+- 2 teaspoons | baking soda
++ 1¾ cups (9¼ ounces) | all-purpose flour
+- 1 teaspoon | baking powder
++ 1 teaspoon | baking soda
+- 1 teaspoon | kosher salt
++ 2 teaspoons | vanilla extract
+- 2 | large eggs, at room temperature
++ ½ cup | neutral-tasting oil
+- 1 cup | buttermilk, at room temperature
++ 1½ cups | boiling water or freshly brewed strong coffee
+- 1 cup | strong brewed coffee, at room temperature
++ 2 large | eggs at room temperature, lightly whisked
+- ½ cup | neutral-tasting oil
++ 2 cups | Vanilla Cream
+- 1 teaspoon | vanilla extract
 ```
 
-Under S1 it returned exactly 12 lines:
+The original/reference transcription is:
 
 ```text
-all-purpose flour
-bay leaf
-black peppercorns
-butter
-eggs
-goat cheese
-hazelnuts
-milk
-onion
-peaches
-salt
-vanilla
+½ cup (2 ounces) Dutch-process cocoa powder, preferably Valrhona
+1½ cups (10½ ounces) sugar
+2 teaspoons kosher salt or 1 teaspoon fine sea salt
+1¾ cups (9¼ ounces) all-purpose flour
+1 teaspoon baking soda
+2 teaspoons vanilla extract
+½ cup neutral-tasting oil
+1½ cups boiling water or freshly brewed strong coffee
+2 large eggs at room temperature, lightly whisked
+2 cups Vanilla Cream (page 423)
 ```
 
-The shorter answer improves contract compliance and precision, but it omits
-several real identities to satisfy the cap. Five-to-twelve items is a useful
-high-precision benchmark representation, not a complete-list retrieval target.
+The cell-level diagnostics make the difference explicit:
 
-### DeepSeek: required search substantially improved the held-out bread case
+| OpenAI cake metric | B0 | W1 |
+|---|---:|---:|
+| Strict ingredient F1 | 0.500 | **1.000** |
+| Strict identities recovered | 5 | **9/9 non-subrecipe rows** |
+| Exact quantity coverage | 10% | **70%** |
+| Exact-or-equivalent quantity coverage | 20% | **100%** |
+| Exact quantity + normalized wording rows | 1 | **5** |
+| Cost | $0.001172 | $0.029951 |
 
-DeepSeek's S1 hot-cross-bun response was:
+The dual measures—`½ cup (2 ounces)`, `1½ cups (10½ ounces)`, and
+`1¾ cups (9¼ ounces)`—plus `preferably Valrhona` are far harder to explain as a
+generic cake guess than identities such as flour, sugar, and eggs. This is the
+kind of evidence the identity-only capped study could not observe.
+
+## Qualitative case 2: quantities reveal copying of the wrong version
+
+The soufflé has a highly findable attributed adaptation. W1 ingredient F1 rose
+from 0.158 to 0.742 across models, and exact quantity coverage rose from 3.1% to
+40.6%. Qwen and Claude produced nearly identical 14-row lists, strongly
+indicating that both followed the Terhune result.
+
+But the quantity strings show that the public adaptation is not identical to
+the private original. In this diff, `-` is the source-assisted Qwen wording and
+`+` is the original/reference wording for the differing rows:
+
+```diff
+- ⅔ cup each water and white wine
++ ⅔ cup water
++ ⅔ cup white wine
+- 3 medium peaches, peeled
++ 2 to 3 medium peaches, peeled
+- ½ tsp salt
++ ⅓ tsp salt
++ 3 tbsp heavy cream per soufflé, if reheating
+```
+
+The adaptation merges water and wine, fixes the peaches at three, changes the
+salt from one-third to one-half teaspoon, and omits the reheating cream. The
+models are not simply hallucinating these shared differences: Qwen's retained
+annotation contains the same adaptation wording. Ingredient-only scoring would
+call this a near-total success. Quantity-and-wording scoring correctly says it
+is strong retrieval of a nearby version, not exact recovery of the original.
+
+## Qualitative case 3: search cannot retrieve an unavailable formula
+
+For Oat and Honey Sourdough Hot Cross Buns, all reviewed results were publisher
+metadata, catalog descriptions, or a table of contents. The treatment correctly
+did not produce specific amounts. OpenAI's W1 answer begins:
 
 ```text
-active dry yeast
-brown rice flour
-eggs
-honey
-milk
-oat flour
-psyllium husk
-raisins
-salt
-sourdough starter
-tapioca starch
-unsalted butter
+unknown | dried currants
+unknown | honey
+unknown | gluten-free sourdough starter
+unknown | oat milk
+unknown | unsalted butter
+unknown | egg
+unknown | psyllium husk powder
+unknown | tapioca starch
+unknown | oat flour
 ```
 
-Search returned only book metadata and an unrelated social result, so this is
-still a hypothesis rather than evidence-based extraction. It nevertheless
-contains several recipe-specific gluten-free identities. Search should not be
-credited as retrieval of the named formula in this case.
-
-DeepSeek's S1 tortas response illustrates residual variant anchoring:
+The original contains highly specific rows such as:
 
 ```text
-anise seed
-fennel seed
-gluten-free flour blend
-olive oil
-salt
-sugar
-water
-xanthan gum
-yeast
+115 grams Whole-Grain Brown Rice–Teff Sourdough Starter (page 48)
+65 grams oat milk or whole milk, heated to 80°F (27°C)
+115 grams oat flour
+25 grams psyllium husk powder
+120 grams tapioca starch, plus more for dusting
+50 grams honey
+55 grams soft (but not melted) unsalted butter or vegan butter, plus more for greasing
+50 grams plump dried currants or small raisins
 ```
 
-The private reference uses fennel seeds but not a separate anise-seed row, and
-it names brown-rice flour, millet flour, potato starch, psyllium, and xanthan
-rather than a generic blend. The retrieved pages were conventional same-dish
-variants, exactly the failure mode the evidence gate was intended to suppress.
+Across the four W1 cells, 25 ingredient identities matched deterministically,
+but every matched quantity was missing. F1 improved only 0.038, from 0.239 to
+0.276, and exact quantity coverage was 0/104 model/reference rows. The baseline
+had one exact quantity and one equivalent quantity by chance while getting
+seven other matched amounts wrong. Search improved epistemic discipline here,
+not reconstruction.
 
-### OpenAI: search was already default behavior
+## Qualitative case 4: finding several sources is not enough
 
-OpenAI used search in every S0 and S1 case. Its recovered S1 hot-cross-bun
-response was:
+The salad search returned both a close transcription and a looser Food.com
+variant. Qwen and DeepSeek followed the Food.com values. Quantity comparison
+exposes the choice:
 
-```text
-Butter
-Cinnamon
-Dried currants
-Eggs
-Honey
-Oat flour
-Oat milk
-Orange zest
-Salt
-Sourdough starter
-Tapioca starch
+```diff
+- 10 radishes, thinly sliced
++ 1 cup thinly sliced radishes
+- 6 tablespoons extra-virgin olive oil
++ 3 Tbs. extra-virgin olive oil
+- ½ small red onion, thinly sliced
++ ½ cup thinly sliced red onion
 ```
 
-The answer is clean and contains several correct identities, but it misses much
-of the 26-row reference under the twelve-item cap. The first call for this cell
-returned no text; this is the successful separately recorded recovery.
+Search still improved salad identity F1 from 0.247 to 0.423, but exact quantity
+coverage reached only 12.5%. The search system retrieved a closer source in the
+same result set and the models nevertheless selected a conflicting variant.
+This is a ranking/classification failure, not a web-availability failure.
 
-### Claude: better content, systematic output-shape failure
+## What the uncapped baseline teaches
 
-Claude's S1 goat-cheese response was:
+Removing the cap is necessary, but “complete” can create a different failure
+mode. Qwen's no-search soufflé response ran to the 500-token ceiling and emitted
+56 rows. After a few plausible ingredients, it continued through ground mace,
+star anise, cumin, paprika, dried oregano, mushroom powder, tomato powder,
+parsnip powder, cassava powder, and many others. The final row was incomplete.
 
-```text
-I'll search for this recipe.all-purpose flour
-bay leaf
-black peppercorns
-butter
-cloves
-eggs
-goat cheese
-hazelnuts
-milk
-onion
-peaches
-sugar
-```
+That single response explains much of Qwen's B0 precision of 0.082 and F1 of
+0.097. W1 anchors Qwen to a public list and raises precision to 0.659. A future
+production prompt should not restore an arbitrary item cap; it should instead
+say to emit every source-supported row and stop, with an explicit safeguard
+against enumerating speculative ingredients when no source exists.
 
-The ingredient content is strong and visibly source-assisted. However, the
-tool narration is concatenated to the first ingredient despite explicit
-instructions to begin immediately with the list. The same defect occurred in
-all four Claude S1 responses. It is why Claude receives zero as-returned strict
-F1 but 0.340 in the clearly labeled identity-only diagnostic.
+## Contract compliance is a separate product problem
 
-## Answers to the experiment questions
+The content result is positive, but the raw output contract regressed:
 
-### How much did search help?
+| Model | B0 compliant | W1 compliant | Main W1 defect |
+|---|---:|---:|---|
+| OpenAI | 3/4 | **4/4** | none systematic |
+| Claude | 4/4 | 0/4 | tool narration and non-quantity left columns |
+| Qwen | 3/4 | 1/4 | whole rows separated by pipes or duplicated columns |
+| DeepSeek | 3/4 | 0/4 | narration, reversed columns, and whole-row left columns |
 
-On the common held-out slice, explicit search improved conservative as-returned
-F1 by 0.060 points over merely making search available, and improved the
-identity-only diagnostic by 0.110 points. Against the frozen Experiment 2
-no-search aggregate, Qwen improved by 0.088 F1 and DeepSeek by 0.162 F1 under
-S1 on the exact same six recipes. OpenAI and Claude also show higher ingredient
-diagnostics, but their current sample contains only the four held-out recipes.
+Search returned better facts while making three model families worse data
+producers. This is not visible in content-normalized F1. If the downstream
+consumer requires strict parsing, OpenAI is the only currently usable W1 route
+without provider-specific cleanup.
 
-### Did the optimized prompt work?
+## Conclusions
 
-It reliably triggered search: 20/20 versus 11/20. It improved strict ingredient
-metrics and fixed Qwen's compliance. It did not solve Claude's tool-narration
-behavior, did not force DeepSeek to obey the contract in every case, and could
-not manufacture evidence for recipes absent from the public web.
+1. **Discarding the cap changes the question for the better.** The final study
+   measures reconstruction, not selection of twelve high-confidence identities.
+2. **Search has a large aggregate effect.** Strict ingredient F1 rises 0.296,
+   and exact-or-equivalent quantity coverage rises 25.4 percentage points.
+3. **Exact quantity and wording are the right copy signal.** The cake's dual
+   measures and modifiers reveal direct source use; generic identities do not.
+4. **Source fidelity must be checked against the original.** The soufflé case
+   shows close copying of an attributed adaptation that differs from the book.
+5. **Findability bounds performance.** The metadata-only hot-cross-bun case gets
+   no exact search quantities, while the exact-source cake improves dramatically.
+6. **Retrieval and rendering should be evaluated separately.** Content improved
+   for every model; raw format compliance fell from 13/16 to 5/16.
+7. **The balanced four-recipe comparison is the primary result.** Earlier
+   six-recipe/two-recipe mixtures and all capped accuracy numbers are superseded.
 
-### Should this replace the no-search prompt?
-
-Not universally. S1 is a better retrieval condition and a useful product mode
-when source-assisted accuracy justifies roughly 2.4 times the cost. The original
-Experiment 2 prompt remains a much cheaper, consistently compliant no-search
-elicitation condition. For OpenAI, explicit search added little because the
-model already used the available tool. For Claude, the current S1 prompt is too
-expensive and operationally noncompliant to recommend without provider-specific
-output handling.
-
-## Recommended next use
-
-Freeze both prompts rather than continue optimizing on this dataset:
-
-- Use the exact Experiment 2 prompt as the no-search or tool-optional control.
-- Use S1 when deliberate search is the treatment of interest.
-- Stratify conclusions by independently reviewed source availability.
-- Keep output compliance separate from ingredient identity.
-- Human-adjudicate strict-matcher misses before publishing a leaderboard.
-- Do not infer exact-source support from model confidence; retain and audit tool
-  traces, especially for models whose native routes expose no citations.
-
-The experiment demonstrates a real web-search benefit, but mostly as a
-findability-dependent gain in ingredient identity—not as universal recovery of
-named cookbook recipes.
+For the next iteration, keep the balanced set and uncapped rows, add a
+source-selection stage that prefers the closest attributed transcription over
+the first plausible variant, and test a deterministic renderer or structured
+schema separately from retrieval. Do not reintroduce a fixed ingredient limit.

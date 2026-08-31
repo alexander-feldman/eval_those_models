@@ -2,7 +2,13 @@
 
 Date: 2026-08-30
 
-Status: prompt pilot complete; ready for a stratified Gate A
+Status: superseded
+
+> **Superseded:** The final study rejected this pilot's five-to-twelve-item
+> contract because it mechanically capped recall on 16- and 26-row recipes.
+> Its prompt-development history and spend remain valid, but its proposed
+> capped evaluation and scale-up criteria must not be used. See the
+> [balanced uncapped final report](experiment-3-web-search-final-20260830.md).
 
 Maximum authorized spend: $0.20
 

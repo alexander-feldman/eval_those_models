@@ -15,7 +15,7 @@ from typing import Any
 from eval_those_models.grading import grade_response
 from eval_those_models.grading.models import MatchMethod, ReferenceIngredient
 from eval_those_models.grading.normalization import normalize_text
-from eval_those_models.grading.parsing import parse_quantity_text
+from eval_those_models.grading.parsing import parse_ingredient_line, parse_quantity_text
 
 _QUANTITY_START = re.compile(
     r"(?<!\w)(?:\d+\s*/\s*\d+|[¼½¾⅓⅔⅛⅜⅝⅞]|\d+(?:\.\d+)?)"
@@ -91,6 +91,8 @@ def _strip_first_line_tool_narration(text: str) -> tuple[str, bool]:
     if "|" not in first:
         return text, False
     left = first.split("|", 1)[0]
+    if parse_quantity_text(left) is not None:
+        return "\n".join(lines), False
     match = _QUANTITY_START.search(left)
     if match is None or match.start() == 0:
         return "\n".join(lines), False
@@ -99,20 +101,31 @@ def _strip_first_line_tool_narration(text: str) -> tuple[str, bool]:
 
 
 def _adapt_quantity_rows(text: str) -> tuple[str, bool]:
-    """Convert the requested pipe rows to ordinary grader ingredient lines."""
+    """Mechanically recover ingredient rows while retaining contract failures."""
     stripped, had_tool_narration = _strip_first_line_tool_narration(text)
     adapted: list[str] = []
     for line in _meaningful_lines(stripped):
+        if line.count("|") > 1:
+            adapted.extend(f"- {part.strip()}" for part in line.split("|") if part.strip())
+            continue
         if "|" not in line:
             adapted.append(line)
             continue
         left, right = (part.strip() for part in line.split("|", 1))
         left = re.sub(r"^(\d+(?:\.\d+)?)(ml|g|oz)\b", r"\1 \2", left, flags=re.I)
+        parsed_left = parse_ingredient_line(left, 0)
+        right_normalized = normalize_text(right).casefold()
         if left.casefold() == "unknown":
             rendered = right
         elif (
-            right.casefold() == "unknown" and parse_quantity_text(left) is None
-        ) or normalize_text(left).casefold() == normalize_text(right).casefold():
+            (right.casefold() == "unknown" and parse_quantity_text(left) is None)
+            or normalize_text(left).casefold() == normalize_text(right).casefold()
+            or (
+                parsed_left is not None
+                and parsed_left.quantity is not None
+                and right_normalized in normalize_text(parsed_left.ingredient_phrase).casefold()
+            )
+        ):
             rendered = left
         else:
             rendered = f"{left} {right}"
@@ -191,6 +204,7 @@ def _cell_metrics(
         "web_search_requests": tool_details.get("web_search_requests", 0),
         "citation_annotations": len(message.get("annotations") or []),
         "output_rows": len(_meaningful_lines(event["output_text"])),
+        "content_normalized_rows": len(grade.response.ingredients),
         "output_contract_compliant": _contract_compliant(event["output_text"]),
         "had_tool_narration": had_tool_narration,
         "reference_rows": len(references),
@@ -224,9 +238,13 @@ def _aggregate(rows: list[dict[str, Any]]) -> dict[str, Any]:
     return {
         "cases": len(rows),
         "searched": sum(row["searched"] for row in rows),
+        "web_search_requests": sum(row["web_search_requests"] for row in rows),
+        "citation_annotations": sum(row["citation_annotations"] for row in rows),
+        "finish_reasons": Counter(row["finish_reason"] for row in rows),
         "output_contract_compliant": sum(row["output_contract_compliant"] for row in rows),
         "had_tool_narration": sum(row["had_tool_narration"] for row in rows),
         "output_rows": sum(row["output_rows"] for row in rows),
+        "content_normalized_rows": sum(row["content_normalized_rows"] for row in rows),
         "reference_rows": reference_rows,
         "reported_cost_usd": sum(row["reported_cost_usd"] for row in rows),
         "strict_identity": {
@@ -288,9 +306,11 @@ def build_report(database: Path, run_paths: list[Path]) -> dict[str, Any]:
     return {
         "analysis_version": 1,
         "description": (
-            "Deterministic-v3 identity and quantity metrics for pipe-delimited, "
-            "uncapped ingredient rows. Tool narration is removed only for grading "
-            "and remains a separate contract-failure metric."
+            "Deterministic-v3 identity and quantity metrics for uncapped ingredient "
+            "rows. Mechanical normalization handles compact metric units, duplicated "
+            "columns, and one-line pipe-separated rows. Tool narration is removed only "
+            "for grading. Every raw formatting defect remains a separate contract "
+            "failure metric."
         ),
         "input_runs": [str(path) for path in run_paths],
         "operational": {
@@ -303,6 +323,8 @@ def build_report(database: Path, run_paths: list[Path]) -> dict[str, Any]:
         },
         "overall_by_prompt": _group(rows, ("prompt",)),
         "by_model_and_prompt": _group(rows, ("model", "prompt")),
+        "by_recipe_and_prompt": _group(rows, ("recipe_id", "prompt")),
+        "by_model_recipe_and_prompt": _group(rows, ("model", "recipe_id", "prompt")),
         "cells": sorted(rows, key=lambda row: (row["model"], row["prompt"])),
     }
 

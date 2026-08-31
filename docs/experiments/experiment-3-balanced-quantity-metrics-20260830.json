@@ -1,0 +1,3499 @@
+{
+  "analysis_version": 1,
+  "by_model_and_prompt": {
+    "anthropic/claude-opus-4.8 | uncapped-quantity-no-search": {
+      "cases": 4,
+      "citation_annotations": 0,
+      "content_normalized_rows": 63,
+      "exact_ingredient_wording": 11,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reasons": {
+        "stop": 4
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 11,
+      "output_contract_compliant": 4,
+      "output_rows": 63,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.05555555555555555,
+        "exact_or_equivalent_reference_coverage": 0.016129032258064516,
+        "exact_rate_among_matched": 0.0,
+        "exact_reference_coverage": 0.0,
+        "matched_count": 18,
+        "statuses": {
+          "equivalent": 1,
+          "extra": 1,
+          "missing": 15,
+          "wrong": 1
+        }
+      },
+      "reference_rows": 62,
+      "reported_cost_usd": 0.023205,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.2926829268292683,
+        "false_negatives": 42,
+        "false_positives": 45,
+        "precision": 0.2857142857142857,
+        "recall": 0.3,
+        "true_positives": 18
+      },
+      "web_search_requests": 0
+    },
+    "anthropic/claude-opus-4.8 | uncapped-quantity-required-search": {
+      "cases": 4,
+      "citation_annotations": 0,
+      "content_normalized_rows": 59,
+      "exact_ingredient_wording": 19,
+      "exact_quantity_and_ingredient_wording": 9,
+      "exact_quantity_and_normalized_ingredient_wording": 9,
+      "finish_reasons": {
+        "stop": 4
+      },
+      "had_tool_narration": 2,
+      "normalized_exact_ingredient_wording": 19,
+      "output_contract_compliant": 0,
+      "output_rows": 59,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.6206896551724138,
+        "exact_or_equivalent_reference_coverage": 0.2903225806451613,
+        "exact_rate_among_matched": 0.4482758620689655,
+        "exact_reference_coverage": 0.20967741935483872,
+        "matched_count": 29,
+        "statuses": {
+          "equivalent": 5,
+          "exact": 13,
+          "missing": 10,
+          "wrong": 1
+        }
+      },
+      "reference_rows": 62,
+      "reported_cost_usd": 0.37367999999999996,
+      "searched": 4,
+      "strict_identity": {
+        "f1": 0.48739495798319327,
+        "false_negatives": 31,
+        "false_positives": 30,
+        "precision": 0.4915254237288136,
+        "recall": 0.48333333333333334,
+        "true_positives": 29
+      },
+      "web_search_requests": 4
+    },
+    "deepseek/deepseek-v4-pro-0813 | uncapped-quantity-no-search": {
+      "cases": 4,
+      "citation_annotations": 0,
+      "content_normalized_rows": 69,
+      "exact_ingredient_wording": 15,
+      "exact_quantity_and_ingredient_wording": 3,
+      "exact_quantity_and_normalized_ingredient_wording": 3,
+      "finish_reasons": {
+        "stop": 4
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 15,
+      "output_contract_compliant": 3,
+      "output_rows": 69,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.3,
+        "exact_or_equivalent_reference_coverage": 0.0967741935483871,
+        "exact_rate_among_matched": 0.25,
+        "exact_reference_coverage": 0.08064516129032258,
+        "matched_count": 20,
+        "statuses": {
+          "equivalent": 1,
+          "exact": 5,
+          "extra": 1,
+          "wrong": 13
+        }
+      },
+      "reference_rows": 62,
+      "reported_cost_usd": 0.002522256,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.31007751937984496,
+        "false_negatives": 40,
+        "false_positives": 49,
+        "precision": 0.2898550724637681,
+        "recall": 0.3333333333333333,
+        "true_positives": 20
+      },
+      "web_search_requests": 0
+    },
+    "deepseek/deepseek-v4-pro-0813 | uncapped-quantity-required-search": {
+      "cases": 4,
+      "citation_annotations": 12,
+      "content_normalized_rows": 63,
+      "exact_ingredient_wording": 21,
+      "exact_quantity_and_ingredient_wording": 10,
+      "exact_quantity_and_normalized_ingredient_wording": 10,
+      "finish_reasons": {
+        "stop": 4
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 21,
+      "output_contract_compliant": 0,
+      "output_rows": 54,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.5263157894736842,
+        "exact_or_equivalent_reference_coverage": 0.3225806451612903,
+        "exact_rate_among_matched": 0.34210526315789475,
+        "exact_reference_coverage": 0.20967741935483872,
+        "matched_count": 38,
+        "statuses": {
+          "equivalent": 7,
+          "exact": 13,
+          "extra": 1,
+          "missing": 14,
+          "wrong": 3
+        }
+      },
+      "reference_rows": 62,
+      "reported_cost_usd": 0.049427955999999995,
+      "searched": 4,
+      "strict_identity": {
+        "f1": 0.5573770491803278,
+        "false_negatives": 26,
+        "false_positives": 28,
+        "precision": 0.5483870967741935,
+        "recall": 0.5666666666666667,
+        "true_positives": 34
+      },
+      "web_search_requests": 6
+    },
+    "openai/gpt-5.6-sol | uncapped-quantity-no-search": {
+      "cases": 4,
+      "citation_annotations": 0,
+      "content_normalized_rows": 52,
+      "exact_ingredient_wording": 9,
+      "exact_quantity_and_ingredient_wording": 2,
+      "exact_quantity_and_normalized_ingredient_wording": 2,
+      "finish_reasons": {
+        "stop": 4
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 9,
+      "output_contract_compliant": 3,
+      "output_rows": 52,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.3333333333333333,
+        "exact_or_equivalent_reference_coverage": 0.08064516129032258,
+        "exact_rate_among_matched": 0.2,
+        "exact_reference_coverage": 0.04838709677419355,
+        "matched_count": 15,
+        "statuses": {
+          "equivalent": 2,
+          "exact": 3,
+          "extra": 1,
+          "missing": 5,
+          "wrong": 4
+        }
+      },
+      "reference_rows": 62,
+      "reported_cost_usd": 0.0049759999999999995,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.26785714285714285,
+        "false_negatives": 45,
+        "false_positives": 37,
+        "precision": 0.28846153846153844,
+        "recall": 0.25,
+        "true_positives": 15
+      },
+      "web_search_requests": 0
+    },
+    "openai/gpt-5.6-sol | uncapped-quantity-required-search": {
+      "cases": 4,
+      "citation_annotations": 0,
+      "content_normalized_rows": 47,
+      "exact_ingredient_wording": 19,
+      "exact_quantity_and_ingredient_wording": 9,
+      "exact_quantity_and_normalized_ingredient_wording": 9,
+      "finish_reasons": {
+        "stop": 4
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 19,
+      "output_contract_compliant": 4,
+      "output_rows": 47,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.5666666666666667,
+        "exact_or_equivalent_reference_coverage": 0.27419354838709675,
+        "exact_rate_among_matched": 0.4,
+        "exact_reference_coverage": 0.1935483870967742,
+        "matched_count": 30,
+        "statuses": {
+          "equivalent": 5,
+          "exact": 12,
+          "missing": 13
+        }
+      },
+      "reference_rows": 62,
+      "reported_cost_usd": 0.119484,
+      "searched": 4,
+      "strict_identity": {
+        "f1": 0.5283018867924527,
+        "false_negatives": 32,
+        "false_positives": 18,
+        "precision": 0.6086956521739131,
+        "recall": 0.4666666666666667,
+        "true_positives": 28
+      },
+      "web_search_requests": 4
+    },
+    "qwen/qwen3.8-27b | uncapped-quantity-no-search": {
+      "cases": 4,
+      "citation_annotations": 0,
+      "content_normalized_rows": 85,
+      "exact_ingredient_wording": 5,
+      "exact_quantity_and_ingredient_wording": 1,
+      "exact_quantity_and_normalized_ingredient_wording": 1,
+      "finish_reasons": {
+        "length": 1,
+        "stop": 3
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 5,
+      "output_contract_compliant": 3,
+      "output_rows": 86,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.14285714285714285,
+        "exact_or_equivalent_reference_coverage": 0.016129032258064516,
+        "exact_rate_among_matched": 0.14285714285714285,
+        "exact_reference_coverage": 0.016129032258064516,
+        "matched_count": 7,
+        "statuses": {
+          "exact": 1,
+          "extra": 1,
+          "wrong": 5
+        }
+      },
+      "reference_rows": 62,
+      "reported_cost_usd": 0.0021228749999999998,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.09655172413793102,
+        "false_negatives": 53,
+        "false_positives": 78,
+        "precision": 0.08235294117647059,
+        "recall": 0.11666666666666667,
+        "true_positives": 7
+      },
+      "web_search_requests": 0
+    },
+    "qwen/qwen3.8-27b | uncapped-quantity-required-search": {
+      "cases": 4,
+      "citation_annotations": 12,
+      "content_normalized_rows": 44,
+      "exact_ingredient_wording": 14,
+      "exact_quantity_and_ingredient_wording": 10,
+      "exact_quantity_and_normalized_ingredient_wording": 10,
+      "finish_reasons": {
+        "stop": 4
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 18,
+      "output_contract_compliant": 1,
+      "output_rows": 27,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.65625,
+        "exact_or_equivalent_reference_coverage": 0.3387096774193548,
+        "exact_rate_among_matched": 0.4375,
+        "exact_reference_coverage": 0.22580645161290322,
+        "matched_count": 32,
+        "statuses": {
+          "equivalent": 7,
+          "exact": 14,
+          "extra": 1,
+          "missing": 5,
+          "wrong": 5
+        }
+      },
+      "reference_rows": 62,
+      "reported_cost_usd": 0.03536695,
+      "searched": 4,
+      "strict_identity": {
+        "f1": 0.5576923076923077,
+        "false_negatives": 31,
+        "false_positives": 15,
+        "precision": 0.6590909090909091,
+        "recall": 0.48333333333333334,
+        "true_positives": 29
+      },
+      "web_search_requests": 5
+    }
+  },
+  "by_model_recipe_and_prompt": {
+    "anthropic/claude-opus-4.8 | art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns | uncapped-quantity-no-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 26,
+      "exact_ingredient_wording": 5,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 5,
+      "output_contract_compliant": 1,
+      "output_rows": 26,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.0,
+        "exact_or_equivalent_reference_coverage": 0.0,
+        "exact_rate_among_matched": 0.0,
+        "exact_reference_coverage": 0.0,
+        "matched_count": 7,
+        "statuses": {
+          "missing": 7
+        }
+      },
+      "reference_rows": 26,
+      "reported_cost_usd": 0.008885,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.27450980392156865,
+        "false_negatives": 18,
+        "false_positives": 19,
+        "precision": 0.2692307692307692,
+        "recall": 0.28,
+        "true_positives": 7
+      },
+      "web_search_requests": 0
+    },
+    "anthropic/claude-opus-4.8 | art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns | uncapped-quantity-required-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 26,
+      "exact_ingredient_wording": 5,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 5,
+      "output_contract_compliant": 0,
+      "output_rows": 26,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.0,
+        "exact_or_equivalent_reference_coverage": 0.0,
+        "exact_rate_among_matched": 0.0,
+        "exact_reference_coverage": 0.0,
+        "matched_count": 7,
+        "statuses": {
+          "missing": 7
+        }
+      },
+      "reference_rows": 26,
+      "reported_cost_usd": 0.09668,
+      "searched": 1,
+      "strict_identity": {
+        "f1": 0.27450980392156865,
+        "false_negatives": 18,
+        "false_positives": 19,
+        "precision": 0.2692307692307692,
+        "recall": 0.28,
+        "true_positives": 7
+      },
+      "web_search_requests": 1
+    },
+    "anthropic/claude-opus-4.8 | enchanted_broccoli_forest__moroccan_orange_walnut_salad | uncapped-quantity-no-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 12,
+      "exact_ingredient_wording": 0,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 0,
+      "output_contract_compliant": 1,
+      "output_rows": 12,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.3333333333333333,
+        "exact_or_equivalent_reference_coverage": 0.1,
+        "exact_rate_among_matched": 0.0,
+        "exact_reference_coverage": 0.0,
+        "matched_count": 3,
+        "statuses": {
+          "equivalent": 1,
+          "extra": 1,
+          "wrong": 1
+        }
+      },
+      "reference_rows": 10,
+      "reported_cost_usd": 0.005665,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.2727272727272727,
+        "false_negatives": 7,
+        "false_positives": 9,
+        "precision": 0.25,
+        "recall": 0.3,
+        "true_positives": 3
+      },
+      "web_search_requests": 0
+    },
+    "anthropic/claude-opus-4.8 | enchanted_broccoli_forest__moroccan_orange_walnut_salad | uncapped-quantity-required-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 10,
+      "exact_ingredient_wording": 2,
+      "exact_quantity_and_ingredient_wording": 2,
+      "exact_quantity_and_normalized_ingredient_wording": 2,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 2,
+      "output_contract_compliant": 0,
+      "output_rows": 10,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 1.0,
+        "exact_or_equivalent_reference_coverage": 0.5,
+        "exact_rate_among_matched": 0.6,
+        "exact_reference_coverage": 0.3,
+        "matched_count": 5,
+        "statuses": {
+          "equivalent": 2,
+          "exact": 3
+        }
+      },
+      "reference_rows": 10,
+      "reported_cost_usd": 0.0873,
+      "searched": 1,
+      "strict_identity": {
+        "f1": 0.5,
+        "false_negatives": 5,
+        "false_positives": 5,
+        "precision": 0.5,
+        "recall": 0.5,
+        "true_positives": 5
+      },
+      "web_search_requests": 1
+    },
+    "anthropic/claude-opus-4.8 | plenty__goat_cheese_souffles_with_vanilla_poached_peaches | uncapped-quantity-no-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 14,
+      "exact_ingredient_wording": 2,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 2,
+      "output_contract_compliant": 1,
+      "output_rows": 14,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.0,
+        "exact_or_equivalent_reference_coverage": 0.0,
+        "exact_rate_among_matched": 0.0,
+        "exact_reference_coverage": 0.0,
+        "matched_count": 4,
+        "statuses": {
+          "missing": 4
+        }
+      },
+      "reference_rows": 16,
+      "reported_cost_usd": 0.00466,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.26666666666666666,
+        "false_negatives": 12,
+        "false_positives": 10,
+        "precision": 0.2857142857142857,
+        "recall": 0.25,
+        "true_positives": 4
+      },
+      "web_search_requests": 0
+    },
+    "anthropic/claude-opus-4.8 | plenty__goat_cheese_souffles_with_vanilla_poached_peaches | uncapped-quantity-required-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 14,
+      "exact_ingredient_wording": 6,
+      "exact_quantity_and_ingredient_wording": 5,
+      "exact_quantity_and_normalized_ingredient_wording": 5,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 1,
+      "normalized_exact_ingredient_wording": 6,
+      "output_contract_compliant": 0,
+      "output_rows": 14,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.9,
+        "exact_or_equivalent_reference_coverage": 0.5625,
+        "exact_rate_among_matched": 0.8,
+        "exact_reference_coverage": 0.5,
+        "matched_count": 10,
+        "statuses": {
+          "equivalent": 1,
+          "exact": 8,
+          "wrong": 1
+        }
+      },
+      "reference_rows": 16,
+      "reported_cost_usd": 0.09634,
+      "searched": 1,
+      "strict_identity": {
+        "f1": 0.6666666666666666,
+        "false_negatives": 6,
+        "false_positives": 4,
+        "precision": 0.7142857142857143,
+        "recall": 0.625,
+        "true_positives": 10
+      },
+      "web_search_requests": 1
+    },
+    "anthropic/claude-opus-4.8 | salt_fat_acid_heat__lori_s_chocolate_midnight_cake | uncapped-quantity-no-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 11,
+      "exact_ingredient_wording": 4,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 4,
+      "output_contract_compliant": 1,
+      "output_rows": 11,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.0,
+        "exact_or_equivalent_reference_coverage": 0.0,
+        "exact_rate_among_matched": 0.0,
+        "exact_reference_coverage": 0.0,
+        "matched_count": 4,
+        "statuses": {
+          "missing": 4
+        }
+      },
+      "reference_rows": 10,
+      "reported_cost_usd": 0.003995,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.39999999999999997,
+        "false_negatives": 5,
+        "false_positives": 7,
+        "precision": 0.36363636363636365,
+        "recall": 0.4444444444444444,
+        "true_positives": 4
+      },
+      "web_search_requests": 0
+    },
+    "anthropic/claude-opus-4.8 | salt_fat_acid_heat__lori_s_chocolate_midnight_cake | uncapped-quantity-required-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 9,
+      "exact_ingredient_wording": 6,
+      "exact_quantity_and_ingredient_wording": 2,
+      "exact_quantity_and_normalized_ingredient_wording": 2,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 1,
+      "normalized_exact_ingredient_wording": 6,
+      "output_contract_compliant": 0,
+      "output_rows": 9,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.5714285714285714,
+        "exact_or_equivalent_reference_coverage": 0.4,
+        "exact_rate_among_matched": 0.2857142857142857,
+        "exact_reference_coverage": 0.2,
+        "matched_count": 7,
+        "statuses": {
+          "equivalent": 2,
+          "exact": 2,
+          "missing": 3
+        }
+      },
+      "reference_rows": 10,
+      "reported_cost_usd": 0.09336,
+      "searched": 1,
+      "strict_identity": {
+        "f1": 0.7777777777777778,
+        "false_negatives": 2,
+        "false_positives": 2,
+        "precision": 0.7777777777777778,
+        "recall": 0.7777777777777778,
+        "true_positives": 7
+      },
+      "web_search_requests": 1
+    },
+    "deepseek/deepseek-v4-pro-0813 | art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns | uncapped-quantity-no-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 23,
+      "exact_ingredient_wording": 6,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 6,
+      "output_contract_compliant": 1,
+      "output_rows": 23,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.25,
+        "exact_or_equivalent_reference_coverage": 0.07692307692307693,
+        "exact_rate_among_matched": 0.125,
+        "exact_reference_coverage": 0.038461538461538464,
+        "matched_count": 8,
+        "statuses": {
+          "equivalent": 1,
+          "exact": 1,
+          "wrong": 6
+        }
+      },
+      "reference_rows": 26,
+      "reported_cost_usd": 0.00079662,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.3333333333333333,
+        "false_negatives": 17,
+        "false_positives": 15,
+        "precision": 0.34782608695652173,
+        "recall": 0.32,
+        "true_positives": 8
+      },
+      "web_search_requests": 0
+    },
+    "deepseek/deepseek-v4-pro-0813 | art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns | uncapped-quantity-required-search": {
+      "cases": 1,
+      "citation_annotations": 3,
+      "content_normalized_rows": 24,
+      "exact_ingredient_wording": 5,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 5,
+      "output_contract_compliant": 0,
+      "output_rows": 24,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.0,
+        "exact_or_equivalent_reference_coverage": 0.0,
+        "exact_rate_among_matched": 0.0,
+        "exact_reference_coverage": 0.0,
+        "matched_count": 7,
+        "statuses": {
+          "missing": 7
+        }
+      },
+      "reference_rows": 26,
+      "reported_cost_usd": 0.013878982000000002,
+      "searched": 1,
+      "strict_identity": {
+        "f1": 0.2857142857142857,
+        "false_negatives": 18,
+        "false_positives": 17,
+        "precision": 0.2916666666666667,
+        "recall": 0.28,
+        "true_positives": 7
+      },
+      "web_search_requests": 2
+    },
+    "deepseek/deepseek-v4-pro-0813 | enchanted_broccoli_forest__moroccan_orange_walnut_salad | uncapped-quantity-no-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 11,
+      "exact_ingredient_wording": 0,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 0,
+      "output_contract_compliant": 1,
+      "output_rows": 11,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.0,
+        "exact_or_equivalent_reference_coverage": 0.0,
+        "exact_rate_among_matched": 0.0,
+        "exact_reference_coverage": 0.0,
+        "matched_count": 1,
+        "statuses": {
+          "extra": 1
+        }
+      },
+      "reference_rows": 10,
+      "reported_cost_usd": 0.000468996,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.09523809523809525,
+        "false_negatives": 9,
+        "false_positives": 10,
+        "precision": 0.09090909090909091,
+        "recall": 0.1,
+        "true_positives": 1
+      },
+      "web_search_requests": 0
+    },
+    "deepseek/deepseek-v4-pro-0813 | enchanted_broccoli_forest__moroccan_orange_walnut_salad | uncapped-quantity-required-search": {
+      "cases": 1,
+      "citation_annotations": 3,
+      "content_normalized_rows": 10,
+      "exact_ingredient_wording": 1,
+      "exact_quantity_and_ingredient_wording": 1,
+      "exact_quantity_and_normalized_ingredient_wording": 1,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 1,
+      "output_contract_compliant": 0,
+      "output_rows": 11,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.5,
+        "exact_or_equivalent_reference_coverage": 0.4,
+        "exact_rate_among_matched": 0.125,
+        "exact_reference_coverage": 0.1,
+        "matched_count": 8,
+        "statuses": {
+          "equivalent": 3,
+          "exact": 1,
+          "extra": 1,
+          "wrong": 3
+        }
+      },
+      "reference_rows": 10,
+      "reported_cost_usd": 0.010900072,
+      "searched": 1,
+      "strict_identity": {
+        "f1": 0.5,
+        "false_negatives": 5,
+        "false_positives": 5,
+        "precision": 0.5,
+        "recall": 0.5,
+        "true_positives": 5
+      },
+      "web_search_requests": 1
+    },
+    "deepseek/deepseek-v4-pro-0813 | plenty__goat_cheese_souffles_with_vanilla_poached_peaches | uncapped-quantity-no-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 18,
+      "exact_ingredient_wording": 5,
+      "exact_quantity_and_ingredient_wording": 1,
+      "exact_quantity_and_normalized_ingredient_wording": 1,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 5,
+      "output_contract_compliant": 0,
+      "output_rows": 18,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.2857142857142857,
+        "exact_or_equivalent_reference_coverage": 0.125,
+        "exact_rate_among_matched": 0.2857142857142857,
+        "exact_reference_coverage": 0.125,
+        "matched_count": 7,
+        "statuses": {
+          "exact": 2,
+          "wrong": 5
+        }
+      },
+      "reference_rows": 16,
+      "reported_cost_usd": 0.000669834,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.411764705882353,
+        "false_negatives": 9,
+        "false_positives": 11,
+        "precision": 0.3888888888888889,
+        "recall": 0.4375,
+        "true_positives": 7
+      },
+      "web_search_requests": 0
+    },
+    "deepseek/deepseek-v4-pro-0813 | plenty__goat_cheese_souffles_with_vanilla_poached_peaches | uncapped-quantity-required-search": {
+      "cases": 1,
+      "citation_annotations": 3,
+      "content_normalized_rows": 16,
+      "exact_ingredient_wording": 8,
+      "exact_quantity_and_ingredient_wording": 4,
+      "exact_quantity_and_normalized_ingredient_wording": 4,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 8,
+      "output_contract_compliant": 0,
+      "output_rows": 17,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.46153846153846156,
+        "exact_or_equivalent_reference_coverage": 0.375,
+        "exact_rate_among_matched": 0.38461538461538464,
+        "exact_reference_coverage": 0.3125,
+        "matched_count": 13,
+        "statuses": {
+          "equivalent": 1,
+          "exact": 5,
+          "missing": 7
+        }
+      },
+      "reference_rows": 16,
+      "reported_cost_usd": 0.013551358,
+      "searched": 1,
+      "strict_identity": {
+        "f1": 0.8125,
+        "false_negatives": 3,
+        "false_positives": 3,
+        "precision": 0.8125,
+        "recall": 0.8125,
+        "true_positives": 13
+      },
+      "web_search_requests": 2
+    },
+    "deepseek/deepseek-v4-pro-0813 | salt_fat_acid_heat__lori_s_chocolate_midnight_cake | uncapped-quantity-no-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 17,
+      "exact_ingredient_wording": 4,
+      "exact_quantity_and_ingredient_wording": 2,
+      "exact_quantity_and_normalized_ingredient_wording": 2,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 4,
+      "output_contract_compliant": 1,
+      "output_rows": 17,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.5,
+        "exact_or_equivalent_reference_coverage": 0.2,
+        "exact_rate_among_matched": 0.5,
+        "exact_reference_coverage": 0.2,
+        "matched_count": 4,
+        "statuses": {
+          "exact": 2,
+          "wrong": 2
+        }
+      },
+      "reference_rows": 10,
+      "reported_cost_usd": 0.000586806,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.30769230769230765,
+        "false_negatives": 5,
+        "false_positives": 13,
+        "precision": 0.23529411764705882,
+        "recall": 0.4444444444444444,
+        "true_positives": 4
+      },
+      "web_search_requests": 0
+    },
+    "deepseek/deepseek-v4-pro-0813 | salt_fat_acid_heat__lori_s_chocolate_midnight_cake | uncapped-quantity-required-search": {
+      "cases": 1,
+      "citation_annotations": 3,
+      "content_normalized_rows": 13,
+      "exact_ingredient_wording": 7,
+      "exact_quantity_and_ingredient_wording": 5,
+      "exact_quantity_and_normalized_ingredient_wording": 5,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 7,
+      "output_contract_compliant": 0,
+      "output_rows": 2,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 1.0,
+        "exact_or_equivalent_reference_coverage": 1.0,
+        "exact_rate_among_matched": 0.7,
+        "exact_reference_coverage": 0.7,
+        "matched_count": 10,
+        "statuses": {
+          "equivalent": 3,
+          "exact": 7
+        }
+      },
+      "reference_rows": 10,
+      "reported_cost_usd": 0.011097543999999999,
+      "searched": 1,
+      "strict_identity": {
+        "f1": 0.8571428571428571,
+        "false_negatives": 0,
+        "false_positives": 3,
+        "precision": 0.75,
+        "recall": 1.0,
+        "true_positives": 9
+      },
+      "web_search_requests": 1
+    },
+    "openai/gpt-5.6-sol | art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns | uncapped-quantity-no-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 17,
+      "exact_ingredient_wording": 4,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 4,
+      "output_contract_compliant": 1,
+      "output_rows": 17,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.0,
+        "exact_or_equivalent_reference_coverage": 0.0,
+        "exact_rate_among_matched": 0.0,
+        "exact_reference_coverage": 0.0,
+        "matched_count": 5,
+        "statuses": {
+          "missing": 5
+        }
+      },
+      "reference_rows": 26,
+      "reported_cost_usd": 0.00139,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.2380952380952381,
+        "false_negatives": 20,
+        "false_positives": 12,
+        "precision": 0.29411764705882354,
+        "recall": 0.2,
+        "true_positives": 5
+      },
+      "web_search_requests": 0
+    },
+    "openai/gpt-5.6-sol | art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns | uncapped-quantity-required-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 20,
+      "exact_ingredient_wording": 4,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 4,
+      "output_contract_compliant": 1,
+      "output_rows": 20,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.0,
+        "exact_or_equivalent_reference_coverage": 0.0,
+        "exact_rate_among_matched": 0.0,
+        "exact_reference_coverage": 0.0,
+        "matched_count": 6,
+        "statuses": {
+          "missing": 6
+        }
+      },
+      "reference_rows": 26,
+      "reported_cost_usd": 0.030699,
+      "searched": 1,
+      "strict_identity": {
+        "f1": 0.2666666666666666,
+        "false_negatives": 19,
+        "false_positives": 14,
+        "precision": 0.3,
+        "recall": 0.24,
+        "true_positives": 6
+      },
+      "web_search_requests": 1
+    },
+    "openai/gpt-5.6-sol | enchanted_broccoli_forest__moroccan_orange_walnut_salad | uncapped-quantity-no-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 10,
+      "exact_ingredient_wording": 1,
+      "exact_quantity_and_ingredient_wording": 1,
+      "exact_quantity_and_normalized_ingredient_wording": 1,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 1,
+      "output_contract_compliant": 1,
+      "output_rows": 10,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.75,
+        "exact_or_equivalent_reference_coverage": 0.3,
+        "exact_rate_among_matched": 0.5,
+        "exact_reference_coverage": 0.2,
+        "matched_count": 4,
+        "statuses": {
+          "equivalent": 1,
+          "exact": 2,
+          "extra": 1
+        }
+      },
+      "reference_rows": 10,
+      "reported_cost_usd": 0.000964,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.4000000000000001,
+        "false_negatives": 6,
+        "false_positives": 6,
+        "precision": 0.4,
+        "recall": 0.4,
+        "true_positives": 4
+      },
+      "web_search_requests": 0
+    },
+    "openai/gpt-5.6-sol | enchanted_broccoli_forest__moroccan_orange_walnut_salad | uncapped-quantity-required-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 1,
+      "exact_ingredient_wording": 0,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 0,
+      "output_contract_compliant": 1,
+      "output_rows": 1,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 1.0,
+        "exact_or_equivalent_reference_coverage": 0.1,
+        "exact_rate_among_matched": 0.0,
+        "exact_reference_coverage": 0.0,
+        "matched_count": 1,
+        "statuses": {
+          "equivalent": 1
+        }
+      },
+      "reference_rows": 10,
+      "reported_cost_usd": 0.0286235,
+      "searched": 1,
+      "strict_identity": {
+        "f1": 0.0,
+        "false_negatives": 10,
+        "false_positives": 1,
+        "precision": 0.0,
+        "recall": 0.0,
+        "true_positives": 0
+      },
+      "web_search_requests": 1
+    },
+    "openai/gpt-5.6-sol | plenty__goat_cheese_souffles_with_vanilla_poached_peaches | uncapped-quantity-no-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 14,
+      "exact_ingredient_wording": 0,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 0,
+      "output_contract_compliant": 0,
+      "output_rows": 14,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.0,
+        "exact_or_equivalent_reference_coverage": 0.0,
+        "exact_rate_among_matched": 0.0,
+        "exact_reference_coverage": 0.0,
+        "matched_count": 1,
+        "statuses": {
+          "wrong": 1
+        }
+      },
+      "reference_rows": 16,
+      "reported_cost_usd": 0.00145,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.06666666666666667,
+        "false_negatives": 15,
+        "false_positives": 13,
+        "precision": 0.07142857142857142,
+        "recall": 0.0625,
+        "true_positives": 1
+      },
+      "web_search_requests": 0
+    },
+    "openai/gpt-5.6-sol | plenty__goat_cheese_souffles_with_vanilla_poached_peaches | uncapped-quantity-required-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 16,
+      "exact_ingredient_wording": 8,
+      "exact_quantity_and_ingredient_wording": 4,
+      "exact_quantity_and_normalized_ingredient_wording": 4,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 8,
+      "output_contract_compliant": 1,
+      "output_rows": 16,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.46153846153846156,
+        "exact_or_equivalent_reference_coverage": 0.375,
+        "exact_rate_among_matched": 0.38461538461538464,
+        "exact_reference_coverage": 0.3125,
+        "matched_count": 13,
+        "statuses": {
+          "equivalent": 1,
+          "exact": 5,
+          "missing": 7
+        }
+      },
+      "reference_rows": 16,
+      "reported_cost_usd": 0.0302105,
+      "searched": 1,
+      "strict_identity": {
+        "f1": 0.8125,
+        "false_negatives": 3,
+        "false_positives": 3,
+        "precision": 0.8125,
+        "recall": 0.8125,
+        "true_positives": 13
+      },
+      "web_search_requests": 1
+    },
+    "openai/gpt-5.6-sol | salt_fat_acid_heat__lori_s_chocolate_midnight_cake | uncapped-quantity-no-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 11,
+      "exact_ingredient_wording": 4,
+      "exact_quantity_and_ingredient_wording": 1,
+      "exact_quantity_and_normalized_ingredient_wording": 1,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 4,
+      "output_contract_compliant": 1,
+      "output_rows": 11,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.4,
+        "exact_or_equivalent_reference_coverage": 0.2,
+        "exact_rate_among_matched": 0.2,
+        "exact_reference_coverage": 0.1,
+        "matched_count": 5,
+        "statuses": {
+          "equivalent": 1,
+          "exact": 1,
+          "wrong": 3
+        }
+      },
+      "reference_rows": 10,
+      "reported_cost_usd": 0.001172,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.5,
+        "false_negatives": 4,
+        "false_positives": 6,
+        "precision": 0.45454545454545453,
+        "recall": 0.5555555555555556,
+        "true_positives": 5
+      },
+      "web_search_requests": 0
+    },
+    "openai/gpt-5.6-sol | salt_fat_acid_heat__lori_s_chocolate_midnight_cake | uncapped-quantity-required-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 10,
+      "exact_ingredient_wording": 7,
+      "exact_quantity_and_ingredient_wording": 5,
+      "exact_quantity_and_normalized_ingredient_wording": 5,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 7,
+      "output_contract_compliant": 1,
+      "output_rows": 10,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 1.0,
+        "exact_or_equivalent_reference_coverage": 1.0,
+        "exact_rate_among_matched": 0.7,
+        "exact_reference_coverage": 0.7,
+        "matched_count": 10,
+        "statuses": {
+          "equivalent": 3,
+          "exact": 7
+        }
+      },
+      "reference_rows": 10,
+      "reported_cost_usd": 0.029951,
+      "searched": 1,
+      "strict_identity": {
+        "f1": 1.0,
+        "false_negatives": 0,
+        "false_positives": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "true_positives": 9
+      },
+      "web_search_requests": 1
+    },
+    "qwen/qwen3.8-27b | art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns | uncapped-quantity-no-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 10,
+      "exact_ingredient_wording": 1,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 1,
+      "output_contract_compliant": 1,
+      "output_rows": 10,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.0,
+        "exact_or_equivalent_reference_coverage": 0.0,
+        "exact_rate_among_matched": 0.0,
+        "exact_reference_coverage": 0.0,
+        "matched_count": 1,
+        "statuses": {
+          "wrong": 1
+        }
+      },
+      "reference_rows": 26,
+      "reported_cost_usd": 0.00023545,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.05714285714285714,
+        "false_negatives": 24,
+        "false_positives": 9,
+        "precision": 0.1,
+        "recall": 0.04,
+        "true_positives": 1
+      },
+      "web_search_requests": 0
+    },
+    "qwen/qwen3.8-27b | art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns | uncapped-quantity-required-search": {
+      "cases": 1,
+      "citation_annotations": 3,
+      "content_normalized_rows": 11,
+      "exact_ingredient_wording": 0,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 4,
+      "output_contract_compliant": 1,
+      "output_rows": 11,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.0,
+        "exact_or_equivalent_reference_coverage": 0.0,
+        "exact_rate_among_matched": 0.0,
+        "exact_reference_coverage": 0.0,
+        "matched_count": 5,
+        "statuses": {
+          "missing": 5
+        }
+      },
+      "reference_rows": 26,
+      "reported_cost_usd": 0.009253349999999999,
+      "searched": 1,
+      "strict_identity": {
+        "f1": 0.2777777777777778,
+        "false_negatives": 20,
+        "false_positives": 6,
+        "precision": 0.45454545454545453,
+        "recall": 0.2,
+        "true_positives": 5
+      },
+      "web_search_requests": 2
+    },
+    "qwen/qwen3.8-27b | enchanted_broccoli_forest__moroccan_orange_walnut_salad | uncapped-quantity-no-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 8,
+      "exact_ingredient_wording": 0,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 0,
+      "output_contract_compliant": 1,
+      "output_rows": 8,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.0,
+        "exact_or_equivalent_reference_coverage": 0.0,
+        "exact_rate_among_matched": 0.0,
+        "exact_reference_coverage": 0.0,
+        "matched_count": 2,
+        "statuses": {
+          "extra": 1,
+          "wrong": 1
+        }
+      },
+      "reference_rows": 10,
+      "reported_cost_usd": 0.000221425,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.22222222222222224,
+        "false_negatives": 8,
+        "false_positives": 6,
+        "precision": 0.25,
+        "recall": 0.2,
+        "true_positives": 2
+      },
+      "web_search_requests": 0
+    },
+    "qwen/qwen3.8-27b | enchanted_broccoli_forest__moroccan_orange_walnut_salad | uncapped-quantity-required-search": {
+      "cases": 1,
+      "citation_annotations": 3,
+      "content_normalized_rows": 10,
+      "exact_ingredient_wording": 1,
+      "exact_quantity_and_ingredient_wording": 1,
+      "exact_quantity_and_normalized_ingredient_wording": 1,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 1,
+      "output_contract_compliant": 0,
+      "output_rows": 1,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.5,
+        "exact_or_equivalent_reference_coverage": 0.4,
+        "exact_rate_among_matched": 0.125,
+        "exact_reference_coverage": 0.1,
+        "matched_count": 8,
+        "statuses": {
+          "equivalent": 3,
+          "exact": 1,
+          "extra": 1,
+          "wrong": 3
+        }
+      },
+      "reference_rows": 10,
+      "reported_cost_usd": 0.008459874999999999,
+      "searched": 1,
+      "strict_identity": {
+        "f1": 0.5,
+        "false_negatives": 5,
+        "false_positives": 5,
+        "precision": 0.5,
+        "recall": 0.5,
+        "true_positives": 5
+      },
+      "web_search_requests": 1
+    },
+    "qwen/qwen3.8-27b | plenty__goat_cheese_souffles_with_vanilla_poached_peaches | uncapped-quantity-no-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 55,
+      "exact_ingredient_wording": 1,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reasons": {
+        "length": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 1,
+      "output_contract_compliant": 0,
+      "output_rows": 56,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.0,
+        "exact_or_equivalent_reference_coverage": 0.0,
+        "exact_rate_among_matched": 0.0,
+        "exact_reference_coverage": 0.0,
+        "matched_count": 1,
+        "statuses": {
+          "wrong": 1
+        }
+      },
+      "reference_rows": 16,
+      "reported_cost_usd": 0.00133535,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.02816901408450704,
+        "false_negatives": 15,
+        "false_positives": 54,
+        "precision": 0.01818181818181818,
+        "recall": 0.0625,
+        "true_positives": 1
+      },
+      "web_search_requests": 0
+    },
+    "qwen/qwen3.8-27b | plenty__goat_cheese_souffles_with_vanilla_poached_peaches | uncapped-quantity-required-search": {
+      "cases": 1,
+      "citation_annotations": 3,
+      "content_normalized_rows": 14,
+      "exact_ingredient_wording": 6,
+      "exact_quantity_and_ingredient_wording": 5,
+      "exact_quantity_and_normalized_ingredient_wording": 5,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 6,
+      "output_contract_compliant": 0,
+      "output_rows": 14,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.9,
+        "exact_or_equivalent_reference_coverage": 0.5625,
+        "exact_rate_among_matched": 0.8,
+        "exact_reference_coverage": 0.5,
+        "matched_count": 10,
+        "statuses": {
+          "equivalent": 1,
+          "exact": 8,
+          "wrong": 1
+        }
+      },
+      "reference_rows": 16,
+      "reported_cost_usd": 0.009052325,
+      "searched": 1,
+      "strict_identity": {
+        "f1": 0.6666666666666666,
+        "false_negatives": 6,
+        "false_positives": 4,
+        "precision": 0.7142857142857143,
+        "recall": 0.625,
+        "true_positives": 10
+      },
+      "web_search_requests": 1
+    },
+    "qwen/qwen3.8-27b | salt_fat_acid_heat__lori_s_chocolate_midnight_cake | uncapped-quantity-no-search": {
+      "cases": 1,
+      "citation_annotations": 0,
+      "content_normalized_rows": 12,
+      "exact_ingredient_wording": 3,
+      "exact_quantity_and_ingredient_wording": 1,
+      "exact_quantity_and_normalized_ingredient_wording": 1,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 3,
+      "output_contract_compliant": 1,
+      "output_rows": 12,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.3333333333333333,
+        "exact_or_equivalent_reference_coverage": 0.1,
+        "exact_rate_among_matched": 0.3333333333333333,
+        "exact_reference_coverage": 0.1,
+        "matched_count": 3,
+        "statuses": {
+          "exact": 1,
+          "wrong": 2
+        }
+      },
+      "reference_rows": 10,
+      "reported_cost_usd": 0.00033065,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.28571428571428575,
+        "false_negatives": 6,
+        "false_positives": 9,
+        "precision": 0.25,
+        "recall": 0.3333333333333333,
+        "true_positives": 3
+      },
+      "web_search_requests": 0
+    },
+    "qwen/qwen3.8-27b | salt_fat_acid_heat__lori_s_chocolate_midnight_cake | uncapped-quantity-required-search": {
+      "cases": 1,
+      "citation_annotations": 3,
+      "content_normalized_rows": 9,
+      "exact_ingredient_wording": 7,
+      "exact_quantity_and_ingredient_wording": 4,
+      "exact_quantity_and_normalized_ingredient_wording": 4,
+      "finish_reasons": {
+        "stop": 1
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 7,
+      "output_contract_compliant": 0,
+      "output_rows": 1,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.8888888888888888,
+        "exact_or_equivalent_reference_coverage": 0.8,
+        "exact_rate_among_matched": 0.5555555555555556,
+        "exact_reference_coverage": 0.5,
+        "matched_count": 9,
+        "statuses": {
+          "equivalent": 3,
+          "exact": 5,
+          "wrong": 1
+        }
+      },
+      "reference_rows": 10,
+      "reported_cost_usd": 0.0086014,
+      "searched": 1,
+      "strict_identity": {
+        "f1": 1.0,
+        "false_negatives": 0,
+        "false_positives": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "true_positives": 9
+      },
+      "web_search_requests": 1
+    }
+  },
+  "by_recipe_and_prompt": {
+    "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns | uncapped-quantity-no-search": {
+      "cases": 4,
+      "citation_annotations": 0,
+      "content_normalized_rows": 76,
+      "exact_ingredient_wording": 16,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reasons": {
+        "stop": 4
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 16,
+      "output_contract_compliant": 4,
+      "output_rows": 76,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.09523809523809523,
+        "exact_or_equivalent_reference_coverage": 0.019230769230769232,
+        "exact_rate_among_matched": 0.047619047619047616,
+        "exact_reference_coverage": 0.009615384615384616,
+        "matched_count": 21,
+        "statuses": {
+          "equivalent": 1,
+          "exact": 1,
+          "missing": 12,
+          "wrong": 7
+        }
+      },
+      "reference_rows": 104,
+      "reported_cost_usd": 0.01130707,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.23863636363636365,
+        "false_negatives": 79,
+        "false_positives": 55,
+        "precision": 0.27631578947368424,
+        "recall": 0.21,
+        "true_positives": 21
+      },
+      "web_search_requests": 0
+    },
+    "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns | uncapped-quantity-required-search": {
+      "cases": 4,
+      "citation_annotations": 6,
+      "content_normalized_rows": 81,
+      "exact_ingredient_wording": 14,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reasons": {
+        "stop": 4
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 18,
+      "output_contract_compliant": 2,
+      "output_rows": 81,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.0,
+        "exact_or_equivalent_reference_coverage": 0.0,
+        "exact_rate_among_matched": 0.0,
+        "exact_reference_coverage": 0.0,
+        "matched_count": 25,
+        "statuses": {
+          "missing": 25
+        }
+      },
+      "reference_rows": 104,
+      "reported_cost_usd": 0.150511332,
+      "searched": 4,
+      "strict_identity": {
+        "f1": 0.2762430939226519,
+        "false_negatives": 75,
+        "false_positives": 56,
+        "precision": 0.30864197530864196,
+        "recall": 0.25,
+        "true_positives": 25
+      },
+      "web_search_requests": 6
+    },
+    "enchanted_broccoli_forest__moroccan_orange_walnut_salad | uncapped-quantity-no-search": {
+      "cases": 4,
+      "citation_annotations": 0,
+      "content_normalized_rows": 41,
+      "exact_ingredient_wording": 1,
+      "exact_quantity_and_ingredient_wording": 1,
+      "exact_quantity_and_normalized_ingredient_wording": 1,
+      "finish_reasons": {
+        "stop": 4
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 1,
+      "output_contract_compliant": 4,
+      "output_rows": 41,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.4,
+        "exact_or_equivalent_reference_coverage": 0.1,
+        "exact_rate_among_matched": 0.2,
+        "exact_reference_coverage": 0.05,
+        "matched_count": 10,
+        "statuses": {
+          "equivalent": 2,
+          "exact": 2,
+          "extra": 4,
+          "wrong": 2
+        }
+      },
+      "reference_rows": 40,
+      "reported_cost_usd": 0.007319421,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.24691358024691357,
+        "false_negatives": 30,
+        "false_positives": 31,
+        "precision": 0.24390243902439024,
+        "recall": 0.25,
+        "true_positives": 10
+      },
+      "web_search_requests": 0
+    },
+    "enchanted_broccoli_forest__moroccan_orange_walnut_salad | uncapped-quantity-required-search": {
+      "cases": 4,
+      "citation_annotations": 6,
+      "content_normalized_rows": 31,
+      "exact_ingredient_wording": 4,
+      "exact_quantity_and_ingredient_wording": 4,
+      "exact_quantity_and_normalized_ingredient_wording": 4,
+      "finish_reasons": {
+        "stop": 4
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 4,
+      "output_contract_compliant": 1,
+      "output_rows": 23,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.6363636363636364,
+        "exact_or_equivalent_reference_coverage": 0.35,
+        "exact_rate_among_matched": 0.22727272727272727,
+        "exact_reference_coverage": 0.125,
+        "matched_count": 22,
+        "statuses": {
+          "equivalent": 9,
+          "exact": 5,
+          "extra": 2,
+          "wrong": 6
+        }
+      },
+      "reference_rows": 40,
+      "reported_cost_usd": 0.135283447,
+      "searched": 4,
+      "strict_identity": {
+        "f1": 0.4225352112676056,
+        "false_negatives": 25,
+        "false_positives": 16,
+        "precision": 0.4838709677419355,
+        "recall": 0.375,
+        "true_positives": 15
+      },
+      "web_search_requests": 4
+    },
+    "plenty__goat_cheese_souffles_with_vanilla_poached_peaches | uncapped-quantity-no-search": {
+      "cases": 4,
+      "citation_annotations": 0,
+      "content_normalized_rows": 101,
+      "exact_ingredient_wording": 8,
+      "exact_quantity_and_ingredient_wording": 1,
+      "exact_quantity_and_normalized_ingredient_wording": 1,
+      "finish_reasons": {
+        "length": 1,
+        "stop": 3
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 8,
+      "output_contract_compliant": 1,
+      "output_rows": 102,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.15384615384615385,
+        "exact_or_equivalent_reference_coverage": 0.03125,
+        "exact_rate_among_matched": 0.15384615384615385,
+        "exact_reference_coverage": 0.03125,
+        "matched_count": 13,
+        "statuses": {
+          "exact": 2,
+          "missing": 4,
+          "wrong": 7
+        }
+      },
+      "reference_rows": 64,
+      "reported_cost_usd": 0.008115184,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.1575757575757576,
+        "false_negatives": 51,
+        "false_positives": 88,
+        "precision": 0.12871287128712872,
+        "recall": 0.203125,
+        "true_positives": 13
+      },
+      "web_search_requests": 0
+    },
+    "plenty__goat_cheese_souffles_with_vanilla_poached_peaches | uncapped-quantity-required-search": {
+      "cases": 4,
+      "citation_annotations": 6,
+      "content_normalized_rows": 60,
+      "exact_ingredient_wording": 28,
+      "exact_quantity_and_ingredient_wording": 18,
+      "exact_quantity_and_normalized_ingredient_wording": 18,
+      "finish_reasons": {
+        "stop": 4
+      },
+      "had_tool_narration": 1,
+      "normalized_exact_ingredient_wording": 28,
+      "output_contract_compliant": 1,
+      "output_rows": 61,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.6521739130434783,
+        "exact_or_equivalent_reference_coverage": 0.46875,
+        "exact_rate_among_matched": 0.5652173913043478,
+        "exact_reference_coverage": 0.40625,
+        "matched_count": 46,
+        "statuses": {
+          "equivalent": 4,
+          "exact": 26,
+          "missing": 14,
+          "wrong": 2
+        }
+      },
+      "reference_rows": 64,
+      "reported_cost_usd": 0.149154183,
+      "searched": 4,
+      "strict_identity": {
+        "f1": 0.7419354838709677,
+        "false_negatives": 18,
+        "false_positives": 14,
+        "precision": 0.7666666666666667,
+        "recall": 0.71875,
+        "true_positives": 46
+      },
+      "web_search_requests": 5
+    },
+    "salt_fat_acid_heat__lori_s_chocolate_midnight_cake | uncapped-quantity-no-search": {
+      "cases": 4,
+      "citation_annotations": 0,
+      "content_normalized_rows": 51,
+      "exact_ingredient_wording": 15,
+      "exact_quantity_and_ingredient_wording": 4,
+      "exact_quantity_and_normalized_ingredient_wording": 4,
+      "finish_reasons": {
+        "stop": 4
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 15,
+      "output_contract_compliant": 4,
+      "output_rows": 51,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.3125,
+        "exact_or_equivalent_reference_coverage": 0.125,
+        "exact_rate_among_matched": 0.25,
+        "exact_reference_coverage": 0.1,
+        "matched_count": 16,
+        "statuses": {
+          "equivalent": 1,
+          "exact": 4,
+          "missing": 4,
+          "wrong": 7
+        }
+      },
+      "reference_rows": 40,
+      "reported_cost_usd": 0.006084456,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.367816091954023,
+        "false_negatives": 20,
+        "false_positives": 35,
+        "precision": 0.3137254901960784,
+        "recall": 0.4444444444444444,
+        "true_positives": 16
+      },
+      "web_search_requests": 0
+    },
+    "salt_fat_acid_heat__lori_s_chocolate_midnight_cake | uncapped-quantity-required-search": {
+      "cases": 4,
+      "citation_annotations": 6,
+      "content_normalized_rows": 41,
+      "exact_ingredient_wording": 27,
+      "exact_quantity_and_ingredient_wording": 16,
+      "exact_quantity_and_normalized_ingredient_wording": 16,
+      "finish_reasons": {
+        "stop": 4
+      },
+      "had_tool_narration": 1,
+      "normalized_exact_ingredient_wording": 27,
+      "output_contract_compliant": 1,
+      "output_rows": 22,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.8888888888888888,
+        "exact_or_equivalent_reference_coverage": 0.8,
+        "exact_rate_among_matched": 0.5833333333333334,
+        "exact_reference_coverage": 0.525,
+        "matched_count": 36,
+        "statuses": {
+          "equivalent": 11,
+          "exact": 21,
+          "missing": 3,
+          "wrong": 1
+        }
+      },
+      "reference_rows": 40,
+      "reported_cost_usd": 0.143009944,
+      "searched": 4,
+      "strict_identity": {
+        "f1": 0.9066666666666667,
+        "false_negatives": 2,
+        "false_positives": 5,
+        "precision": 0.8717948717948718,
+        "recall": 0.9444444444444444,
+        "true_positives": 34
+      },
+      "web_search_requests": 4
+    }
+  },
+  "cells": [
+    {
+      "attempt_id": "attempt_9f80fed5aee842048c62b92b39f8264d",
+      "citation_annotations": 0,
+      "content_normalized_rows": 11,
+      "exact_ingredient_wording": 4,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "anthropic/claude-opus-4.8",
+      "normalized_exact_ingredient_wording": 4,
+      "output_contract_compliant": true,
+      "output_rows": 11,
+      "prompt": "uncapped-quantity-no-search",
+      "quantity": {
+        "equivalent_count": 0,
+        "equivalent_rate": 0.0,
+        "equivalent_reference_coverage": 0.0,
+        "exact_count": 0,
+        "exact_rate": 0.0,
+        "exact_reference_coverage": 0.0,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 4,
+        "missing_count": 4,
+        "missing_rate": 1.0,
+        "statuses": {
+          "missing": 4
+        },
+        "wrong_count": 0,
+        "wrong_rate": 0.0
+      },
+      "recipe_id": "salt_fat_acid_heat__lori_s_chocolate_midnight_cake",
+      "reference_rows": 10,
+      "reported_cost_usd": 0.003995,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": false,
+      "strict_identity": {
+        "f1": 0.39999999999999997,
+        "false_negatives": 5,
+        "false_positives": 7,
+        "precision": 0.36363636363636365,
+        "recall": 0.4444444444444444,
+        "true_positives": 4
+      },
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_e6d3773b51d74aefbf4e23ab9d940879",
+      "citation_annotations": 0,
+      "content_normalized_rows": 12,
+      "exact_ingredient_wording": 0,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "anthropic/claude-opus-4.8",
+      "normalized_exact_ingredient_wording": 0,
+      "output_contract_compliant": true,
+      "output_rows": 12,
+      "prompt": "uncapped-quantity-no-search",
+      "quantity": {
+        "equivalent_count": 1,
+        "equivalent_rate": 0.3333333333333333,
+        "equivalent_reference_coverage": 0.1,
+        "exact_count": 0,
+        "exact_rate": 0.0,
+        "exact_reference_coverage": 0.0,
+        "extra_count": 1,
+        "extra_rate": 0.3333333333333333,
+        "matched_count": 3,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "equivalent": 1,
+          "extra": 1,
+          "wrong": 1
+        },
+        "wrong_count": 1,
+        "wrong_rate": 0.3333333333333333
+      },
+      "recipe_id": "enchanted_broccoli_forest__moroccan_orange_walnut_salad",
+      "reference_rows": 10,
+      "reported_cost_usd": 0.005665,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": false,
+      "strict_identity": {
+        "f1": 0.2727272727272727,
+        "false_negatives": 7,
+        "false_positives": 9,
+        "precision": 0.25,
+        "recall": 0.3,
+        "true_positives": 3
+      },
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_bc133ec01df24d70aca3ebbb9f55dc06",
+      "citation_annotations": 0,
+      "content_normalized_rows": 14,
+      "exact_ingredient_wording": 2,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "anthropic/claude-opus-4.8",
+      "normalized_exact_ingredient_wording": 2,
+      "output_contract_compliant": true,
+      "output_rows": 14,
+      "prompt": "uncapped-quantity-no-search",
+      "quantity": {
+        "equivalent_count": 0,
+        "equivalent_rate": 0.0,
+        "equivalent_reference_coverage": 0.0,
+        "exact_count": 0,
+        "exact_rate": 0.0,
+        "exact_reference_coverage": 0.0,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 4,
+        "missing_count": 4,
+        "missing_rate": 1.0,
+        "statuses": {
+          "missing": 4
+        },
+        "wrong_count": 0,
+        "wrong_rate": 0.0
+      },
+      "recipe_id": "plenty__goat_cheese_souffles_with_vanilla_poached_peaches",
+      "reference_rows": 16,
+      "reported_cost_usd": 0.00466,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": false,
+      "strict_identity": {
+        "f1": 0.26666666666666666,
+        "false_negatives": 12,
+        "false_positives": 10,
+        "precision": 0.2857142857142857,
+        "recall": 0.25,
+        "true_positives": 4
+      },
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_878b5437f5564fc0b89efd97fbbf42d3",
+      "citation_annotations": 0,
+      "content_normalized_rows": 26,
+      "exact_ingredient_wording": 5,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "anthropic/claude-opus-4.8",
+      "normalized_exact_ingredient_wording": 5,
+      "output_contract_compliant": true,
+      "output_rows": 26,
+      "prompt": "uncapped-quantity-no-search",
+      "quantity": {
+        "equivalent_count": 0,
+        "equivalent_rate": 0.0,
+        "equivalent_reference_coverage": 0.0,
+        "exact_count": 0,
+        "exact_rate": 0.0,
+        "exact_reference_coverage": 0.0,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 7,
+        "missing_count": 7,
+        "missing_rate": 1.0,
+        "statuses": {
+          "missing": 7
+        },
+        "wrong_count": 0,
+        "wrong_rate": 0.0
+      },
+      "recipe_id": "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns",
+      "reference_rows": 26,
+      "reported_cost_usd": 0.008885,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": false,
+      "strict_identity": {
+        "f1": 0.27450980392156865,
+        "false_negatives": 18,
+        "false_positives": 19,
+        "precision": 0.2692307692307692,
+        "recall": 0.28,
+        "true_positives": 7
+      },
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_574c067d7012404793b6cea1e3cdf626",
+      "citation_annotations": 0,
+      "content_normalized_rows": 9,
+      "exact_ingredient_wording": 6,
+      "exact_quantity_and_ingredient_wording": 2,
+      "exact_quantity_and_normalized_ingredient_wording": 2,
+      "finish_reason": "stop",
+      "had_tool_narration": true,
+      "model": "anthropic/claude-opus-4.8",
+      "normalized_exact_ingredient_wording": 6,
+      "output_contract_compliant": false,
+      "output_rows": 9,
+      "prompt": "uncapped-quantity-required-search",
+      "quantity": {
+        "equivalent_count": 4,
+        "equivalent_rate": 0.5714285714285714,
+        "equivalent_reference_coverage": 0.4,
+        "exact_count": 2,
+        "exact_rate": 0.2857142857142857,
+        "exact_reference_coverage": 0.2,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 7,
+        "missing_count": 3,
+        "missing_rate": 0.42857142857142855,
+        "statuses": {
+          "equivalent": 2,
+          "exact": 2,
+          "missing": 3
+        },
+        "wrong_count": 0,
+        "wrong_rate": 0.0
+      },
+      "recipe_id": "salt_fat_acid_heat__lori_s_chocolate_midnight_cake",
+      "reference_rows": 10,
+      "reported_cost_usd": 0.09336,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": true,
+      "strict_identity": {
+        "f1": 0.7777777777777778,
+        "false_negatives": 2,
+        "false_positives": 2,
+        "precision": 0.7777777777777778,
+        "recall": 0.7777777777777778,
+        "true_positives": 7
+      },
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_12b3746f4c444cd1a95d48db5bbcc28a",
+      "citation_annotations": 0,
+      "content_normalized_rows": 10,
+      "exact_ingredient_wording": 2,
+      "exact_quantity_and_ingredient_wording": 2,
+      "exact_quantity_and_normalized_ingredient_wording": 2,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "anthropic/claude-opus-4.8",
+      "normalized_exact_ingredient_wording": 2,
+      "output_contract_compliant": false,
+      "output_rows": 10,
+      "prompt": "uncapped-quantity-required-search",
+      "quantity": {
+        "equivalent_count": 5,
+        "equivalent_rate": 1.0,
+        "equivalent_reference_coverage": 0.5,
+        "exact_count": 3,
+        "exact_rate": 0.6,
+        "exact_reference_coverage": 0.3,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 5,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "equivalent": 2,
+          "exact": 3
+        },
+        "wrong_count": 0,
+        "wrong_rate": 0.0
+      },
+      "recipe_id": "enchanted_broccoli_forest__moroccan_orange_walnut_salad",
+      "reference_rows": 10,
+      "reported_cost_usd": 0.0873,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": true,
+      "strict_identity": {
+        "f1": 0.5,
+        "false_negatives": 5,
+        "false_positives": 5,
+        "precision": 0.5,
+        "recall": 0.5,
+        "true_positives": 5
+      },
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_ba3e8978c4444ceea5a584eb14c3f78b",
+      "citation_annotations": 0,
+      "content_normalized_rows": 14,
+      "exact_ingredient_wording": 6,
+      "exact_quantity_and_ingredient_wording": 5,
+      "exact_quantity_and_normalized_ingredient_wording": 5,
+      "finish_reason": "stop",
+      "had_tool_narration": true,
+      "model": "anthropic/claude-opus-4.8",
+      "normalized_exact_ingredient_wording": 6,
+      "output_contract_compliant": false,
+      "output_rows": 14,
+      "prompt": "uncapped-quantity-required-search",
+      "quantity": {
+        "equivalent_count": 9,
+        "equivalent_rate": 0.9,
+        "equivalent_reference_coverage": 0.5625,
+        "exact_count": 8,
+        "exact_rate": 0.8,
+        "exact_reference_coverage": 0.5,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 10,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "equivalent": 1,
+          "exact": 8,
+          "wrong": 1
+        },
+        "wrong_count": 1,
+        "wrong_rate": 0.1
+      },
+      "recipe_id": "plenty__goat_cheese_souffles_with_vanilla_poached_peaches",
+      "reference_rows": 16,
+      "reported_cost_usd": 0.09634,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": true,
+      "strict_identity": {
+        "f1": 0.6666666666666666,
+        "false_negatives": 6,
+        "false_positives": 4,
+        "precision": 0.7142857142857143,
+        "recall": 0.625,
+        "true_positives": 10
+      },
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_70921a33ed974092886d62f54e404916",
+      "citation_annotations": 0,
+      "content_normalized_rows": 26,
+      "exact_ingredient_wording": 5,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "anthropic/claude-opus-4.8",
+      "normalized_exact_ingredient_wording": 5,
+      "output_contract_compliant": false,
+      "output_rows": 26,
+      "prompt": "uncapped-quantity-required-search",
+      "quantity": {
+        "equivalent_count": 0,
+        "equivalent_rate": 0.0,
+        "equivalent_reference_coverage": 0.0,
+        "exact_count": 0,
+        "exact_rate": 0.0,
+        "exact_reference_coverage": 0.0,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 7,
+        "missing_count": 7,
+        "missing_rate": 1.0,
+        "statuses": {
+          "missing": 7
+        },
+        "wrong_count": 0,
+        "wrong_rate": 0.0
+      },
+      "recipe_id": "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns",
+      "reference_rows": 26,
+      "reported_cost_usd": 0.09668,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": true,
+      "strict_identity": {
+        "f1": 0.27450980392156865,
+        "false_negatives": 18,
+        "false_positives": 19,
+        "precision": 0.2692307692307692,
+        "recall": 0.28,
+        "true_positives": 7
+      },
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_a118245e7e6749f8855d9d2cd60c71ee",
+      "citation_annotations": 0,
+      "content_normalized_rows": 17,
+      "exact_ingredient_wording": 4,
+      "exact_quantity_and_ingredient_wording": 2,
+      "exact_quantity_and_normalized_ingredient_wording": 2,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "normalized_exact_ingredient_wording": 4,
+      "output_contract_compliant": true,
+      "output_rows": 17,
+      "prompt": "uncapped-quantity-no-search",
+      "quantity": {
+        "equivalent_count": 2,
+        "equivalent_rate": 0.5,
+        "equivalent_reference_coverage": 0.2,
+        "exact_count": 2,
+        "exact_rate": 0.5,
+        "exact_reference_coverage": 0.2,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 4,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "exact": 2,
+          "wrong": 2
+        },
+        "wrong_count": 2,
+        "wrong_rate": 0.5
+      },
+      "recipe_id": "salt_fat_acid_heat__lori_s_chocolate_midnight_cake",
+      "reference_rows": 10,
+      "reported_cost_usd": 0.000586806,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": false,
+      "strict_identity": {
+        "f1": 0.30769230769230765,
+        "false_negatives": 5,
+        "false_positives": 13,
+        "precision": 0.23529411764705882,
+        "recall": 0.4444444444444444,
+        "true_positives": 4
+      },
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_89db56fafa30459aa222b7826817f59a",
+      "citation_annotations": 0,
+      "content_normalized_rows": 11,
+      "exact_ingredient_wording": 0,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "normalized_exact_ingredient_wording": 0,
+      "output_contract_compliant": true,
+      "output_rows": 11,
+      "prompt": "uncapped-quantity-no-search",
+      "quantity": {
+        "equivalent_count": 0,
+        "equivalent_rate": 0.0,
+        "equivalent_reference_coverage": 0.0,
+        "exact_count": 0,
+        "exact_rate": 0.0,
+        "exact_reference_coverage": 0.0,
+        "extra_count": 1,
+        "extra_rate": 1.0,
+        "matched_count": 1,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "extra": 1
+        },
+        "wrong_count": 0,
+        "wrong_rate": 0.0
+      },
+      "recipe_id": "enchanted_broccoli_forest__moroccan_orange_walnut_salad",
+      "reference_rows": 10,
+      "reported_cost_usd": 0.000468996,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": false,
+      "strict_identity": {
+        "f1": 0.09523809523809525,
+        "false_negatives": 9,
+        "false_positives": 10,
+        "precision": 0.09090909090909091,
+        "recall": 0.1,
+        "true_positives": 1
+      },
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_d374bfc32c0c4e51acc99bd0d11a6112",
+      "citation_annotations": 0,
+      "content_normalized_rows": 18,
+      "exact_ingredient_wording": 5,
+      "exact_quantity_and_ingredient_wording": 1,
+      "exact_quantity_and_normalized_ingredient_wording": 1,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "normalized_exact_ingredient_wording": 5,
+      "output_contract_compliant": false,
+      "output_rows": 18,
+      "prompt": "uncapped-quantity-no-search",
+      "quantity": {
+        "equivalent_count": 2,
+        "equivalent_rate": 0.2857142857142857,
+        "equivalent_reference_coverage": 0.125,
+        "exact_count": 2,
+        "exact_rate": 0.2857142857142857,
+        "exact_reference_coverage": 0.125,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 7,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "exact": 2,
+          "wrong": 5
+        },
+        "wrong_count": 5,
+        "wrong_rate": 0.7142857142857143
+      },
+      "recipe_id": "plenty__goat_cheese_souffles_with_vanilla_poached_peaches",
+      "reference_rows": 16,
+      "reported_cost_usd": 0.000669834,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": false,
+      "strict_identity": {
+        "f1": 0.411764705882353,
+        "false_negatives": 9,
+        "false_positives": 11,
+        "precision": 0.3888888888888889,
+        "recall": 0.4375,
+        "true_positives": 7
+      },
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_f7310d424a2c412eadf0042d185d76fa",
+      "citation_annotations": 0,
+      "content_normalized_rows": 23,
+      "exact_ingredient_wording": 6,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "normalized_exact_ingredient_wording": 6,
+      "output_contract_compliant": true,
+      "output_rows": 23,
+      "prompt": "uncapped-quantity-no-search",
+      "quantity": {
+        "equivalent_count": 2,
+        "equivalent_rate": 0.25,
+        "equivalent_reference_coverage": 0.07692307692307693,
+        "exact_count": 1,
+        "exact_rate": 0.125,
+        "exact_reference_coverage": 0.038461538461538464,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 8,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "equivalent": 1,
+          "exact": 1,
+          "wrong": 6
+        },
+        "wrong_count": 6,
+        "wrong_rate": 0.75
+      },
+      "recipe_id": "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns",
+      "reference_rows": 26,
+      "reported_cost_usd": 0.00079662,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": false,
+      "strict_identity": {
+        "f1": 0.3333333333333333,
+        "false_negatives": 17,
+        "false_positives": 15,
+        "precision": 0.34782608695652173,
+        "recall": 0.32,
+        "true_positives": 8
+      },
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_9491582109274688949b4d260cc794b4",
+      "citation_annotations": 3,
+      "content_normalized_rows": 13,
+      "exact_ingredient_wording": 7,
+      "exact_quantity_and_ingredient_wording": 5,
+      "exact_quantity_and_normalized_ingredient_wording": 5,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "normalized_exact_ingredient_wording": 7,
+      "output_contract_compliant": false,
+      "output_rows": 2,
+      "prompt": "uncapped-quantity-required-search",
+      "quantity": {
+        "equivalent_count": 10,
+        "equivalent_rate": 1.0,
+        "equivalent_reference_coverage": 1.0,
+        "exact_count": 7,
+        "exact_rate": 0.7,
+        "exact_reference_coverage": 0.7,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 10,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "equivalent": 3,
+          "exact": 7
+        },
+        "wrong_count": 0,
+        "wrong_rate": 0.0
+      },
+      "recipe_id": "salt_fat_acid_heat__lori_s_chocolate_midnight_cake",
+      "reference_rows": 10,
+      "reported_cost_usd": 0.011097543999999999,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": true,
+      "strict_identity": {
+        "f1": 0.8571428571428571,
+        "false_negatives": 0,
+        "false_positives": 3,
+        "precision": 0.75,
+        "recall": 1.0,
+        "true_positives": 9
+      },
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_ec476ef5edaa45c4b5a541577ecaec56",
+      "citation_annotations": 3,
+      "content_normalized_rows": 10,
+      "exact_ingredient_wording": 1,
+      "exact_quantity_and_ingredient_wording": 1,
+      "exact_quantity_and_normalized_ingredient_wording": 1,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "normalized_exact_ingredient_wording": 1,
+      "output_contract_compliant": false,
+      "output_rows": 11,
+      "prompt": "uncapped-quantity-required-search",
+      "quantity": {
+        "equivalent_count": 4,
+        "equivalent_rate": 0.5,
+        "equivalent_reference_coverage": 0.4,
+        "exact_count": 1,
+        "exact_rate": 0.125,
+        "exact_reference_coverage": 0.1,
+        "extra_count": 1,
+        "extra_rate": 0.125,
+        "matched_count": 8,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "equivalent": 3,
+          "exact": 1,
+          "extra": 1,
+          "wrong": 3
+        },
+        "wrong_count": 3,
+        "wrong_rate": 0.375
+      },
+      "recipe_id": "enchanted_broccoli_forest__moroccan_orange_walnut_salad",
+      "reference_rows": 10,
+      "reported_cost_usd": 0.010900072,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": true,
+      "strict_identity": {
+        "f1": 0.5,
+        "false_negatives": 5,
+        "false_positives": 5,
+        "precision": 0.5,
+        "recall": 0.5,
+        "true_positives": 5
+      },
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_997627b774d64d6799b634667337b96c",
+      "citation_annotations": 3,
+      "content_normalized_rows": 16,
+      "exact_ingredient_wording": 8,
+      "exact_quantity_and_ingredient_wording": 4,
+      "exact_quantity_and_normalized_ingredient_wording": 4,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "normalized_exact_ingredient_wording": 8,
+      "output_contract_compliant": false,
+      "output_rows": 17,
+      "prompt": "uncapped-quantity-required-search",
+      "quantity": {
+        "equivalent_count": 6,
+        "equivalent_rate": 0.46153846153846156,
+        "equivalent_reference_coverage": 0.375,
+        "exact_count": 5,
+        "exact_rate": 0.38461538461538464,
+        "exact_reference_coverage": 0.3125,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 13,
+        "missing_count": 7,
+        "missing_rate": 0.5384615384615384,
+        "statuses": {
+          "equivalent": 1,
+          "exact": 5,
+          "missing": 7
+        },
+        "wrong_count": 0,
+        "wrong_rate": 0.0
+      },
+      "recipe_id": "plenty__goat_cheese_souffles_with_vanilla_poached_peaches",
+      "reference_rows": 16,
+      "reported_cost_usd": 0.013551358,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": true,
+      "strict_identity": {
+        "f1": 0.8125,
+        "false_negatives": 3,
+        "false_positives": 3,
+        "precision": 0.8125,
+        "recall": 0.8125,
+        "true_positives": 13
+      },
+      "web_search_requests": 2
+    },
+    {
+      "attempt_id": "attempt_2e30177b3cde4aa38cea06e2fe928718",
+      "citation_annotations": 3,
+      "content_normalized_rows": 24,
+      "exact_ingredient_wording": 5,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "normalized_exact_ingredient_wording": 5,
+      "output_contract_compliant": false,
+      "output_rows": 24,
+      "prompt": "uncapped-quantity-required-search",
+      "quantity": {
+        "equivalent_count": 0,
+        "equivalent_rate": 0.0,
+        "equivalent_reference_coverage": 0.0,
+        "exact_count": 0,
+        "exact_rate": 0.0,
+        "exact_reference_coverage": 0.0,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 7,
+        "missing_count": 7,
+        "missing_rate": 1.0,
+        "statuses": {
+          "missing": 7
+        },
+        "wrong_count": 0,
+        "wrong_rate": 0.0
+      },
+      "recipe_id": "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns",
+      "reference_rows": 26,
+      "reported_cost_usd": 0.013878982000000002,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": true,
+      "strict_identity": {
+        "f1": 0.2857142857142857,
+        "false_negatives": 18,
+        "false_positives": 17,
+        "precision": 0.2916666666666667,
+        "recall": 0.28,
+        "true_positives": 7
+      },
+      "web_search_requests": 2
+    },
+    {
+      "attempt_id": "attempt_d467f55216df46c3a5b8ac7eb09e40df",
+      "citation_annotations": 0,
+      "content_normalized_rows": 11,
+      "exact_ingredient_wording": 4,
+      "exact_quantity_and_ingredient_wording": 1,
+      "exact_quantity_and_normalized_ingredient_wording": 1,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "openai/gpt-5.6-sol",
+      "normalized_exact_ingredient_wording": 4,
+      "output_contract_compliant": true,
+      "output_rows": 11,
+      "prompt": "uncapped-quantity-no-search",
+      "quantity": {
+        "equivalent_count": 2,
+        "equivalent_rate": 0.4,
+        "equivalent_reference_coverage": 0.2,
+        "exact_count": 1,
+        "exact_rate": 0.2,
+        "exact_reference_coverage": 0.1,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 5,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "equivalent": 1,
+          "exact": 1,
+          "wrong": 3
+        },
+        "wrong_count": 3,
+        "wrong_rate": 0.6
+      },
+      "recipe_id": "salt_fat_acid_heat__lori_s_chocolate_midnight_cake",
+      "reference_rows": 10,
+      "reported_cost_usd": 0.001172,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": false,
+      "strict_identity": {
+        "f1": 0.5,
+        "false_negatives": 4,
+        "false_positives": 6,
+        "precision": 0.45454545454545453,
+        "recall": 0.5555555555555556,
+        "true_positives": 5
+      },
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_56c63648f6894082871395a1d84d3665",
+      "citation_annotations": 0,
+      "content_normalized_rows": 10,
+      "exact_ingredient_wording": 1,
+      "exact_quantity_and_ingredient_wording": 1,
+      "exact_quantity_and_normalized_ingredient_wording": 1,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "openai/gpt-5.6-sol",
+      "normalized_exact_ingredient_wording": 1,
+      "output_contract_compliant": true,
+      "output_rows": 10,
+      "prompt": "uncapped-quantity-no-search",
+      "quantity": {
+        "equivalent_count": 3,
+        "equivalent_rate": 0.75,
+        "equivalent_reference_coverage": 0.3,
+        "exact_count": 2,
+        "exact_rate": 0.5,
+        "exact_reference_coverage": 0.2,
+        "extra_count": 1,
+        "extra_rate": 0.25,
+        "matched_count": 4,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "equivalent": 1,
+          "exact": 2,
+          "extra": 1
+        },
+        "wrong_count": 0,
+        "wrong_rate": 0.0
+      },
+      "recipe_id": "enchanted_broccoli_forest__moroccan_orange_walnut_salad",
+      "reference_rows": 10,
+      "reported_cost_usd": 0.000964,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": false,
+      "strict_identity": {
+        "f1": 0.4000000000000001,
+        "false_negatives": 6,
+        "false_positives": 6,
+        "precision": 0.4,
+        "recall": 0.4,
+        "true_positives": 4
+      },
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_b8a014552ed44e87b1c526a6d0bff65b",
+      "citation_annotations": 0,
+      "content_normalized_rows": 14,
+      "exact_ingredient_wording": 0,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "openai/gpt-5.6-sol",
+      "normalized_exact_ingredient_wording": 0,
+      "output_contract_compliant": false,
+      "output_rows": 14,
+      "prompt": "uncapped-quantity-no-search",
+      "quantity": {
+        "equivalent_count": 0,
+        "equivalent_rate": 0.0,
+        "equivalent_reference_coverage": 0.0,
+        "exact_count": 0,
+        "exact_rate": 0.0,
+        "exact_reference_coverage": 0.0,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 1,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "wrong": 1
+        },
+        "wrong_count": 1,
+        "wrong_rate": 1.0
+      },
+      "recipe_id": "plenty__goat_cheese_souffles_with_vanilla_poached_peaches",
+      "reference_rows": 16,
+      "reported_cost_usd": 0.00145,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": false,
+      "strict_identity": {
+        "f1": 0.06666666666666667,
+        "false_negatives": 15,
+        "false_positives": 13,
+        "precision": 0.07142857142857142,
+        "recall": 0.0625,
+        "true_positives": 1
+      },
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_0380654e629b4642b0b0025595941d57",
+      "citation_annotations": 0,
+      "content_normalized_rows": 17,
+      "exact_ingredient_wording": 4,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "openai/gpt-5.6-sol",
+      "normalized_exact_ingredient_wording": 4,
+      "output_contract_compliant": true,
+      "output_rows": 17,
+      "prompt": "uncapped-quantity-no-search",
+      "quantity": {
+        "equivalent_count": 0,
+        "equivalent_rate": 0.0,
+        "equivalent_reference_coverage": 0.0,
+        "exact_count": 0,
+        "exact_rate": 0.0,
+        "exact_reference_coverage": 0.0,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 5,
+        "missing_count": 5,
+        "missing_rate": 1.0,
+        "statuses": {
+          "missing": 5
+        },
+        "wrong_count": 0,
+        "wrong_rate": 0.0
+      },
+      "recipe_id": "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns",
+      "reference_rows": 26,
+      "reported_cost_usd": 0.00139,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": false,
+      "strict_identity": {
+        "f1": 0.2380952380952381,
+        "false_negatives": 20,
+        "false_positives": 12,
+        "precision": 0.29411764705882354,
+        "recall": 0.2,
+        "true_positives": 5
+      },
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_99a483b06ab745afaeb5896aa331890b",
+      "citation_annotations": 0,
+      "content_normalized_rows": 10,
+      "exact_ingredient_wording": 7,
+      "exact_quantity_and_ingredient_wording": 5,
+      "exact_quantity_and_normalized_ingredient_wording": 5,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "openai/gpt-5.6-sol",
+      "normalized_exact_ingredient_wording": 7,
+      "output_contract_compliant": true,
+      "output_rows": 10,
+      "prompt": "uncapped-quantity-required-search",
+      "quantity": {
+        "equivalent_count": 10,
+        "equivalent_rate": 1.0,
+        "equivalent_reference_coverage": 1.0,
+        "exact_count": 7,
+        "exact_rate": 0.7,
+        "exact_reference_coverage": 0.7,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 10,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "equivalent": 3,
+          "exact": 7
+        },
+        "wrong_count": 0,
+        "wrong_rate": 0.0
+      },
+      "recipe_id": "salt_fat_acid_heat__lori_s_chocolate_midnight_cake",
+      "reference_rows": 10,
+      "reported_cost_usd": 0.029951,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": true,
+      "strict_identity": {
+        "f1": 1.0,
+        "false_negatives": 0,
+        "false_positives": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "true_positives": 9
+      },
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_9eadf6dc9b4c4b9399f274ac445b2f16",
+      "citation_annotations": 0,
+      "content_normalized_rows": 1,
+      "exact_ingredient_wording": 0,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "openai/gpt-5.6-sol",
+      "normalized_exact_ingredient_wording": 0,
+      "output_contract_compliant": true,
+      "output_rows": 1,
+      "prompt": "uncapped-quantity-required-search",
+      "quantity": {
+        "equivalent_count": 1,
+        "equivalent_rate": 1.0,
+        "equivalent_reference_coverage": 0.1,
+        "exact_count": 0,
+        "exact_rate": 0.0,
+        "exact_reference_coverage": 0.0,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 1,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "equivalent": 1
+        },
+        "wrong_count": 0,
+        "wrong_rate": 0.0
+      },
+      "recipe_id": "enchanted_broccoli_forest__moroccan_orange_walnut_salad",
+      "reference_rows": 10,
+      "reported_cost_usd": 0.0286235,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": true,
+      "strict_identity": {
+        "f1": 0.0,
+        "false_negatives": 10,
+        "false_positives": 1,
+        "precision": 0.0,
+        "recall": 0.0,
+        "true_positives": 0
+      },
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_3448079c707a4a789d75876ab6c0e991",
+      "citation_annotations": 0,
+      "content_normalized_rows": 16,
+      "exact_ingredient_wording": 8,
+      "exact_quantity_and_ingredient_wording": 4,
+      "exact_quantity_and_normalized_ingredient_wording": 4,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "openai/gpt-5.6-sol",
+      "normalized_exact_ingredient_wording": 8,
+      "output_contract_compliant": true,
+      "output_rows": 16,
+      "prompt": "uncapped-quantity-required-search",
+      "quantity": {
+        "equivalent_count": 6,
+        "equivalent_rate": 0.46153846153846156,
+        "equivalent_reference_coverage": 0.375,
+        "exact_count": 5,
+        "exact_rate": 0.38461538461538464,
+        "exact_reference_coverage": 0.3125,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 13,
+        "missing_count": 7,
+        "missing_rate": 0.5384615384615384,
+        "statuses": {
+          "equivalent": 1,
+          "exact": 5,
+          "missing": 7
+        },
+        "wrong_count": 0,
+        "wrong_rate": 0.0
+      },
+      "recipe_id": "plenty__goat_cheese_souffles_with_vanilla_poached_peaches",
+      "reference_rows": 16,
+      "reported_cost_usd": 0.0302105,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": true,
+      "strict_identity": {
+        "f1": 0.8125,
+        "false_negatives": 3,
+        "false_positives": 3,
+        "precision": 0.8125,
+        "recall": 0.8125,
+        "true_positives": 13
+      },
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_a4c35cacdfc042fbb174b9a342c6603c",
+      "citation_annotations": 0,
+      "content_normalized_rows": 20,
+      "exact_ingredient_wording": 4,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "openai/gpt-5.6-sol",
+      "normalized_exact_ingredient_wording": 4,
+      "output_contract_compliant": true,
+      "output_rows": 20,
+      "prompt": "uncapped-quantity-required-search",
+      "quantity": {
+        "equivalent_count": 0,
+        "equivalent_rate": 0.0,
+        "equivalent_reference_coverage": 0.0,
+        "exact_count": 0,
+        "exact_rate": 0.0,
+        "exact_reference_coverage": 0.0,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 6,
+        "missing_count": 6,
+        "missing_rate": 1.0,
+        "statuses": {
+          "missing": 6
+        },
+        "wrong_count": 0,
+        "wrong_rate": 0.0
+      },
+      "recipe_id": "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns",
+      "reference_rows": 26,
+      "reported_cost_usd": 0.030699,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": true,
+      "strict_identity": {
+        "f1": 0.2666666666666666,
+        "false_negatives": 19,
+        "false_positives": 14,
+        "precision": 0.3,
+        "recall": 0.24,
+        "true_positives": 6
+      },
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_e0c7ce5f421e43a1a38c2fdcad114814",
+      "citation_annotations": 0,
+      "content_normalized_rows": 12,
+      "exact_ingredient_wording": 3,
+      "exact_quantity_and_ingredient_wording": 1,
+      "exact_quantity_and_normalized_ingredient_wording": 1,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "qwen/qwen3.8-27b",
+      "normalized_exact_ingredient_wording": 3,
+      "output_contract_compliant": true,
+      "output_rows": 12,
+      "prompt": "uncapped-quantity-no-search",
+      "quantity": {
+        "equivalent_count": 1,
+        "equivalent_rate": 0.3333333333333333,
+        "equivalent_reference_coverage": 0.1,
+        "exact_count": 1,
+        "exact_rate": 0.3333333333333333,
+        "exact_reference_coverage": 0.1,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 3,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "exact": 1,
+          "wrong": 2
+        },
+        "wrong_count": 2,
+        "wrong_rate": 0.6666666666666666
+      },
+      "recipe_id": "salt_fat_acid_heat__lori_s_chocolate_midnight_cake",
+      "reference_rows": 10,
+      "reported_cost_usd": 0.00033065,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": false,
+      "strict_identity": {
+        "f1": 0.28571428571428575,
+        "false_negatives": 6,
+        "false_positives": 9,
+        "precision": 0.25,
+        "recall": 0.3333333333333333,
+        "true_positives": 3
+      },
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_8a40e54f75274c1882767f531fe1a9f8",
+      "citation_annotations": 0,
+      "content_normalized_rows": 8,
+      "exact_ingredient_wording": 0,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "qwen/qwen3.8-27b",
+      "normalized_exact_ingredient_wording": 0,
+      "output_contract_compliant": true,
+      "output_rows": 8,
+      "prompt": "uncapped-quantity-no-search",
+      "quantity": {
+        "equivalent_count": 0,
+        "equivalent_rate": 0.0,
+        "equivalent_reference_coverage": 0.0,
+        "exact_count": 0,
+        "exact_rate": 0.0,
+        "exact_reference_coverage": 0.0,
+        "extra_count": 1,
+        "extra_rate": 0.5,
+        "matched_count": 2,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "extra": 1,
+          "wrong": 1
+        },
+        "wrong_count": 1,
+        "wrong_rate": 0.5
+      },
+      "recipe_id": "enchanted_broccoli_forest__moroccan_orange_walnut_salad",
+      "reference_rows": 10,
+      "reported_cost_usd": 0.000221425,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": false,
+      "strict_identity": {
+        "f1": 0.22222222222222224,
+        "false_negatives": 8,
+        "false_positives": 6,
+        "precision": 0.25,
+        "recall": 0.2,
+        "true_positives": 2
+      },
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_30ba81c7f47743f1b93cde35969bb7b8",
+      "citation_annotations": 0,
+      "content_normalized_rows": 55,
+      "exact_ingredient_wording": 1,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reason": "length",
+      "had_tool_narration": false,
+      "model": "qwen/qwen3.8-27b",
+      "normalized_exact_ingredient_wording": 1,
+      "output_contract_compliant": false,
+      "output_rows": 56,
+      "prompt": "uncapped-quantity-no-search",
+      "quantity": {
+        "equivalent_count": 0,
+        "equivalent_rate": 0.0,
+        "equivalent_reference_coverage": 0.0,
+        "exact_count": 0,
+        "exact_rate": 0.0,
+        "exact_reference_coverage": 0.0,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 1,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "wrong": 1
+        },
+        "wrong_count": 1,
+        "wrong_rate": 1.0
+      },
+      "recipe_id": "plenty__goat_cheese_souffles_with_vanilla_poached_peaches",
+      "reference_rows": 16,
+      "reported_cost_usd": 0.00133535,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": false,
+      "strict_identity": {
+        "f1": 0.02816901408450704,
+        "false_negatives": 15,
+        "false_positives": 54,
+        "precision": 0.01818181818181818,
+        "recall": 0.0625,
+        "true_positives": 1
+      },
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_57bf69933d954c16b5c0650a243b1bc6",
+      "citation_annotations": 0,
+      "content_normalized_rows": 10,
+      "exact_ingredient_wording": 1,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "qwen/qwen3.8-27b",
+      "normalized_exact_ingredient_wording": 1,
+      "output_contract_compliant": true,
+      "output_rows": 10,
+      "prompt": "uncapped-quantity-no-search",
+      "quantity": {
+        "equivalent_count": 0,
+        "equivalent_rate": 0.0,
+        "equivalent_reference_coverage": 0.0,
+        "exact_count": 0,
+        "exact_rate": 0.0,
+        "exact_reference_coverage": 0.0,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 1,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "wrong": 1
+        },
+        "wrong_count": 1,
+        "wrong_rate": 1.0
+      },
+      "recipe_id": "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns",
+      "reference_rows": 26,
+      "reported_cost_usd": 0.00023545,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": false,
+      "strict_identity": {
+        "f1": 0.05714285714285714,
+        "false_negatives": 24,
+        "false_positives": 9,
+        "precision": 0.1,
+        "recall": 0.04,
+        "true_positives": 1
+      },
+      "web_search_requests": 0
+    },
+    {
+      "attempt_id": "attempt_8382ab38cdcf417d95cb006a0caecf84",
+      "citation_annotations": 3,
+      "content_normalized_rows": 9,
+      "exact_ingredient_wording": 7,
+      "exact_quantity_and_ingredient_wording": 4,
+      "exact_quantity_and_normalized_ingredient_wording": 4,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "qwen/qwen3.8-27b",
+      "normalized_exact_ingredient_wording": 7,
+      "output_contract_compliant": false,
+      "output_rows": 1,
+      "prompt": "uncapped-quantity-required-search",
+      "quantity": {
+        "equivalent_count": 8,
+        "equivalent_rate": 0.8888888888888888,
+        "equivalent_reference_coverage": 0.8,
+        "exact_count": 5,
+        "exact_rate": 0.5555555555555556,
+        "exact_reference_coverage": 0.5,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 9,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "equivalent": 3,
+          "exact": 5,
+          "wrong": 1
+        },
+        "wrong_count": 1,
+        "wrong_rate": 0.1111111111111111
+      },
+      "recipe_id": "salt_fat_acid_heat__lori_s_chocolate_midnight_cake",
+      "reference_rows": 10,
+      "reported_cost_usd": 0.0086014,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": true,
+      "strict_identity": {
+        "f1": 1.0,
+        "false_negatives": 0,
+        "false_positives": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "true_positives": 9
+      },
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_e2b5e22c382145d18e4bee3e48f83938",
+      "citation_annotations": 3,
+      "content_normalized_rows": 10,
+      "exact_ingredient_wording": 1,
+      "exact_quantity_and_ingredient_wording": 1,
+      "exact_quantity_and_normalized_ingredient_wording": 1,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "qwen/qwen3.8-27b",
+      "normalized_exact_ingredient_wording": 1,
+      "output_contract_compliant": false,
+      "output_rows": 1,
+      "prompt": "uncapped-quantity-required-search",
+      "quantity": {
+        "equivalent_count": 4,
+        "equivalent_rate": 0.5,
+        "equivalent_reference_coverage": 0.4,
+        "exact_count": 1,
+        "exact_rate": 0.125,
+        "exact_reference_coverage": 0.1,
+        "extra_count": 1,
+        "extra_rate": 0.125,
+        "matched_count": 8,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "equivalent": 3,
+          "exact": 1,
+          "extra": 1,
+          "wrong": 3
+        },
+        "wrong_count": 3,
+        "wrong_rate": 0.375
+      },
+      "recipe_id": "enchanted_broccoli_forest__moroccan_orange_walnut_salad",
+      "reference_rows": 10,
+      "reported_cost_usd": 0.008459874999999999,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": true,
+      "strict_identity": {
+        "f1": 0.5,
+        "false_negatives": 5,
+        "false_positives": 5,
+        "precision": 0.5,
+        "recall": 0.5,
+        "true_positives": 5
+      },
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_13957a4a08b049ffbd6f9c821bf596fe",
+      "citation_annotations": 3,
+      "content_normalized_rows": 14,
+      "exact_ingredient_wording": 6,
+      "exact_quantity_and_ingredient_wording": 5,
+      "exact_quantity_and_normalized_ingredient_wording": 5,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "qwen/qwen3.8-27b",
+      "normalized_exact_ingredient_wording": 6,
+      "output_contract_compliant": false,
+      "output_rows": 14,
+      "prompt": "uncapped-quantity-required-search",
+      "quantity": {
+        "equivalent_count": 9,
+        "equivalent_rate": 0.9,
+        "equivalent_reference_coverage": 0.5625,
+        "exact_count": 8,
+        "exact_rate": 0.8,
+        "exact_reference_coverage": 0.5,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 10,
+        "missing_count": 0,
+        "missing_rate": 0.0,
+        "statuses": {
+          "equivalent": 1,
+          "exact": 8,
+          "wrong": 1
+        },
+        "wrong_count": 1,
+        "wrong_rate": 0.1
+      },
+      "recipe_id": "plenty__goat_cheese_souffles_with_vanilla_poached_peaches",
+      "reference_rows": 16,
+      "reported_cost_usd": 0.009052325,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": true,
+      "strict_identity": {
+        "f1": 0.6666666666666666,
+        "false_negatives": 6,
+        "false_positives": 4,
+        "precision": 0.7142857142857143,
+        "recall": 0.625,
+        "true_positives": 10
+      },
+      "web_search_requests": 1
+    },
+    {
+      "attempt_id": "attempt_1935d78c75df4dc5b83c2cb0357da484",
+      "citation_annotations": 3,
+      "content_normalized_rows": 11,
+      "exact_ingredient_wording": 0,
+      "exact_quantity_and_ingredient_wording": 0,
+      "exact_quantity_and_normalized_ingredient_wording": 0,
+      "finish_reason": "stop",
+      "had_tool_narration": false,
+      "model": "qwen/qwen3.8-27b",
+      "normalized_exact_ingredient_wording": 4,
+      "output_contract_compliant": true,
+      "output_rows": 11,
+      "prompt": "uncapped-quantity-required-search",
+      "quantity": {
+        "equivalent_count": 0,
+        "equivalent_rate": 0.0,
+        "equivalent_reference_coverage": 0.0,
+        "exact_count": 0,
+        "exact_rate": 0.0,
+        "exact_reference_coverage": 0.0,
+        "extra_count": 0,
+        "extra_rate": 0.0,
+        "matched_count": 5,
+        "missing_count": 5,
+        "missing_rate": 1.0,
+        "statuses": {
+          "missing": 5
+        },
+        "wrong_count": 0,
+        "wrong_rate": 0.0
+      },
+      "recipe_id": "art_gluten_free_bread__oat_and_honey_sourdough_hot_cross_buns",
+      "reference_rows": 26,
+      "reported_cost_usd": 0.009253349999999999,
+      "run": "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl",
+      "searched": true,
+      "strict_identity": {
+        "f1": 0.2777777777777778,
+        "false_negatives": 20,
+        "false_positives": 6,
+        "precision": 0.45454545454545453,
+        "recall": 0.2,
+        "true_positives": 5
+      },
+      "web_search_requests": 2
+    }
+  ],
+  "description": "Deterministic-v3 identity and quantity metrics for uncapped ingredient rows. Mechanical normalization handles compact metric units, duplicated columns, and one-line pipe-separated rows. Tool narration is removed only for grading. Every raw formatting defect remains a separate contract failure metric.",
+  "input_runs": [
+    "artifacts/runs/cookbook-experiment-3-balanced-uncapped-quantity/run_cee6e92070b146df911acfa4f8066981/attempts.jsonl"
+  ],
+  "operational": {
+    "attempts": 32,
+    "failed": 0,
+    "reported_cost_usd": 0.6107850370000001,
+    "succeeded": 32
+  },
+  "overall_by_prompt": {
+    "uncapped-quantity-no-search": {
+      "cases": 16,
+      "citation_annotations": 0,
+      "content_normalized_rows": 269,
+      "exact_ingredient_wording": 40,
+      "exact_quantity_and_ingredient_wording": 6,
+      "exact_quantity_and_normalized_ingredient_wording": 6,
+      "finish_reasons": {
+        "length": 1,
+        "stop": 15
+      },
+      "had_tool_narration": 0,
+      "normalized_exact_ingredient_wording": 40,
+      "output_contract_compliant": 13,
+      "output_rows": 270,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.21666666666666667,
+        "exact_or_equivalent_reference_coverage": 0.05241935483870968,
+        "exact_rate_among_matched": 0.15,
+        "exact_reference_coverage": 0.036290322580645164,
+        "matched_count": 60,
+        "statuses": {
+          "equivalent": 4,
+          "exact": 9,
+          "extra": 4,
+          "missing": 20,
+          "wrong": 23
+        }
+      },
+      "reference_rows": 248,
+      "reported_cost_usd": 0.032826130999999995,
+      "searched": 0,
+      "strict_identity": {
+        "f1": 0.2357563850687623,
+        "false_negatives": 180,
+        "false_positives": 209,
+        "precision": 0.22304832713754646,
+        "recall": 0.25,
+        "true_positives": 60
+      },
+      "web_search_requests": 0
+    },
+    "uncapped-quantity-required-search": {
+      "cases": 16,
+      "citation_annotations": 24,
+      "content_normalized_rows": 213,
+      "exact_ingredient_wording": 73,
+      "exact_quantity_and_ingredient_wording": 38,
+      "exact_quantity_and_normalized_ingredient_wording": 38,
+      "finish_reasons": {
+        "stop": 16
+      },
+      "had_tool_narration": 2,
+      "normalized_exact_ingredient_wording": 77,
+      "output_contract_compliant": 5,
+      "output_rows": 187,
+      "quantity": {
+        "exact_or_equivalent_rate_among_matched": 0.5891472868217055,
+        "exact_or_equivalent_reference_coverage": 0.3064516129032258,
+        "exact_rate_among_matched": 0.40310077519379844,
+        "exact_reference_coverage": 0.20967741935483872,
+        "matched_count": 129,
+        "statuses": {
+          "equivalent": 24,
+          "exact": 52,
+          "extra": 2,
+          "missing": 42,
+          "wrong": 9
+        }
+      },
+      "reference_rows": 248,
+      "reported_cost_usd": 0.577958906,
+      "searched": 16,
+      "strict_identity": {
+        "f1": 0.532150776053215,
+        "false_negatives": 120,
+        "false_positives": 91,
+        "precision": 0.5687203791469194,
+        "recall": 0.5,
+        "true_positives": 120
+      },
+      "web_search_requests": 19
+    }
+  }
+}

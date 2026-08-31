@@ -143,7 +143,8 @@ observed refusal increase, the prompt changes that produced replicated full
 compliance, and the remaining gap between compliance and factual accuracy.
 
 The [Experiment 3 web-search
-report](docs/experiments/experiment-3-web-search-final-20260830.md) compares that
-winning prompt with a search-required, evidence-gated prompt across four
-models, including deterministic metrics, provider costs, and raw qualitative
-examples.
+report](docs/experiments/experiment-3-web-search-final-20260830.md) compares a
+true no-tool baseline with required evidence-gated search across the same four
+recipes and four models. Its uncapped evaluation includes ingredient identity,
+exact and equivalent quantities, exact wording, provider costs, and raw
+qualitative diffs.
